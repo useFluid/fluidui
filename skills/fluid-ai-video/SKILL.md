@@ -1,6 +1,6 @@
 ---
 name: fluid-ai-video
-description: Combines AI-generated video (Sora, Veo, Runway, Kling and similar) with Fluid brand motion - writes generation prompts that leave room for the brand, records the Fluid layer, and composites the two with ffmpeg. Use when someone wants motion graphics, a logo reveal or brand animation on top of, before or after an AI-made video.
+description: Use when combining Fluid brand motion with AI-generated footage (Sora, Veo, Runway, Kling): writing the generation prompt that leaves room for the brand, or compositing a recorded Fluid layer over the clip. Not for AI video work that does not involve Fluid.
 ---
 
 # Fluid over AI video

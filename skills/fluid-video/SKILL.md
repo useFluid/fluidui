@@ -1,6 +1,6 @@
 ---
 name: fluid-video
-description: Records any web page or Fluid animation as an MP4, frame by frame at 60 fps, in story, post, square or wide format, smooth and identical every time. Use when someone asks for a video, animated post, story, reel, intro video or motion graphics from their brand, components or site.
+description: Use when recording a web page or Fluid animation to MP4 with the Fluid CLI (fluid record), or when such a recording is choppy, cut off or blank. Not for editing, cutting or captioning existing videos.
 ---
 
 # Fluid video

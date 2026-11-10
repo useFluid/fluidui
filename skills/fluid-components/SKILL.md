@@ -1,6 +1,6 @@
 ---
 name: fluid-components
-description: Adds and adapts Fluid animated pieces in a React project - Metamorph (Shape, Icon, Menu, Dialog, Copy, Morph Button, Loader), characters (Pet, Bot), controls (Segmented Picker, Pill Tabs, Spring Switch, Spring Button, Morph Island), text (Word Cycle, Text Reveal) and transitions (Logo Wipe, Island Toast). Use when someone asks for animation, micro-interactions, or a component that "flows", "morphs" or "springs".
+description: Use when the project depends on @usefluid/motion or the user names Fluid, and they want to add, choose or adapt a Fluid piece (Metamorph, Pet, Bot, Segmented Picker, Spring Switch, Morph Dialog, Splash...). Not for animation with other libraries (Framer Motion, GSAP, CSS) or projects without Fluid.
 ---
 
 # Fluid components

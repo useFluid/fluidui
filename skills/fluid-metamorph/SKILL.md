@@ -1,6 +1,6 @@
 ---
 name: fluid-metamorph
-description: Builds new animated components with the Fluid engine (@usefluid/motion) - Metamorph contour morphing between any shapes or logos, exact springs and timelines - following the rules that keep morphs clean. Use when someone wants a shape, icon, logo or UI element to morph into another, or a new piece "in the Fluid style".
+description: Use when building a new component with the Fluid engine (@usefluid/motion: MorphPath, useSpring, createMorpher) or when a Fluid morph tears, twists or spikes. Not for SVG morphing with other libraries.
 ---
 
 # Building with Metamorph

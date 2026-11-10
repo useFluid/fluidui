@@ -1,6 +1,6 @@
 ---
 name: fluid-characters
-description: Creates pets, mascots and chat bots in the Fluid style - a soft single body that changes mood on springs, with minimal eyes and no mouth, and moods tied to real product events. Use when someone asks for a mascot, pet, character, animated avatar or an assistant with a face.
+description: Use when the project depends on @usefluid/motion or the user names Fluid, and they want a pet, mascot or assistant face built with Fluid's Pet or Bot. Not for illustrated mascots, 3D characters or avatars without Fluid.
 ---
 
 # Fluid characters

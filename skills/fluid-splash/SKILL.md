@@ -1,6 +1,6 @@
 ---
 name: fluid-splash
-description: Builds a product opening (splash, intro) in the Fluid style - shapes morph into the person's logo, the logo rises, and the headline comes out of a blur. Use when someone asks for an intro, splash screen, opening animation or loading screen with their logo.
+description: Use when the project depends on @usefluid/motion or the user names Fluid, and they want an opening, intro or splash built from their logo with Fluid. Not for native app launch screens or splash screens without Fluid.
 ---
 
 # Fluid opening

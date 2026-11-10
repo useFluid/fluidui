@@ -1,6 +1,6 @@
 ---
 name: fluid-brand
-description: Sets up a project's brand for Fluid motion pieces - finds the logo, colours and font, converts the logo to the path the pieces use, and writes the --fluid-* theme. Use before adding any Fluid piece, or when someone asks to put their brand, logo or colours into animations.
+description: Use when a project already depends on @usefluid/motion (or the user asks to set up Fluid) and the logo, colours or font still need to reach the Fluid pieces: no --fluid-* theme file yet, a new logo, or a rebrand. Not for brand work that does not involve Fluid.
 ---
 
 # Fluid brand
