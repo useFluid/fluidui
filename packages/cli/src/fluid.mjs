@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -11,12 +11,29 @@ const registry = JSON.parse(readFileSync(join(here, "registry.json"), "utf8"));
 
 const args = process.argv.slice(2);
 const command = args[0];
-const flag = (name, fallback) => {
-  const i = args.indexOf(`--${name}`);
-  return i >= 0 && args[i + 1] && !args[i + 1].startsWith("--") ? args[i + 1] : fallback;
-};
-const has = (name) => args.includes(`--${name}`);
-const positional = args.slice(1).filter((a, i, all) => !a.startsWith("--") && !(all[i - 1] ?? "").startsWith("--"));
+const VALUE_FLAGS = new Set(["dir", "out", "format", "seconds", "fps", "browser"]);
+const values = {};
+const switches = new Set();
+const positional = [];
+for (let i = 1; i < args.length; i++) {
+  const a = args[i];
+  if (!a.startsWith("--")) {
+    positional.push(a);
+    continue;
+  }
+  const [name, inline] = a.slice(2).split("=", 2);
+  if (VALUE_FLAGS.has(name)) {
+    const value = inline ?? args[i + 1];
+    if (value === undefined || value.startsWith("--")) {
+      console.error(`fluid: --${name} needs a value.`);
+      process.exit(1);
+    }
+    values[name] = value;
+    if (inline === undefined) i++;
+  } else switches.add(name);
+}
+const flag = (name, fallback) => values[name] ?? fallback;
+const has = (name) => switches.has(name);
 
 const bold = (s) => (process.stdout.isTTY ? `\x1b[1m${s}\x1b[0m` : s);
 const dim = (s) => (process.stdout.isTTY ? `\x1b[2m${s}\x1b[0m` : s);
@@ -46,6 +63,27 @@ function defaultDir(kind) {
   const src = existsSync("src");
   if (kind === "pieces") return src ? "src/components/fluid" : "components/fluid";
   return src ? "src/fluid-theme.css" : "fluid-theme.css";
+}
+
+const SKIP = new Set(["node_modules", "dist", "build", "out", "coverage"]);
+
+function findTheme(dir = ".", depth = 0) {
+  if (depth > 5) return null;
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return null;
+  }
+  for (const entry of entries) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (SKIP.has(entry.name) || entry.name.startsWith(".")) continue;
+      const found = findTheme(path, depth + 1);
+      if (found) return found;
+    } else if (entry.name.endsWith(".css") && readFileSync(path, "utf8").includes("--fluid-accent")) return path;
+  }
+  return null;
 }
 
 function list() {
@@ -99,7 +137,7 @@ function add() {
   const pkg = existsSync("package.json") ? JSON.parse(readFileSync("package.json", "utf8")) : {};
   const deps = { ...pkg.dependencies, ...pkg.devDependencies };
   if (!deps["@usefluid/motion"]) console.log(`\nThe pieces run on the engine:\n  ${bold("npm i @usefluid/motion")}`);
-  if (!existsSync(defaultDir("theme")) && !flag("dir")) console.log(`\nSet your brand once:\n  ${bold("npx @usefluid/cli init")}`);
+  if (!findTheme()) console.log(`\nSet your brand once:\n  ${bold("npx @usefluid/cli init")}`);
   for (const slug of positional) {
     const piece = registry.pieces.find((p) => p.slug === slug);
     console.log(`\n${bold(piece.name)}\n${piece.usage.split("\n").map((l) => `  ${l}`).join("\n")}`);
@@ -111,7 +149,9 @@ function init() {
   if (existsSync(out) && !has("overwrite")) fail(`${out} already exists. Use --overwrite to replace it.`);
   mkdirSync(dirname(resolve(out)), { recursive: true });
   writeFileSync(out, registry.theme);
-  console.log(`${bold("Wrote")} ${out}\nImport it once at the root of your app and change the values to your brand.`);
+  console.log(`${bold("Wrote")} ${out}`);
+  console.log("Import it once at the root of your app, then point each variable at your own tokens,");
+  console.log(`for example ${bold("--fluid-accent: var(--color-primary);")} so dark mode follows by itself.`);
 }
 
 
@@ -161,7 +201,8 @@ async function logo() {
   const parts = sampleContours(fitted).length;
   const out = flag("out");
   if (out) {
-    writeFileSync(out, `// ${relative(process.cwd(), file)}, fitted to a 120 x 120 box by "fluid logo". ${parts} part(s).\nexport const logo =\n  ${JSON.stringify(fitted)};\n`);
+    mkdirSync(dirname(resolve(out)), { recursive: true });
+    writeFileSync(out, `export const logo =\n  ${JSON.stringify(fitted)};\n`);
     console.log(`${bold("Wrote")} ${out} ${dim(`(${parts} part${parts === 1 ? "" : "s"})`)}`);
   } else {
     console.log(fitted);
@@ -201,10 +242,9 @@ async function record() {
     deviceScaleFactor: scale,
   });
   await page.clock.install({ time: 0 });
+  await page.clock.pauseAt(1000);
   await page.goto(url, { waitUntil: "load" });
   await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(300);
-  await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 20);
   await page.evaluate(() => {
     window.__fluidStart = new WeakMap();
   });
@@ -234,8 +274,13 @@ async function record() {
 }
 
 const commands = { list, add, init, logo, record };
-if (!command || command === "help" || has("help") || !commands[command]) {
+if (!command || command === "help" || command === "--help" || has("help")) {
   console.log(HELP);
-  process.exit(command && command !== "help" && !has("help") ? 1 : 0);
+  process.exit(0);
+}
+if (!commands[command]) {
+  console.error(`fluid: unknown command "${command}".\n`);
+  console.error(HELP);
+  process.exit(1);
 }
 await commands[command]();
