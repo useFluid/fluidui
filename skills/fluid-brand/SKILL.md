@@ -5,51 +5,78 @@ description: Use when a project already depends on @usefluid/motion (or the user
 
 # Fluid brand
 
-Every Fluid piece reads ten CSS variables and a logo as one SVG path in a 120 x 120 box. This skill finds those in the project and writes them in one place. Do it once per project.
+Every Fluid piece reads ten `--fluid-*` CSS variables and takes the logo as one SVG path in a 120 x 120 box. This skill connects the project's existing brand to those two things, once.
 
-## 1. Look before asking
+**The core idea:** point the Fluid variables at the tokens the project already has. Then there is one source of truth, and dark mode follows by itself.
 
-- **Logo:** search `public/`, `assets/`, `src/assets/`, `app/` and any component named `Logo` for SVG files. Prefer the symbol on its own (no wordmark) and a one-colour version.
-- **Colours:** look for tokens: `tokens.css`, `globals.css`, `tailwind.config.*`, `theme.ts`, CSS variables like `--primary`, `--brand`, `--accent`. The brand's strongest colour becomes `--fluid-accent`.
-- **Font:** the `font-family` on `body`, or what `next/font` or `@font-face` loads.
-- **Dark mode:** check whether the project has one and how it switches (`.dark`, `[data-theme]`, media query).
+## Steps
 
-If there is no SVG logo, **ask for one**. Never invent a logo, never use a generic icon, never use another company's logo.
+### 1. Find what exists
 
-## 2. Convert the logo
+| Look for | Where |
+|---|---|
+| Logo (SVG, symbol only, one colour) | `public/`, `assets/`, `src/assets/`, `app/`, components named `Logo` |
+| Colour tokens | `globals.css`, `tokens.css`, `tailwind.config.*`, `theme.ts`, variables like `--primary` or `--color-primary` |
+| Font | the `font-family` on `body`, `next/font`, `@font-face` |
+| Dark mode | `.dark`, `[data-theme]` or a `prefers-color-scheme` query |
+
+No SVG logo? Ask for one. Never draw a logo, use a generic icon, or use another company's mark.
+
+**Check:** you can name the file of the logo and of each token.
+
+### 2. Convert the logo
 
 ```bash
-npx @usefluid/cli logo path/to/logo.svg --out src/lib/logo.ts
+npx @usefluid/cli logo public/logo.svg --out src/lib/logo.ts
 ```
 
-This reads paths, circles, rectangles and polygons, joins them and fits them into the 120 box. It prints how many parts the logo has; holes and several parts are fine.
+Use the folder the project keeps helpers in (`src/lib`, `lib`, `app/lib`). The CLI creates it if needed.
 
-If it refuses because of `transform`, the SVG must be exported again with transforms applied and strokes outlined (Figma: select, Flatten, Outline stroke). If the logo is text or a raster image, ask for a vector version.
+**Check:** the CLI prints the number of parts. A symbol with a dot and a bar is 2. If it refuses because of `transform`, or the logo is text or a picture, ask for an SVG exported with transforms applied and strokes outlined.
 
-## 3. Write the theme
+### 3. Write the theme and point it at the project's tokens
 
 ```bash
 npx @usefluid/cli init --out src/styles/fluid-theme.css
 ```
 
-Then fill in the values from step 1 and import the file once at the root of the app:
+Replace every value with the project's own token, and import the file once at the root of the app:
 
-| Variable | What it is |
+```css
+:root {
+  --fluid-accent: var(--color-primary);
+  --fluid-on-accent: var(--color-primary-contrast);
+  --fluid-surface: var(--color-panel);
+  --fluid-surface-2: var(--color-bg);
+  --fluid-text: var(--color-text);
+  --fluid-text-2: var(--color-text-muted);
+  --fluid-border: var(--color-border);
+  --fluid-focus: var(--color-primary);
+  --fluid-radius: var(--radius);
+  --fluid-font: var(--font);
+}
+```
+
+| Variable | Used for |
 |---|---|
-| `--fluid-accent` | the brand colour; fills buttons, pills and logos |
-| `--fluid-on-accent` | text and icons on top of the accent; must reach 4.5:1 contrast with it |
-| `--fluid-surface` | background of cards and panels |
-| `--fluid-surface-2` | background behind the pieces |
-| `--fluid-text`, `--fluid-text-2` | main and secondary text; secondary still needs 4.5:1 |
-| `--fluid-border` | hairlines |
-| `--fluid-focus` | focus ring |
-| `--fluid-radius` | the project's control radius |
-| `--fluid-font` | the project's font stack |
+| `--fluid-accent` | logos, fills, the chosen pill, switches when on |
+| `--fluid-on-accent` | text, icons and small shapes on the accent; also switch thumbs |
+| `--fluid-surface`, `--fluid-surface-2` | panels, and the area behind pieces |
+| `--fluid-text`, `--fluid-text-2` | main and secondary text |
+| `--fluid-border`, `--fluid-focus` | hairlines and the focus ring |
+| `--fluid-radius`, `--fluid-font` | control radius and font |
 
-If the project has dark mode, repeat the values that change under the selector the project already uses.
+A token the project lacks: pick a value and tell the person you chose it.
 
-Check contrast for every text pair. A light brand colour (yellow, light blue) usually needs dark `--fluid-on-accent`.
+**Check:** text on accent and secondary text reach 4.5:1 contrast, in light and in dark mode.
 
-## 4. Show it
+## Common mistakes
 
-Tell the person where each value came from and which ones you chose because you found nothing. Then show the logo arriving in a `ShapeMorph` (`npx @usefluid/cli add shape-morph`) so they can see it is right.
+| Mistake | Fix |
+|---|---|
+| Copying hex values into the theme | Point at the project's variables, so a rebrand or dark mode changes everything |
+| A separate dark block that repeats values | Not needed when the variables point at tokens that already switch |
+| Showing the logo touching its box | The fitted path fills the 120 box; draw it with `viewBox="-8 -8 136 136"` for breathing room |
+| Assuming a logo with holes broke | Holes need `fill-rule="evenodd"`, which `MorphPath` already sets |
+
+Then add pieces with `fluid-components`.

@@ -5,59 +5,77 @@ description: Use when recording a web page or Fluid animation to MP4 with the Fl
 
 # Fluid video
 
-The video is recorded with time stopped: each frame the clock moves 1/60 s and the screen is captured. That is why it is smooth even on a slow machine and the same every run. It works for Fluid pieces and for any page made with CSS or JavaScript animation.
+`fluid record` records a page with time stopped: each frame, the clock moves exactly 1/60 s and the screen is captured. The video is smooth on any machine and identical every run, starting at the page's first instant.
 
 ## Needs
 
-```bash
-npm i -D playwright-core       # drives the browser
-# Chrome or Edge installed, and ffmpeg on the PATH (https://ffmpeg.org/download.html)
-```
+- `playwright-core` in the project (`npm i -D playwright-core` if missing)
+- Chrome or Edge installed
+- `ffmpeg` on the PATH
 
-## 1. Make a page that shows only the scene
+## Steps
 
-Create a route that renders just the animation, full screen, no navbar or cookie banner:
+### 1. Make a page with only the scene
+
+The scene must not render the app's header, sidebar or banners. Give it its own layout.
+
+Next.js App Router: a route group with its own root layout.
 
 ```tsx
-// app/record/page.tsx (Next.js) or any route in your framework
-import { SplashChoice } from "@/components/fluid/splash-choice/SplashChoice";
-import { logo } from "@/lib/logo";
+// app/(record)/layout.tsx
+import "../globals.css";
+export default function RecordLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="en"><body style={{ margin: 0 }}>{children}</body></html>;
+}
 
+// app/(record)/record/page.tsx
+import { SplashDots } from "@/components/fluid/splash-dots/SplashDots";
+import { logo } from "@/lib/logo";
 export default function Record() {
   return (
     <main style={{ position: "fixed", inset: 0, background: "var(--fluid-surface-2)" }}>
-      <SplashChoice logo={logo} title="Made for" word="you." options={[]} />
+      <SplashDots logo={logo} name="Acme" skippable={false} />
     </main>
   );
 }
 ```
 
-Design it for a phone: the recorder lays the page out at about 400 px wide and captures it at high density, so text reads on a phone screen.
+Vite or another single-page app: render the scene instead of the app when `location.pathname === "/record"`.
 
-Anything that should happen in the video must happen on its own: start the timeline on mount, drive interactions with timers.
+Everything in the video must happen by itself: start timelines on mount, drive interactions with timers. Pass `skippable={false}` to openings.
 
-## 2. Record
+### 2. Record
 
 ```bash
-npm run dev    # or a production build, which is smoother
-npx @usefluid/cli record http://localhost:3000/record --format story --seconds 8 --out videos/intro.mp4
+npx @usefluid/cli record http://localhost:3000/record --format story --seconds 6 --out videos/intro.mp4
 ```
 
-| Option | Values |
+| Format | Size | The page is laid out at |
+|---|---|---|
+| `story` | 1080 x 1920 | 400 x 711 |
+| `post` | 1080 x 1350 | 400 x 500 |
+| `square` | 1080 x 1080 | 400 x 400 |
+| `wide` | 1920 x 1080 | 711 x 400 |
+
+The short side is always 400 px and is scaled up 2.7 times, so design the scene at those sizes. A production build records smoother than the dev server.
+
+### 3. Check before handing it over
+
+```bash
+ffmpeg -i videos/intro.mp4 -vf "select='not(mod(n\,30))',scale=240:-1,tile=4x3" -frames:v 1 sheet.png
+```
+
+Look at the sheet:
+
+- Nothing is cut at the edges.
+- Text is at least 15 px in the page, which becomes 40 px in the video.
+- The last frames hold still for a moment, or flow back into the first if it will loop.
+- No other brand's logo appears.
+
+## Common mistakes
+
+| Symptom | Cause and fix |
 |---|---|
-| `--format` | `story` 1080x1920, `post` 1080x1350, `square` 1080x1080, `wide` 1920x1080 |
-| `--seconds`, `--fps` | length and frame rate (default 6 and 60) |
-| `--browser` | `chrome` (default) or `msedge` |
-
-## 3. Check before you hand it over
-
-Pull a contact sheet and look at it:
-
-```bash
-ffmpeg -i videos/intro.mp4 -vf "select='not(mod(n\,30))',scale=200:-1,tile=8x2" -frames:v 1 sheet.png
-```
-
-- The first and last frames are clean, nothing cut mid-move.
-- Text is readable on a phone: in a story, no letter under 40 px tall.
-- The video uses no other brand's logo.
-- Loop: if it will loop, the last frame should flow into the first.
+| The app's header in the video | The scene shares the app layout; give it its own |
+| Text cut at the sides | Pieces sized with `cqmin` render bigger at 400 px; shorten the text or size it down on the record page |
+| A blank first second | The scene waits for something; start on mount |

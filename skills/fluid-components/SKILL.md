@@ -5,64 +5,74 @@ description: Use when the project depends on @usefluid/motion or the user names 
 
 # Fluid components
 
-Every piece comes from the same motion: outlines that flow on real springs, shapes that become the logo, a pill that flows, words that come out of a blur. Use that motion where it means something, not as decoration.
+Fluid pieces are React components copied into the project, all made from one motion: outlines that flow on real springs. Use them where the motion means something: a state changed, something opened, something arrived.
 
 ## Before you start
 
-1. If there is no `fluid-theme.css` in the project, run the `fluid-brand` skill first.
-2. Read the project: React version, framework (Next.js, Vite, Remix), where components live, how CSS is imported. The pieces use CSS Modules, which all of these support.
+- No `--fluid-*` theme in the project yet? Do `fluid-brand` first.
+- `@usefluid/motion` missing from `package.json`? Install it: `npm i @usefluid/motion`.
+- Works in Next.js (App Router or Pages), Vite and Remix. Pieces start with `"use client"` and use CSS Modules.
 
-## Pick by need
+## Pick the piece
 
 | The product needs | Piece |
 |---|---|
-| A logo that arrives or changes | `shape-morph` |
-| Open/close, play/pause icons | `icon-morph` |
-| A mobile menu | `menu-morph` |
 | A window that opens from a card or button | `morph-dialog` |
+| A mobile menu | `menu-morph` |
+| A filter or a view switch over one list | `segmented-picker` |
+| Tabs that switch panels, with counts | `pill-tabs` |
+| An on and off setting | `spring-switch` |
+| Main and secondary buttons | `spring-button` |
 | A submit that takes a moment | `morph-button` |
+| A notice after an action | `island-toast` |
 | Copy a code or link | `copy-morph` |
 | A loading state | `morph-loader` |
-| Filters or short tabs | `segmented-picker`, or `pill-tabs` when each tab has a count |
-| An on/off preference | `spring-switch` |
-| Main and secondary buttons | `spring-button` |
-| A quick action that opens a panel | `morph-island` |
-| A headline with a changing word | `word-cycle` |
-| A headline that comes in letter by letter | `text-reveal` |
-| An important screen change | `logo-wipe` |
-| A result notice | `island-toast` |
-| A mascot or support chat | `pet`, `bot` (see `fluid-characters`) |
-| The product's opening | see `fluid-splash` |
+| Open and close, play and pause icons | `icon-morph` |
+| A quick action that opens a small panel | `morph-island` |
+| A changing word in a heading | `word-cycle` |
+| A heading that arrives letter by letter | `text-reveal` |
+| A route or screen change with the brand | `logo-wipe` (`LogoCurtain` for routes) |
+| The logo arriving | `shape-morph` |
+| An opening | `fluid-splash` |
+| A mascot or assistant | `fluid-characters` |
 
-`npx @usefluid/cli list` prints every piece with one line about it.
+`npx @usefluid/cli list` prints all of them.
 
-## Add
+## Steps
+
+### 1. Add
 
 ```bash
-npm i @usefluid/motion
-npx @usefluid/cli add segmented-picker morph-button
+npx @usefluid/cli add morph-dialog segmented-picker
 ```
 
-The files are copied into `src/components/fluid/<piece>/` (or `--dir`), together with any piece they import. They are the project's code now: change them freely.
+Files land in `src/components/fluid/<piece>/` (or `components/fluid/`, or `--dir`), with any piece they use.
 
-Wire each piece to real data and real actions. No sample text left behind. Use the `--fluid-*` variables; never hard-code colours inside a piece.
+### 2. Read the piece's README
 
-In Next.js App Router the pieces are client components (they start with `"use client"`). Import them from server components as usual.
+Every piece folder has a `README.md` with its props, an example, and what keyboard and screen reader users get. Read it before wiring the piece. Do not guess props.
 
-## Rules that do not change
+### 3. Wire it to real state
 
-- Touch targets of at least 44 px, and a visible focus ring.
-- With `prefers-reduced-motion`, a piece goes straight to its final state. The engine's hooks already do this; do not remove it.
-- In the product, nothing loops by itself. Autoplay is only for showcases and videos.
-- One showpiece per screen. Too much motion becomes noise.
-- Test the states each piece announces with a keyboard and a screen reader.
+Drive pieces from the product's real data and events: the real request for `morph-button`, the real filter for `segmented-picker`. Remove every sample text.
 
-## Build a new piece in the same style
+**Check:** with the keyboard only, at 320 px wide, in light and dark mode, and with reduced motion on, every state can be reached and read.
 
-If nothing fits, build one with the engine and the `fluid-metamorph` skill.
+## Rules
 
-## Mobile
+- Controls never animate by themselves. Characters may breathe and blink; pass `still` where nothing should move.
+- Colours come from the `--fluid-*` variables only.
+- One showpiece per screen.
+- The pieces are the project's code: change them freely, and keep them accessible.
 
-- Hover styles live inside `@media (hover: hover)`, so nothing stays lit after a tap.
-- Everything runs on pointer events: mouse, finger and pen behave the same.
-- Check every piece at 320 px wide and on a real phone before shipping; the engine is light, but a full-screen morph costs paint on cheap Android phones.
+## Common mistakes
+
+| Mistake | Fix |
+|---|---|
+| `from={ref.current}` on MorphDialog | Keep the opener in state: `onClick={(e) => setFrom(e.currentTarget)}` |
+| `LogoWipe` around App Router `children` | Use `LogoCurtain` and `useCurtain`: cover, navigate, uncover on the new path (see its README) |
+| `pill-tabs` for a filter | `segmented-picker` is the right semantics for a filter |
+| `word-cycle` looping in the product | `loop={false}` |
+| A Bot with no way to type | Pass your input as its `children` |
+
+Building something no piece covers? Use `fluid-metamorph`.
