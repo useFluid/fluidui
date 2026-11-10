@@ -104,7 +104,7 @@ export function Stage({ slug, loop, className, vars, preview, brand: fixed, prio
   const { near, visible } = useVisible(root);
   const turn = useTurn(root, visible, priority);
   const [seen, setSeen] = useState(false);
-  if (turn && !seen) setSeen(true);
+  if (visible && !seen) setSeen(true);
   const reduced = useReducedMotion();
   const [held, setHeld] = useState(false);
   const [take, setTake] = useState(0);
@@ -124,7 +124,7 @@ export function Stage({ slug, loop, className, vars, preview, brand: fixed, prio
       ref={root}
       className={[styles.stage, className].filter(Boolean).join(" ")}
       style={{ ...brand.vars, ...vars } as CSSProperties}
-      data-offscreen={turn || held ? undefined : ""}
+      data-offscreen={visible ? undefined : ""}
       onPointerEnter={preview ? undefined : (e) => { if (e.pointerType === "mouse") setHeld(true); }}
       onPointerLeave={preview ? undefined : () => setHeld(false)}
       onFocus={preview ? undefined : () => setHeld(true)}

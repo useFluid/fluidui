@@ -9,7 +9,7 @@ export function BrandsRow({ loop }: { loop?: number }) {
     <ul className={styles.row}>
       {brands.map((brand) => (
         <li key={brand.id} className={styles.item}>
-          <Stage slug="splash-choice" loop={loop} brand={brand} preview className={styles.stage} />
+          <Stage slug="splash-choice" loop={loop} brand={brand} className={styles.stage} />
           <p className={styles.name}>{brand.name}</p>
         </li>
       ))}
