@@ -1,0 +1,355 @@
+.hero {
+  position: relative;
+  margin-top: calc(var(--bar-h) * -1);
+  padding: calc(var(--bar-h) + var(--space-8)) 0 180px;
+  background: var(--blue);
+  color: var(--ink);
+}
+.heroGrid {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+.title {
+  max-width: 13ch;
+  font-size: clamp(48px, 7.2vw, 106px);
+  line-height: 0.9;
+  font-weight: 600;
+  letter-spacing: -0.058em;
+  text-wrap: balance;
+}
+.lead {
+  max-width: 54ch;
+  margin-top: var(--space-5);
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.5;
+  color: rgba(17, 16, 15, 0.82);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+.primary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@media (hover: hover) {
+  .primary:hover {
+    transform: scale(1.03);
+  }
+}
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  max-width: 100%;
+  padding: 4px 4px 4px 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(17, 16, 15, 0.12);
+}
+.install code {
+  overflow: hidden;
+  font: 14px ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.install button {
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+}
+.heroMark {
+  justify-self: center;
+  width: min(46%, 220px);
+  color: var(--ink);
+}
+.showcase {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+  margin-top: -130px;
+}
+.editor {
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  background: #11100f;
+  color: #f5f5f7;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 80px rgba(17, 16, 15, 0.18);
+  --code-foreground: #f5f5f7;
+  --code-token-constant: #8fd3ff;
+  --code-token-string: #c3f05a;
+  --code-token-comment: #8a8a90;
+  --code-token-keyword: #ff9ecf;
+  --code-token-parameter: #f5f5f7;
+  --code-token-function: #8fd3ff;
+  --code-token-string-expression: #c3f05a;
+  --code-token-punctuation: #8a8a90;
+  --code-token-link: #8fd3ff;
+}
+.editorBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 500;
+}
+.dots {
+  display: flex;
+  gap: 6px;
+}
+.dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.editorCode {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.editorCode :global(pre) {
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  background: transparent !important;
+  font: 13.5px/1.7 ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  letter-spacing: 0;
+}
+.preview {
+  order: -1;
+  min-height: 460px;
+  border-radius: var(--radius-panel);
+  box-shadow: 0 30px 80px rgba(17, 16, 15, 0.18);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: var(--space-7) 0 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--border);
+}
+.stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+  padding: var(--space-5);
+  background: var(--page);
+}
+.stats dt {
+  color: var(--text-2);
+  font-size: 14px;
+}
+.stats dd {
+  margin: 0;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.section {
+  margin-top: var(--space-9);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--border);
+}
+.head {
+  margin-bottom: var(--space-5);
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-3);
+  padding: 4px 14px 4px 4px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+}
+.eyebrow span {
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.sectionTitle {
+  max-width: 18ch;
+  font-size: clamp(34px, 5.5vw, 68px);
+  line-height: 0.96;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+.text {
+  max-width: 56ch;
+  margin: var(--space-4) 0 0;
+  color: var(--text-body);
+  font-size: 18px;
+  line-height: 1.5;
+}
+.split {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+.split .editor,
+.split .install {
+  margin-top: var(--space-5);
+}
+.split .install {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.split .install button {
+  background: var(--action);
+  color: var(--on-action);
+}
+.split > *,
+.showcase > *,
+.heroGrid > * {
+  min-width: 0;
+}
+.videos {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+}
+@media (max-width: 640px) {
+  .videos {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+}
+.skills {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.skills li {
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms ease;
+}
+@media (hover: hover) {
+  .skills li:hover {
+    border-color: var(--text-2);
+    transform: translateX(4px);
+  }
+}
+.skills h3 {
+  font: 600 15px ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+}
+.skills p {
+  margin-top: 4px;
+  color: var(--text-body);
+  font-size: 15px;
+}
+.cta {
+  margin-top: var(--space-9);
+  padding: var(--space-9) 0;
+  background: var(--ink);
+  color: #ffffff;
+}
+.ctaGrid {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+.ctaTitle {
+  font-size: clamp(56px, 11vw, 160px);
+  line-height: 0.9;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+}
+.ctaPrimary,
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.ctaPrimary {
+  background: var(--blue);
+  color: var(--ink);
+}
+.ctaSecondary {
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+.ctaPrimary:focus-visible,
+.ctaSecondary:focus-visible {
+  outline-color: var(--blue);
+}
+.ctaMark {
+  justify-self: center;
+  width: min(70%, 320px);
+  color: var(--blue);
+}
+
+@media (min-width: 900px) {
+  .heroGrid,
+  .ctaGrid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+  .heroMark,
+  .ctaMark {
+    width: 100%;
+  }
+  .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1000px) {
+  .showcase {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .preview {
+    order: 0;
+    min-height: 0;
+  }
+  .split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,10 @@
+.same {
+  display: inline-grid;
+  justify-items: center;
+}
+.same > * {
+  grid-area: 1 / 1;
+}
+.same > [data-off] {
+  visibility: hidden;
+}

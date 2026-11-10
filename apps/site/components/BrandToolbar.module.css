@@ -1,0 +1,35 @@
+.group {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  max-width: 100%;
+}
+.label {
+  padding-left: 14px;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 500;
+}
+.toolbar {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 6px;
+  border-radius: 999px;
+  background: #11100f;
+  color: #ffffff;
+}
+.toolbar > div {
+  --fluid-accent: #ffffff;
+  --fluid-on-accent: #11100f;
+  --fluid-text: #ffffff;
+  --fluid-focus: #6fc4fd;
+  --fluid-radius: 999px;
+  color: #ffffff;
+}
+.toolbar [role="radiogroup"] {
+  background: rgba(255, 255, 255, 0.08);
+}
+.toolbar button[aria-expanded] {
+  color: #ffffff;
+}

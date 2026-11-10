@@ -1,0 +1,241 @@
+#!/usr/bin/env node
+
+import { execFileSync } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const here = dirname(fileURLToPath(import.meta.url));
+const registry = JSON.parse(readFileSync(join(here, "registry.json"), "utf8"));
+
+const args = process.argv.slice(2);
+const command = args[0];
+const flag = (name, fallback) => {
+  const i = args.indexOf(`--${name}`);
+  return i >= 0 && args[i + 1] && !args[i + 1].startsWith("--") ? args[i + 1] : fallback;
+};
+const has = (name) => args.includes(`--${name}`);
+const positional = args.slice(1).filter((a, i, all) => !a.startsWith("--") && !(all[i - 1] ?? "").startsWith("--"));
+
+const bold = (s) => (process.stdout.isTTY ? `\x1b[1m${s}\x1b[0m` : s);
+const dim = (s) => (process.stdout.isTTY ? `\x1b[2m${s}\x1b[0m` : s);
+const fail = (message) => {
+  console.error(`fluid: ${message}`);
+  process.exit(1);
+};
+
+const HELP = `${bold("fluid")} ${dim(registry.version)}
+
+  fluid list                         every piece, by family
+  fluid add <piece...>               copy pieces into your project (and the pieces they use)
+      --dir <path>                   where to put them (default: src/components/fluid or components/fluid)
+      --overwrite                    replace files that already exist
+  fluid init                         write the theme file with the --fluid-* variables
+      --out <file>                   default: src/fluid-theme.css or fluid-theme.css
+  fluid logo <file.svg>              turn any SVG logo into the path the pieces use
+      --out <file.ts>                also write it as a TypeScript module
+  fluid record <url>                 record a page as MP4, frame by frame
+      --format story|post|square|wide   default story
+      --seconds <n>  --fps <n>       default 6 and 60
+      --out <file.mp4>               default fluid-<format>.mp4
+      --browser chrome|msedge        default chrome`;
+
+
+function defaultDir(kind) {
+  const src = existsSync("src");
+  if (kind === "pieces") return src ? "src/components/fluid" : "components/fluid";
+  return src ? "src/fluid-theme.css" : "fluid-theme.css";
+}
+
+function list() {
+  const families = [...new Set(registry.pieces.map((p) => p.category))];
+  for (const family of families) {
+    console.log(`\n${bold(family)}`);
+    for (const p of registry.pieces.filter((x) => x.category === family)) {
+      console.log(`  ${p.slug.padEnd(18)} ${dim(p.description)}`);
+    }
+  }
+  console.log(`\n${dim("fluid add <piece>")}`);
+}
+
+function withDependencies(slugs) {
+  const out = new Set();
+  const visit = (slug) => {
+    const piece = registry.pieces.find((p) => p.slug === slug);
+    if (!piece) fail(`no piece called "${slug}". Run "fluid list" to see them all.`);
+    if (out.has(slug)) return;
+    out.add(slug);
+    piece.dependencies.forEach(visit);
+  };
+  slugs.forEach(visit);
+  return [...out];
+}
+
+function add() {
+  if (!positional.length) fail('say which pieces, e.g. "fluid add splash-choice pet".');
+  const dir = flag("dir", defaultDir("pieces"));
+  const slugs = withDependencies(positional);
+  const written = [];
+  const skipped = [];
+  for (const slug of slugs) {
+    const piece = registry.pieces.find((p) => p.slug === slug);
+    const folder = join(dir, slug);
+    mkdirSync(folder, { recursive: true });
+    for (const file of piece.files) {
+      const target = join(folder, file.name);
+      if (existsSync(target) && !has("overwrite")) {
+        skipped.push(target);
+        continue;
+      }
+      writeFileSync(target, file.content);
+      written.push(target);
+    }
+  }
+  const extra = slugs.filter((s) => !positional.includes(s));
+  console.log(`${bold("Added")} ${slugs.join(", ")} ${dim(`to ${dir}`)}`);
+  if (extra.length) console.log(dim(`  (${extra.join(", ")} came along because the others use them)`));
+  if (skipped.length) console.log(dim(`  kept ${skipped.length} existing file(s); use --overwrite to replace them`));
+  const pkg = existsSync("package.json") ? JSON.parse(readFileSync("package.json", "utf8")) : {};
+  const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+  if (!deps["@usefluid/motion"]) console.log(`\nThe pieces run on the engine:\n  ${bold("npm i @usefluid/motion")}`);
+  if (!existsSync(defaultDir("theme")) && !flag("dir")) console.log(`\nSet your brand once:\n  ${bold("npx @usefluid/cli init")}`);
+  for (const slug of positional) {
+    const piece = registry.pieces.find((p) => p.slug === slug);
+    console.log(`\n${bold(piece.name)}\n${piece.usage.split("\n").map((l) => `  ${l}`).join("\n")}`);
+  }
+}
+
+function init() {
+  const out = flag("out", defaultDir("theme"));
+  if (existsSync(out) && !has("overwrite")) fail(`${out} already exists. Use --overwrite to replace it.`);
+  mkdirSync(dirname(resolve(out)), { recursive: true });
+  writeFileSync(out, registry.theme);
+  console.log(`${bold("Wrote")} ${out}\nImport it once at the root of your app and change the values to your brand.`);
+}
+
+
+const num = (v) => Number.parseFloat(v ?? "0") || 0;
+const attr = (tag, name) => tag.match(new RegExp(`\\s${name}\\s*=\\s*"([^"]*)"`))?.[1] ?? tag.match(new RegExp(`\\s${name}\\s*=\\s*'([^']*)'`))?.[1];
+
+function shapeToPath(tag) {
+  const kind = tag.match(/^<\s*(\w+)/)[1].toLowerCase();
+  if (kind === "path") return attr(tag, "d") ?? "";
+  if (kind === "circle" || kind === "ellipse") {
+    const cx = num(attr(tag, "cx")), cy = num(attr(tag, "cy"));
+    const rx = num(attr(tag, kind === "circle" ? "r" : "rx")), ry = num(attr(tag, kind === "circle" ? "r" : "ry"));
+    return `M${cx - rx} ${cy}a${rx} ${ry} 0 1 0 ${2 * rx} 0a${rx} ${ry} 0 1 0 ${-2 * rx} 0Z`;
+  }
+  if (kind === "rect") {
+    const x = num(attr(tag, "x")), y = num(attr(tag, "y")), w = num(attr(tag, "width")), h = num(attr(tag, "height"));
+    const r = Math.min(num(attr(tag, "rx") ?? attr(tag, "ry")), w / 2, h / 2);
+    if (!r) return `M${x} ${y}H${x + w}V${y + h}H${x}Z`;
+    return `M${x + r} ${y}H${x + w - r}A${r} ${r} 0 0 1 ${x + w} ${y + r}V${y + h - r}A${r} ${r} 0 0 1 ${x + w - r} ${y + h}H${x + r}A${r} ${r} 0 0 1 ${x} ${y + h - r}V${y + r}A${r} ${r} 0 0 1 ${x + r} ${y}Z`;
+  }
+  if (kind === "polygon" || kind === "polyline") {
+    const pts = (attr(tag, "points") ?? "").trim().split(/[\s,]+/).map(Number);
+    let d = "";
+    for (let i = 0; i + 1 < pts.length; i += 2) d += `${i ? "L" : "M"}${pts[i]} ${pts[i + 1]}`;
+    return `${d}Z`;
+  }
+  return "";
+}
+
+async function logo() {
+  const file = positional[0];
+  if (!file || !existsSync(file)) fail('give an SVG file, e.g. "fluid logo public/logo.svg".');
+  const svg = readFileSync(file, "utf8").replace(/<!--[\s\S]*?-->/g, "");
+  if (/\stransform\s*=/.test(svg)) {
+    fail("this SVG uses transform. Export it again with transforms applied (in Figma: Flatten, then Outline stroke).");
+  }
+  const tags = svg.match(/<\s*(path|circle|ellipse|rect|polygon|polyline)\b[^>]*>/gi) ?? [];
+  const d = tags.map(shapeToPath).filter(Boolean).join(" ");
+  if (!d) fail("no shapes found. The logo must be drawn with paths or basic shapes, not text or images.");
+  const { fitPath, sampleContours } = await import("./motion/index.js");
+  let fitted;
+  try {
+    fitted = fitPath(d, 120);
+  } catch (e) {
+    fail(`the drawing could not be read: ${e.message}`);
+  }
+  const parts = sampleContours(fitted).length;
+  const out = flag("out");
+  if (out) {
+    writeFileSync(out, `// ${relative(process.cwd(), file)}, fitted to a 120 x 120 box by "fluid logo". ${parts} part(s).\nexport const logo =\n  ${JSON.stringify(fitted)};\n`);
+    console.log(`${bold("Wrote")} ${out} ${dim(`(${parts} part${parts === 1 ? "" : "s"})`)}`);
+  } else {
+    console.log(fitted);
+    console.error(dim(`\n${parts} part${parts === 1 ? "" : "s"}. Use --out logo.ts to save it as a module.`));
+  }
+}
+
+
+const FORMATS = { story: [1080, 1920], post: [1080, 1350], square: [1080, 1080], wide: [1920, 1080] };
+
+async function record() {
+  const url = positional[0];
+  if (!url) fail('give the address of the page to record, e.g. "fluid record http://localhost:3000/intro".');
+  let chromium;
+  try {
+    ({ chromium } = await import("playwright-core"));
+  } catch {
+    fail("recording needs playwright-core: npm i -D playwright-core");
+  }
+  try {
+    execFileSync("ffmpeg", ["-version"], { stdio: "ignore" });
+  } catch {
+    fail("recording needs ffmpeg on your PATH: https://ffmpeg.org/download.html");
+  }
+  const format = flag("format", "story");
+  if (!FORMATS[format]) fail(`unknown format "${format}". Use story, post, square or wide.`);
+  const [width, height] = FORMATS[format];
+  const seconds = Number(flag("seconds", 6));
+  const fps = Number(flag("fps", 60));
+  const out = flag("out", `fluid-${format}.mp4`);
+  const scale = Math.min(width, height) / 400;
+
+  const frames = mkdtempSync(join(tmpdir(), "fluid-"));
+  const browser = await chromium.launch({ channel: flag("browser", "chrome") });
+  const page = await browser.newPage({
+    viewport: { width: Math.round(width / scale), height: Math.round(height / scale) },
+    deviceScaleFactor: scale,
+  });
+  await page.clock.install({ time: 0 });
+  await page.goto(url, { waitUntil: "load" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(300);
+  await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 20);
+  await page.evaluate(() => {
+    window.__fluidStart = new WeakMap();
+  });
+  const step = 1000 / fps;
+  const total = Math.round(seconds * fps);
+  for (let i = 0; i < total; i++) {
+    await page.clock.runFor(step);
+    await page.evaluate(() => {
+      const now = performance.now();
+      for (const a of document.getAnimations()) {
+        if (!window.__fluidStart.has(a)) window.__fluidStart.set(a, now);
+        a.pause();
+        a.currentTime = now - window.__fluidStart.get(a);
+      }
+    });
+    await page.screenshot({ path: join(frames, `${String(i).padStart(5, "0")}.png`), animations: "allow", caret: "initial" });
+    if (i % fps === 0) process.stdout.write(`\r${Math.round((i / total) * 100)}%`);
+  }
+  await browser.close();
+  mkdirSync(dirname(resolve(out)), { recursive: true });
+  execFileSync("ffmpeg", [
+    "-y", "-loglevel", "error", "-framerate", String(fps), "-i", join(frames, "%05d.png"),
+    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-movflags", "+faststart", out,
+  ]);
+  rmSync(frames, { recursive: true, force: true });
+  console.log(`\r${bold("Recorded")} ${out} ${dim(`(${width}x${height}, ${seconds}s, ${fps} fps)`)}`);
+}
+
+const commands = { list, add, init, logo, record };
+if (!command || command === "help" || has("help") || !commands[command]) {
+  console.log(HELP);
+  process.exit(command && command !== "help" && !has("help") ? 1 : 0);
+}
+await commands[command]();

@@ -1,0 +1,49 @@
+.root {
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 4cqh, 20px);
+  width: 100%;
+  height: 100%;
+  min-height: var(--fluid-splash-height, 100svh);
+  background: transparent;
+  color: var(--fluid-accent);
+}
+.logo {
+  width: clamp(80px, 38cqmin, 170px);
+  aspect-ratio: 1;
+  overflow: visible;
+}
+.dot {
+  fill: currentColor;
+}
+.root[data-step="0"] .dot {
+  opacity: 0;
+}
+.root[data-step="2"] .dot,
+.root[data-step="3"] .dot {
+  opacity: 0;
+}
+.fill {
+  fill: currentColor;
+  opacity: 0;
+}
+.root[data-step="2"] .fill,
+.root[data-step="3"] .fill {
+  opacity: 1;
+  transition: opacity 380ms ease;
+}
+.name {
+  margin: 0;
+  min-height: 1.1em;
+  color: var(--fluid-text);
+  font: 600 clamp(26px, 11cqmin, 60px) / 1.1 var(--fluid-font);
+  letter-spacing: -0.04em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    transition: none !important;
+  }
+}

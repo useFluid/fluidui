@@ -1,0 +1,33 @@
+.root {
+  display: inline-block;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.word {
+  display: inline-block;
+  white-space: pre;
+}
+.char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em) scale(0.8);
+  transition:
+    opacity 180ms ease,
+    transform var(--duration) var(--easing);
+}
+.root[data-play="true"] .char {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .char {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

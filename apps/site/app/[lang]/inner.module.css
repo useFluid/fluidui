@@ -1,0 +1,162 @@
+.page {
+  padding-top: var(--space-6);
+  padding-bottom: 120px;
+}
+.title {
+  font-size: clamp(44px, 8vw, 88px);
+  line-height: 0.98;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+.lead {
+  max-width: 56ch;
+  margin-top: var(--space-3);
+  color: var(--text-body);
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.45;
+}
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-3);
+  margin-top: var(--space-3);
+}
+.jump a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 500;
+  text-underline-offset: 4px;
+}
+.group {
+  margin-top: var(--space-7);
+  scroll-margin-top: calc(var(--bar-h) + var(--space-4));
+}
+.groupTitle {
+  margin-bottom: var(--space-4);
+  font-size: clamp(26px, 4vw, 40px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.groupTitle sup {
+  margin-left: 4px;
+  color: var(--text-2);
+  font-size: 0.45em;
+  font-weight: 500;
+  vertical-align: 1.2em;
+  letter-spacing: 0;
+}
+.wide {
+  margin-top: var(--space-6);
+}
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-2);
+  font-size: 15px;
+  font-weight: 500;
+  text-underline-offset: 4px;
+}
+.stage {
+  height: clamp(340px, 60vh, 560px);
+  margin-top: var(--space-5);
+}
+.tabs {
+  margin-top: var(--space-6);
+}
+.how {
+  max-width: 64ch;
+  color: var(--text-body);
+  font-size: 18px;
+  line-height: 1.55;
+}
+.note {
+  max-width: 62ch;
+  margin-bottom: var(--space-4);
+  color: var(--text-body);
+  font-size: 15px;
+}
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+.pager a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 500;
+  text-underline-offset: 4px;
+}
+.prompts {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.prompt {
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.promptHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.promptHead h2 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.promptHead a {
+  text-underline-offset: 4px;
+}
+.prompt p {
+  color: var(--text-body);
+  font-size: 15px;
+}
+@media (min-width: 900px) {
+  .prompts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.doc {
+  max-width: 760px;
+}
+.doc h2 {
+  margin: var(--space-7) 0 var(--space-3);
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.doc p {
+  margin-bottom: var(--space-3);
+  color: var(--text-body);
+}
+.doc :not(pre) > code {
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  font: 0.88em ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+.status {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--surface-2);
+}
+.doc .status p {
+  margin: 0;
+}

@@ -1,0 +1,52 @@
+.parade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.card {
+  aspect-ratio: 4 / 5;
+  border-radius: 26px;
+  background: var(--bg);
+}
+.button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  height: 100%;
+  padding: var(--space-4);
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: var(--body);
+  font: inherit;
+  cursor: pointer;
+  --fluid-accent: var(--body);
+  --fluid-on-accent: var(--bg);
+}
+.button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+.pet {
+  width: min(70%, 180px);
+  aspect-ratio: 1;
+}
+.caption {
+  font-size: 15px;
+  opacity: 0.8;
+}
+.caption strong {
+  font-weight: 600;
+  opacity: 1;
+}
+@media (min-width: 900px) {
+  .parade {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

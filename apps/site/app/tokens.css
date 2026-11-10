@@ -1,0 +1,88 @@
+:root, [data-theme="light"] {
+  --page: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f2f2f4;
+  --danger: #c5221f;
+  --surface-3: #e5e5e7;
+  --text: #11100f;
+  --text-body: #3a3a3c;
+  --text-2: #6a6a6f;
+  --border: #e5e5e7;
+  --action: #11100f;
+  --on-action: #ffffff;
+  --blue: #6fc4fd;
+  --ink: #11100f;
+  --accent: #11100f;
+  --focus: #11100f;
+  --ceu-3: #d6e1fe;
+  --glass-dark: rgba(22, 22, 26, 0.82);
+  --code-foreground: #0b0b0c;
+  --code-background: transparent;
+  --code-token-constant: #1c4be0;
+  --code-token-string: #0e7c4a;
+  --code-token-comment: #6a6a6f;
+  --code-token-keyword: #a3268f;
+  --code-token-parameter: #0b0b0c;
+  --code-token-function: #1c4be0;
+  --code-token-string-expression: #0e7c4a;
+  --code-token-punctuation: #6a6a6f;
+  --code-token-link: #1c4be0;
+  --fluid-surface-2: #f2f2f4;
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  --page: #08080a;
+  --danger: #ff6b6b;
+  --surface: #161618;
+  --surface-2: #1c1c1f;
+  --surface-3: #26262a;
+  --text: #f5f5f7;
+  --text-body: #d1d1d6;
+  --text-2: #a1a1a6;
+  --border: rgba(255, 255, 255, 0.1);
+  --action: #f5f5f7;
+  --on-action: #0b0b0c;
+  --accent: #6fc4fd;
+  --focus: #6fc4fd;
+  --ceu-3: #141c33;
+  --glass-dark: rgba(38, 38, 44, 0.82);
+  --code-foreground: #f5f5f7;
+  --code-token-constant: #8fabff;
+  --code-token-string: #6fd6a2;
+  --code-token-comment: #a1a1a6;
+  --code-token-keyword: #e79ad8;
+  --code-token-parameter: #f5f5f7;
+  --code-token-function: #8fabff;
+  --code-token-string-expression: #6fd6a2;
+  --code-token-punctuation: #a1a1a6;
+  --code-token-link: #8fabff;
+  --fluid-surface: #161618;
+  --fluid-surface-2: #1c1c1f;
+  --fluid-text: #f5f5f7;
+  --fluid-text-2: #a1a1a6;
+  --fluid-border: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+}
+:root {
+  --fluid-font: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --radius-control: 12px;
+  --radius-card: 20px;
+  --radius-panel: 28px;
+  --radius-pill: 999px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --bar-h: 136px;
+}
+@media (min-width: 900px) {
+  :root {
+    --bar-h: 80px;
+  }
+}

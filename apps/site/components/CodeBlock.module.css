@@ -1,0 +1,35 @@
+.block {
+  margin: 0 0 var(--space-4);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+.name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.code {
+  max-height: 520px;
+  overflow: auto;
+}
+.code :global(pre) {
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: var(--space-4);
+  background: transparent !important;
+  font: 13.5px/1.6 ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  letter-spacing: 0;
+}

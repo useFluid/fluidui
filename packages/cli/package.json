@@ -1,0 +1,7 @@
+{
+  "name": "@usefluid/cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Source of the Fluid CLI. Built into ./dist by scripts/build-packages.mjs.",
+  "type": "module"
+}

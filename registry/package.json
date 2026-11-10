@@ -1,0 +1,13 @@
+{
+  "name": "@usefluid/registry",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./demos": "./demos.tsx",
+    "./demo-context": "./demo-context.tsx",
+    "./*": "./*"
+  },
+  "dependencies": { "@usefluid/motion": "*" }
+}

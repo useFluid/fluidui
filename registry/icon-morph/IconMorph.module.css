@@ -1,0 +1,20 @@
+.button {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fluid-accent);
+  color: var(--fluid-on-accent);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.button:focus-visible {
+  outline: 2px solid var(--fluid-focus);
+  outline-offset: 3px;
+}
+.icon {
+  width: 24px;
+  height: 24px;
+}
