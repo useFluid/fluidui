@@ -14,7 +14,7 @@ export type SourceFile = { name: string; code: string; html: string };
 
 export async function sourceFiles(slug: string): Promise<SourceFile[]> {
   const folder = path.join(process.cwd(), "../../registry", slug);
-  const names = readdirSync(folder).filter((n) => n !== "demo.tsx");
+  const names = readdirSync(folder).filter((n) => n !== "demo.tsx" && !n.endsWith(".md"));
   names.sort((a, b) => Number(a.endsWith(".css")) - Number(b.endsWith(".css")));
   return Promise.all(
     names.map(async (name) => {

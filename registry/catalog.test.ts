@@ -23,6 +23,15 @@ describe("catalog", () => {
     }
   });
 
+  it("documents every piece with an example, props and accessibility", () => {
+    for (const { slug } of catalog) {
+      const path = join(root, slug, "README.md");
+      expect(existsSync(path), slug).toBe(true);
+      const text = readFileSync(path, "utf8");
+      for (const heading of ["## Example", "## Props", "## Keyboard and screen readers"]) expect(text, `${slug} ${heading}`).toContain(heading);
+    }
+  });
+
   it("has complete texts", () => {
     for (const entry of catalog) {
       expect(categories).toContain(entry.category);

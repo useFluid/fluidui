@@ -141,6 +141,7 @@ function add() {
   for (const slug of positional) {
     const piece = registry.pieces.find((p) => p.slug === slug);
     console.log(`\n${bold(piece.name)}\n${piece.usage.split("\n").map((l) => `  ${l}`).join("\n")}`);
+    console.log(dim(`  Props, keyboard and screen readers: ${join(dir, slug, "README.md")}`));
   }
 }
 

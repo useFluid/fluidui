@@ -51,6 +51,30 @@ export default function Demo() {
 }
 `,
 );
+writeFileSync(
+  join(folder, "README.md"),
+  `# ${name}
+
+One sentence about what it does.
+
+## Example
+
+\`\`\`tsx
+import { ${name} } from "./${name}";
+
+<${name} />
+\`\`\`
+
+## Props
+
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+
+## Keyboard and screen readers
+
+What a keyboard user and a screen reader get, and what happens with reduced motion.
+`,
+);
 
 function edit(file, change) {
   const path = join(registry, file);
