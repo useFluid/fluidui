@@ -17,7 +17,7 @@ type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
   labels?: { idle: string; loading?: string; done: string };
 };
 
-export function MorphButton({ state, labels = { idle: "Send", done: "Sent" }, className, ...props }: Props) {
+export function MorphButton({ state, labels = { idle: "Send", done: "Sent" }, className, onClick, ...props }: Props) {
   const button = useRef<HTMLButtonElement>(null);
   const measure = useRef<HTMLSpanElement>(null);
   const [widths, setWidths] = useState({ idle: 0, done: 0 });
@@ -58,6 +58,11 @@ export function MorphButton({ state, labels = { idle: "Send", done: "Sent" }, cl
         className={[styles.button, className].filter(Boolean).join(" ")}
         data-state={state}
         aria-busy={state === "loading"}
+        aria-disabled={state === "loading" || undefined}
+        onClick={(e) => {
+          if (state === "loading") return;
+          onClick?.(e);
+        }}
       >
         <span className={styles.inner} aria-hidden>
           <svg viewBox="0 0 120 120" className={styles.iconBox}>

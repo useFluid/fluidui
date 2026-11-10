@@ -36,7 +36,17 @@ const router = useRouter();
 const pathname = usePathname();
 useEffect(() => curtain.uncover(), [pathname]);
 
-<a href="/projects" onClick={async (e) => { e.preventDefault(); await curtain.cover(); router.push("/projects"); }}>Projects</a>
+<a
+  href="/projects"
+  onClick={async (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || pathname === "/projects") return;
+    e.preventDefault();
+    await curtain.cover();
+    router.push("/projects");
+  }}
+>
+  Projects
+</a>
 <LogoCurtain logo={logo} covered={curtain.covered} />
 ```
 

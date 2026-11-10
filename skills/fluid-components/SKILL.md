@@ -33,8 +33,8 @@ Fluid pieces are React components copied into the project, all made from one mot
 | A heading that arrives letter by letter | `text-reveal` |
 | A route or screen change with the brand | `logo-wipe` (`LogoCurtain` for routes) |
 | The logo arriving | `shape-morph` |
-| An opening | `fluid-splash` |
-| A mascot or assistant | `fluid-characters` |
+| An opening | `splash-shapes`, `splash-choice`, `splash-dots` (see the `fluid-splash` skill) |
+| A mascot or assistant | `pet`, `bot` (see the `fluid-characters` skill) |
 
 `npx @usefluid/cli list` prints all of them.
 
@@ -69,8 +69,9 @@ Drive pieces from the product's real data and events: the real request for `morp
 
 | Mistake | Fix |
 |---|---|
-| `from={ref.current}` on MorphDialog | Keep the opener in state: `onClick={(e) => setFrom(e.currentTarget)}` |
-| `LogoWipe` around App Router `children` | Use `LogoCurtain` and `useCurtain`: cover, navigate, uncover on the new path (see its README) |
+| `from={ref.current}` on MorphDialog, or clearing `from` on close | Keep `open` and `from` in separate state and leave `from` set while it closes |
+| `LogoWipe` around App Router `children` | Use `LogoCurtain` and `useCurtain`: cover, navigate, uncover on the new path; skip the curtain for the current path (see its README) |
+| MenuMorph links reload the whole page in Next.js | Give each item `onSelect: () => router.push(href)` as well as `href` |
 | `pill-tabs` for a filter | `segmented-picker` is the right semantics for a filter |
 | `word-cycle` looping in the product | `loop={false}` |
 | A Bot with no way to type | Pass your input as its `children` |

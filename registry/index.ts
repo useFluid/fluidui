@@ -77,10 +77,11 @@ export const catalog: Entry[] = [
     name: "Morph Dialog",
     category: "Metamorph",
     size: "m",
-    usage: `const [from, setFrom] = useState<HTMLElement | null>(null);
+    usage: `const [open, setOpen] = useState(false);
+const [from, setFrom] = useState<HTMLElement | null>(null);
 
-<button onClick={(e) => setFrom(e.currentTarget)}>Open</button>
-<MorphDialog open={from !== null} onClose={() => setFrom(null)} from={from} labelledBy="title">
+<button onClick={(e) => { setFrom(e.currentTarget); setOpen(true); }}>Open</button>
+<MorphDialog open={open} onClose={() => setOpen(false)} from={from} labelledBy="title">
   <h2 id="title">Order 2041</h2>
 </MorphDialog>`,
     description: "A window that flows out of the card that opened it and back into it.",
@@ -312,7 +313,7 @@ export const catalog: Entry[] = [
     name: "Island Toast",
     category: "Transitions",
     size: "m",
-    usage: `<IslandToast message={message} icon={<Check />} />`,
+    usage: `<IslandToast message={notice} />`,
     description: "A notice that drops from the top as a pill, grows with the message and goes back up.",
     how: "The drop, the width and the height are three springs, so the pill arrives, stretches to fit the sentence and leaves as one body. The width comes from the real size of the text. The sentence comes in once there is room for it, and goes to screen readers through a status region.",
     task: "Use IslandToast for the result notices of my product's actions.",

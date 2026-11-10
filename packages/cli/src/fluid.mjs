@@ -217,9 +217,8 @@ const FORMATS = { story: [1080, 1920], post: [1080, 1350], square: [1080, 1080],
 async function record() {
   const url = positional[0];
   if (!url) fail('give the address of the page to record, e.g. "fluid record http://localhost:3000/intro".');
-  let chromium;
   try {
-    ({ chromium } = await import("playwright-core"));
+    await import("playwright-core");
   } catch {
     fail("recording needs playwright-core: npm i -D playwright-core");
   }
@@ -237,6 +236,16 @@ async function record() {
   const scale = Math.min(width, height) / 400;
 
   const frames = mkdtempSync(join(tmpdir(), "fluid-"));
+  try {
+    await capture({ url, frames, width, height, scale, seconds, fps, out });
+  } finally {
+    rmSync(frames, { recursive: true, force: true });
+  }
+  console.log(`\r${bold("Recorded")} ${out} ${dim(`(${width}x${height}, ${seconds}s, ${fps} fps)`)}`);
+}
+
+async function capture({ url, frames, width, height, scale, seconds, fps, out }) {
+  const { chromium } = await import("playwright-core");
   const browser = await chromium.launch({ channel: flag("browser", "chrome") });
   const page = await browser.newPage({
     viewport: { width: Math.round(width / scale), height: Math.round(height / scale) },
@@ -270,8 +279,6 @@ async function record() {
     "-y", "-loglevel", "error", "-framerate", String(fps), "-i", join(frames, "%05d.png"),
     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-movflags", "+faststart", out,
   ]);
-  rmSync(frames, { recursive: true, force: true });
-  console.log(`\r${bold("Recorded")} ${out} ${dim(`(${width}x${height}, ${seconds}s, ${fps} fps)`)}`);
 }
 
 const commands = { list, add, init, logo, record };

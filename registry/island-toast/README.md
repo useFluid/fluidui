@@ -15,7 +15,7 @@ import { IslandToast } from "./IslandToast";
 | Prop | Type | Default | What it does |
 |---|---|---|---|
 | message | string \| null |  | Set a text to show it; null hides it. You decide when. |
-| icon | ReactNode | a check |  |
+| icon | ReactNode | a check | Any icon; `null` for none. |
 
 ## Keyboard and screen readers
 

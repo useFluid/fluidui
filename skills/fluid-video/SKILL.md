@@ -19,16 +19,9 @@ description: Use when recording a web page or Fluid animation to MP4 with the Fl
 
 The scene must not render the app's header, sidebar or banners. Give it its own layout.
 
-Next.js App Router: a route group with its own root layout.
+Next.js App Router: keep `app/layout.tsx` bare (html, body, global and theme CSS) and move the app's shell into a route group, `app/(app)/layout.tsx`. Then a page outside the group has no shell:
 
 ```tsx
-// app/(record)/layout.tsx
-import "../globals.css";
-export default function RecordLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en"><body style={{ margin: 0 }}>{children}</body></html>;
-}
-
-// app/(record)/record/page.tsx
 import { SplashDots } from "@/components/fluid/splash-dots/SplashDots";
 import { logo } from "@/lib/logo";
 export default function Record() {

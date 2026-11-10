@@ -7,12 +7,18 @@ import styles from "./IslandToast.module.css";
 const BODY = { w: 16, z: 0.8 };
 const DROP = { w: 18, z: 0.72 };
 
+const CHECK = (
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12.5l4.5 4.5L19 7.5" />
+  </svg>
+);
+
 type Props = {
   message: string | null;
   icon?: ReactNode;
 };
 
-export function IslandToast({ message, icon }: Props) {
+export function IslandToast({ message, icon = CHECK }: Props) {
   const body = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState<string | null>(message);
   const measure = useRef<HTMLSpanElement>(null);

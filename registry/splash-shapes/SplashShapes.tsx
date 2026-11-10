@@ -54,6 +54,7 @@ export function SplashShapes({
   const column = useRef<HTMLDivElement>(null);
   const slot = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
+  const [placed, setPlaced] = useState(false);
 
   useLayoutEffect(() => {
     const measure = () => {
@@ -61,9 +62,15 @@ export function SplashShapes({
       setOffset(column.current.offsetHeight / 2 - (slot.current.offsetTop + slot.current.offsetHeight / 2));
     };
     measure();
+    let frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => setPlaced(true));
+    });
     const observer = new ResizeObserver(measure);
     if (column.current) observer.observe(column.current);
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -81,7 +88,7 @@ export function SplashShapes({
           className={styles.slot}
           style={{
             transform: stage === "shapes" ? `translateY(${offset}px) scale(1.35)` : "none",
-            transition: `transform ${rise.duration}ms ${rise.easing}`,
+            transition: placed ? `transform ${rise.duration}ms ${rise.easing}` : "none",
           }}
         >
           <svg viewBox="-8 -8 136 136" aria-hidden>

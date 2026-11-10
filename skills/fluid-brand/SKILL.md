@@ -75,7 +75,7 @@ A token the project lacks: pick a value and tell the person you chose it.
 | Mistake | Fix |
 |---|---|
 | Copying hex values into the theme | Point at the project's variables, so a rebrand or dark mode changes everything |
-| A separate dark block that repeats values | Not needed when the variables point at tokens that already switch |
+| A separate dark block that repeats values | Not needed when the variables point at tokens that switch on the same element, usually `<html>`. If the dark class is on `<body>`, declare the `--fluid-*` block on `body` too |
 | Showing the logo touching its box | The fitted path fills the 120 box; draw it with `viewBox="-8 -8 136 136"` for breathing room |
 | Assuming a logo with holes broke | Holes need `fill-rule="evenodd"`, which `MorphPath` already sets |
 

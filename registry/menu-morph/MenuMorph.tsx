@@ -19,7 +19,7 @@ const rect = (x: number, y: number, w: number, h: number, r: number) => {
 const BODY_SPRING = { w: 13, z: 0.8, points: 140, spread: 0.18 };
 const BAR_SPRING = { w: 15, z: 0.78, points: 80, spread: 0.12 };
 
-export type MenuItem = { label: string; href?: string; onSelect?(): void };
+export type MenuItem = { label: string; href?: string; current?: boolean; onSelect?(): void };
 
 type Props = {
   open: boolean;
@@ -62,6 +62,9 @@ export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", si
       className={styles.root}
       data-open={open}
       data-side={side}
+      onBlur={(e) => {
+        if (open && !e.currentTarget.contains(e.relatedTarget as Node | null)) onOpenChange(false);
+      }}
       onKeyDown={(e) => {
         if (e.key === "Escape" && open) {
           e.stopPropagation();
@@ -70,6 +73,15 @@ export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", si
         }
       }}
     >
+      <button
+        ref={toggle}
+        type="button"
+        className={styles.toggle}
+        aria-expanded={open}
+        aria-controls={id}
+        aria-label={open ? `Close ${label.toLowerCase()}` : label}
+        onClick={() => onOpenChange(!open)}
+      />
       <div className={styles.card} style={{ aspectRatio: `${W} / ${height}` }}>
         <svg viewBox={`0 0 ${W} ${height}`} className={styles.svg} aria-hidden>
           <MorphPath d={open ? bodyOpen : bodyClosed} config={BODY_SPRING} className={styles.body} />
@@ -87,23 +99,26 @@ export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", si
               }}
             >
               {item.href ? (
-                <a href={item.href} onClick={() => { item.onSelect?.(); onOpenChange(false); }}>{item.label}</a>
+                <a
+                  href={item.href}
+                  aria-current={item.current ? "page" : undefined}
+                  onClick={(e) => {
+                    if (item.onSelect && !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) {
+                      e.preventDefault();
+                      item.onSelect();
+                    }
+                    onOpenChange(false);
+                  }}
+                >
+                  {item.label}
+                </a>
               ) : (
-                <button type="button" onClick={() => { item.onSelect?.(); onOpenChange(false); }}>{item.label}</button>
+                <button type="button" aria-current={item.current ? "page" : undefined} onClick={() => { item.onSelect?.(); onOpenChange(false); }}>{item.label}</button>
               )}
             </li>
           ))}
         </ul>
       </div>
-      <button
-        ref={toggle}
-        type="button"
-        className={styles.toggle}
-        aria-expanded={open}
-        aria-controls={id}
-        aria-label={open ? `Close ${label.toLowerCase()}` : label}
-        onClick={() => onOpenChange(!open)}
-      />
     </div>
   );
 }

@@ -96,10 +96,13 @@ export function MorphPath({
     rest.current = onRest;
   });
   const [first] = useState(d);
+  const target = useRef(first);
 
   useLayoutEffect(() => {
     morpher.current ??= createMorpher(first, config);
     const m = morpher.current;
+    if (d === target.current && !stop.current) return;
+    target.current = d;
     stop.current?.();
     if (isReduced()) {
       m.jump(d);
@@ -111,7 +114,10 @@ export function MorphPath({
     stop.current = play((dt) => {
       const moving = m.step(dt);
       el.current?.setAttribute("d", m.path());
-      if (!moving) rest.current?.(d);
+      if (!moving) {
+        stop.current = null;
+        rest.current?.(d);
+      }
       return moving;
     });
   }, [d]);

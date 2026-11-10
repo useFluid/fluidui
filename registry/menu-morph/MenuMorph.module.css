@@ -133,6 +133,9 @@
   text-decoration: none;
   cursor: pointer;
 }
+.items [aria-current="page"] {
+  background: color-mix(in srgb, var(--fluid-on-accent) 16%, transparent);
+}
 @media (hover: hover) {
   .items a:hover,
   .items button:hover {

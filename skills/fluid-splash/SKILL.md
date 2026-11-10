@@ -36,16 +36,16 @@ import { SplashShapes } from "@/components/fluid/splash-shapes/SplashShapes";
 import { logo } from "@/lib/logo";
 
 export function Opening() {
-  const [seen, setSeen] = useState<boolean | null>(null);
-  useEffect(() => setSeen(sessionStorage.getItem("opening") === "1"), []);
-  if (seen === null) return null;
+  const [play, setPlay] = useState(false);
+  useEffect(() => setPlay(sessionStorage.getItem("opening") !== "1"), []);
   return (
     <SplashShapes
+      key={play ? "play" : "final"}
       logo={logo}
       as="h1"
       title="Small-batch coffee,"
       words={["roasted.", "every morning."]}
-      finished={seen}
+      finished={!play}
       onDone={() => sessionStorage.setItem("opening", "1")}
     >
       <p>Order ahead and pick up on your way.</p>
@@ -55,7 +55,8 @@ export function Opening() {
 }
 ```
 
-- `finished` starts on the final screen for later visits.
+- The server and later visits render the final screen (`finished`), so the page works without JavaScript. On a first visit the client remounts it to play. To avoid a flash of the final screen, a tiny inline script in `<head>` can add a class that hides it when the opening has not played yet.
+- `finished` starts on the final screen.
 - Any key or tap skips to the end (`skippable`, on by default).
 - `as="h1"` when it is the page's main heading.
 - `route={[...]}` changes the shapes before the logo; prefer shapes related to the brand.
@@ -66,7 +67,7 @@ export function Opening() {
 - Reduced motion shows the final screen at once.
 - The content is not clickable or focusable before it shows (the pieces make it inert).
 - At 320 px nothing is cut off or scrolls sideways.
-- It is free for interaction in under 5 s. The default route takes about 4.8 s; a shorter `route` is faster.
+- It is free for interaction in under 5 s. The default route ends at about 4 s; a shorter `route` is faster.
 - With server rendering and no JavaScript, the page still shows its content. In a client-only app this does not apply.
 
 ## Common mistakes
@@ -76,3 +77,4 @@ export function Opening() {
 | A long sentence as a changing word | One or two words; the rest as normal text |
 | The last shape of the route looks like the logo | Change `route`, so the logo's arrival reads |
 | Playing it on every page | Only on the first screen, once per visit |
+| A full page squeezed into `children` | `children` sit in a column at most 460 px wide. For a dashboard or grid, render the content after the opening and reveal it in `onDone` |

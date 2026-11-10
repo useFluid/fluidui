@@ -8,7 +8,7 @@ const LEAD = { w: 34, z: 0.8 };
 const TRAIL = { w: 17, z: 0.78 };
 
 type Option<T> = { value: T; label: ReactNode; ariaLabel?: string };
-type Props<T> = { label: string; value: T; onChange(value: T): void; options: Option<T>[] };
+type Props<T> = { label: string; value: T; onChange(value: NoInfer<T>): void; options: Option<NoInfer<T>>[] };
 
 export function SegmentedPicker<T extends string>({ label, value, onChange, options }: Props<T>) {
   const root = useRef<HTMLDivElement>(null);
