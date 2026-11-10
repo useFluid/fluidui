@@ -7,9 +7,9 @@ import styles from "./SpringSwitch.module.css";
 
 const TRAVEL = 20;
 
-type Props = { checked: boolean; onChange(checked: boolean): void; label: string };
+type Props = { checked: boolean; onChange(checked: boolean): void; label: string; className?: string };
 
-export function SpringSwitch({ checked, onChange, label }: Props) {
+export function SpringSwitch({ checked, onChange, label, className }: Props) {
   const thumb = useRef<HTMLSpanElement>(null);
 
   useSpring(
@@ -27,7 +27,7 @@ export function SpringSwitch({ checked, onChange, label }: Props) {
       type="button"
       role="switch"
       aria-checked={checked}
-      className={styles.root}
+      className={className ? `${styles.root} ${className}` : styles.root}
       onClick={() => onChange(!checked)}
     >
       <span className={styles.label}>{label}</span>

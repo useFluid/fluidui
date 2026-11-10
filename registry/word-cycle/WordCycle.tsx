@@ -1,7 +1,7 @@
 "use client";
 
 import { useReducedMotion } from "@usefluid/motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./WordCycle.module.css";
 
 type Props = {
@@ -14,32 +14,40 @@ type Props = {
 export function WordCycle({ words, every = 1.6, loop = true, play = true }: Props) {
   const reduced = useReducedMotion();
   const [index, setIndex] = useState(0);
-  const previous = useRef<number | null>(null);
+  const [leaving, setLeaving] = useState<number | null>(null);
+  const last = words.length - 1;
+  const finished = !loop && index >= last;
 
   useEffect(() => {
-    if (!play || reduced) return;
+    if (!play || reduced || finished || words.length < 2) return;
     const timer = setInterval(() => {
       setIndex((i) => {
-        previous.current = i;
-        if (i + 1 < words.length) return i + 1;
-        return loop ? 0 : i;
+        if (!loop && i >= last) return i;
+        setLeaving(i);
+        return i + 1 <= last ? i + 1 : 0;
       });
     }, every * 1000);
     return () => clearInterval(timer);
-  }, [play, reduced, every, loop, words.length]);
+  }, [play, reduced, finished, every, loop, last, words.length]);
 
-  const current = reduced ? words.length - 1 : index;
-  const leaving = !reduced && previous.current !== null && previous.current !== current ? previous.current : null;
+  const current = reduced ? last : index;
+  const out = reduced ? null : leaving;
 
   return (
     <span className={styles.root}>
-      <span className={styles.srOnly}>{words[words.length - 1]}</span>
+      <span className={styles.srOnly}>{words[last]}</span>
       <span className={styles.stack} aria-hidden>
         {words.map((word) => (
           <span key={word} className={styles.sizer}>{word}</span>
         ))}
-        <span key={`in-${current}`} className={leaving === null ? styles.still : styles.in}>{words[current]}</span>
-        {leaving !== null && <span key={`out-${leaving}-${current}`} className={styles.out}>{words[leaving]}</span>}
+        <span
+          key={`in-${current}`}
+          className={out === null ? styles.still : styles.in}
+          onAnimationEnd={() => setLeaving(null)}
+        >
+          {words[current]}
+        </span>
+        {out !== null && <span key={`out-${out}`} className={styles.out}>{words[out]}</span>}
       </span>
     </span>
   );
