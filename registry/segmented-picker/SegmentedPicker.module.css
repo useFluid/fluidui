@@ -1,7 +1,10 @@
 .root {
   position: relative;
   display: inline-flex;
+  box-sizing: border-box;
   max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
   padding: 4px;
   border-radius: calc(var(--fluid-radius) + 4px);
   background: color-mix(in srgb, var(--fluid-text) 8%, transparent);
@@ -38,4 +41,14 @@
 .option:focus-visible {
   outline: 2px solid var(--fluid-focus);
   outline-offset: 2px;
+}
+@media (max-width: 480px) {
+  .root {
+    display: flex;
+    width: 100%;
+  }
+  .option {
+    flex: 1 1 0;
+    padding: 0 8px;
+  }
 }

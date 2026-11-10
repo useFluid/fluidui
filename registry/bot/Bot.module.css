@@ -2,7 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: min(100%, 320px);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 320px;
+  min-width: 0;
   color: var(--fluid-text);
   font-family: var(--fluid-font);
 }
@@ -26,6 +29,14 @@
   color: var(--fluid-text-2);
   font-size: 13px;
 }
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .messages {
   display: flex;
   flex-direction: column;
@@ -36,6 +47,7 @@
 }
 .message {
   max-width: 85%;
+  overflow-wrap: anywhere;
   padding: 9px 13px;
   border-radius: 18px;
   font-size: 14px;

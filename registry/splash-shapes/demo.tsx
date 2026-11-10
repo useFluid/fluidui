@@ -14,6 +14,7 @@ export default function Demo() {
         words={["to brand.", "to site.", "to video.", "to product."]}
         action="Get started"
         play={play}
+        skippable={false}
       />
     </div>
   );

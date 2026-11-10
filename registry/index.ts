@@ -62,13 +62,13 @@ export const catalog: Entry[] = [
     name: "Menu Morph",
     category: "Metamorph",
     size: "m",
-    usage: `<MenuMorph open={open} onOpenChange={setOpen} items={[{ label: "Home" }, { label: "Orders" }]} />`,
+    usage: `<MenuMorph open={open} onOpenChange={setOpen} title="Acme" items={[{ label: "Home", href: "/" }, { label: "Orders", href: "/orders" }]} />`,
     description: "The three menu bars become the menu: the button flows into the card and each bar into a row.",
-    how: "Two contours of the engine. The round button flows to the size of the card, and the three bars each stretch into a row of the menu, all on springs with slightly different frequencies. Then the words come out of a blur, one at a time. Esc closes and gives focus back to the button.",
+    how: "Two contours of the engine. The round button flows to the size of the card, and the three bars each stretch into a row of the menu, all on springs with slightly different frequencies. Rows beyond three are born from a point. Then the words come out of a blur, one at a time. Esc, a tap outside or choosing an item closes it, and focus goes back to the button.",
     task: "Use MenuMorph as the mobile menu of my product, with its real sections.",
     pt: {
       description: "As três barrinhas do menu viram o menu: o botão flui até virar o card e cada barra vira uma linha.",
-      how: "São dois contornos do motor. O botão redondo flui até o tamanho do card, e as três barras se esticam, cada uma, até virar uma linha do menu, todas com molas de frequências um pouco diferentes. Depois as palavras entram saindo do desfoque, uma de cada vez. Esc fecha e devolve o foco ao botão.",
+      how: "São dois contornos do motor. O botão redondo flui até o tamanho do card, e as três barras se esticam, cada uma, até virar uma linha do menu, todas com molas de frequências um pouco diferentes. Linhas além de três nascem de um ponto. Depois as palavras entram saindo do desfoque, uma de cada vez. Esc, um toque fora ou escolher um item fecha o menu, e o foco volta ao botão.",
       task: "Use MenuMorph como o menu do meu produto no celular, com as seções reais.",
     },
   },
@@ -77,7 +77,12 @@ export const catalog: Entry[] = [
     name: "Morph Dialog",
     category: "Metamorph",
     size: "m",
-    usage: `<MorphDialog open={open} onClose={() => setOpen(false)} from={cardRef.current} labelledBy="title">…</MorphDialog>`,
+    usage: `const [from, setFrom] = useState<HTMLElement | null>(null);
+
+<button onClick={(e) => setFrom(e.currentTarget)}>Open</button>
+<MorphDialog open={from !== null} onClose={() => setFrom(null)} from={from} labelledBy="title">
+  <h2 id="title">Order 2041</h2>
+</MorphDialog>`,
     description: "A window that flows out of the card that opened it and back into it.",
     how: "Each edge of the window is a spring with its own frequency, so one side leaves before the other and it stretches like a liquid. The corners round out with speed and land on the exact radius. The shape is a clip-path, sharp in every frame. It is the native dialog, so focus, Esc and the top layer come from the browser, and the window closes only once the shape is back home.",
     task: "Use MorphDialog for the windows in my product that open from a card or button, passing that element as from.",

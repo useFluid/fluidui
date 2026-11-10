@@ -1,19 +1,13 @@
 "use client";
 
 import { shapes, springCss, springs } from "@usefluid/motion";
-import { MorphPath, useSequence } from "@usefluid/motion/react";
-import { useLayoutEffect, useRef, useState } from "react";
+import { MorphPath, useSequence, useSkip } from "@usefluid/motion/react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { SegmentedPicker } from "../segmented-picker/SegmentedPicker";
 import styles from "./SplashChoice.module.css";
 
-const ROUTE = [shapes.dot, shapes.circle, shapes.triangle, shapes.flower, shapes.square, shapes.drop];
+const DEFAULT_ROUTE = [shapes.dot, shapes.circle, shapes.triangle, shapes.flower, shapes.square, shapes.drop];
 const BEAT = 0.36;
-const LOGO_AT = ROUTE.length * BEAT;
-const RISE_AT = LOGO_AT + 0.7;
-const TIMES = [...ROUTE.map((_, i) => i * BEAT), LOGO_AT, RISE_AT];
-const STEP_LOGO = ROUTE.length;
-const STEP_RISE = STEP_LOGO + 1;
-
 const rise = springCss(springs.soft);
 
 export type Option = { value: string; label: string; word: string; shape: string };
@@ -25,12 +19,41 @@ type Props = {
   options: Option[];
   value?: string | null;
   onChange?(value: string): void;
-  play?: boolean;
   label?: string;
+  route?: string[];
+  as?: "h1" | "h2";
+  play?: boolean;
+  finished?: boolean;
+  skippable?: boolean;
+  onDone?(): void;
 };
 
-export function SplashChoice({ logo, title, word, options, value, onChange, play = true, label = "What you want to build" }: Props) {
-  const step = useSequence(TIMES, play);
+export function SplashChoice({
+  logo,
+  title,
+  word,
+  options,
+  value,
+  onChange,
+  label = "What you want to build",
+  route = DEFAULT_ROUTE,
+  as: Heading = "h2",
+  play = true,
+  finished = false,
+  skippable = true,
+  onDone,
+}: Props) {
+  const logoAt = route.length * BEAT;
+  const times = [...route.map((_, i) => i * BEAT), logoAt, logoAt + 0.7];
+  const stepLogo = route.length;
+  const last = times.length - 1;
+  const skipped = useSkip(play && skippable, finished);
+  const live = useSequence(times, play && !skipped);
+  const step = skipped ? last : live;
+  const done = useRef(onDone);
+  useLayoutEffect(() => {
+    done.current = onDone;
+  });
   const [own, setOwn] = useState<string | null>(null);
   const chosen = value !== undefined ? value : own;
   const option = options.find((o) => o.value === chosen);
@@ -49,8 +72,12 @@ export function SplashChoice({ logo, title, word, options, value, onChange, play
     return () => observer.disconnect();
   }, []);
 
-  const risen = step >= STEP_RISE;
-  const d = step < STEP_LOGO ? ROUTE[step] : (option?.shape ?? logo);
+  useEffect(() => {
+    if (step === last) done.current?.();
+  }, [step, last]);
+
+  const risen = step >= last;
+  const d = step < stepLogo ? route[step] : (option?.shape ?? logo);
   const shown = option?.word ?? word;
 
   return (
@@ -68,12 +95,12 @@ export function SplashChoice({ logo, title, word, options, value, onChange, play
             <MorphPath d={d} fill="currentColor" config={{ w: 14, z: 0.74 }} />
           </svg>
         </div>
-        <h2 className={styles.title}>
+        <Heading className={styles.title}>
           <span className={styles.line}>{title}</span>
           <span className={styles.word}>
             <span key={shown} className={styles.wordIn}>{shown}</span>
           </span>
-        </h2>
+        </Heading>
         <div className={styles.picker} inert={!risen}>
           <SegmentedPicker
             label={label}

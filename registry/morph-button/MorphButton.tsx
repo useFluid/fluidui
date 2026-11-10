@@ -59,13 +59,15 @@ export function MorphButton({ state, labels = { idle: "Send", done: "Sent" }, cl
         data-state={state}
         aria-busy={state === "loading"}
       >
-        <span className={styles.inner}>
-          <svg viewBox="0 0 120 120" aria-hidden className={styles.iconBox}>
+        <span className={styles.inner} aria-hidden>
+          <svg viewBox="0 0 120 120" className={styles.iconBox}>
             <MorphPath d={icon} fill="currentColor" config={{ w: 20, z: 0.76, points: 96 }} />
           </svg>
           <span className={styles.label}>{text}</span>
         </span>
+        <span className={styles.srOnly}>{text}</span>
       </button>
+      <span className={styles.srOnly} role="status">{state === "idle" ? "" : text}</span>
     </>
   );
 }

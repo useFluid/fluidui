@@ -1,9 +1,22 @@
 .root {
   position: relative;
-  width: min(100%, 320px);
-  aspect-ratio: 320 / 240;
+  z-index: 20;
+  width: 48px;
+  height: 48px;
   color: var(--fluid-on-accent);
   font-family: var(--fluid-font);
+}
+.card {
+  position: absolute;
+  top: 0;
+  width: min(320px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.root[data-side="right"] .card {
+  right: 0;
+}
+.root[data-side="left"] .card {
+  left: 0;
 }
 .svg {
   position: absolute;
@@ -23,17 +36,40 @@
 .root[data-open="true"] .bars {
   fill-opacity: 0.14;
 }
+.root[data-open="true"] .card {
+  pointer-events: auto;
+}
 .toggle {
   position: absolute;
   z-index: 2;
-  top: 1.6%;
-  left: 1.2%;
-  width: 15.6%;
-  aspect-ratio: 1;
+  inset: 0;
   border: 0;
   border-radius: 999px;
   background: none;
   cursor: pointer;
+}
+.toggle::before,
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 1px);
+  left: calc(50% - 9px);
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--fluid-on-accent);
+  opacity: 0;
+  transition: opacity 200ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.root[data-open="true"] .toggle::before {
+  opacity: 1;
+  transform: rotate(45deg);
+  transition-delay: 160ms;
+}
+.root[data-open="true"] .toggle::after {
+  opacity: 1;
+  transform: rotate(-45deg);
+  transition-delay: 160ms;
 }
 .toggle:focus-visible {
   outline: 2px solid var(--fluid-focus);
@@ -41,14 +77,20 @@
 }
 .title {
   position: absolute;
-  top: 7%;
-  left: 20%;
+  top: 16px;
   margin: 0;
   font-size: 15px;
   font-weight: 600;
+  line-height: 16px;
   opacity: 0;
-  transform: translateX(-8px);
+  transform: translateY(-4px);
   transition: opacity 200ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.root[data-side="right"] .title {
+  left: 20px;
+}
+.root[data-side="left"] .title {
+  right: 20px;
 }
 .root[data-open="true"] .title {
   opacity: 1;
@@ -74,7 +116,11 @@
   filter: blur(0);
   transform: none;
 }
+.items a,
 .items button {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   padding: 0 20px;
@@ -84,13 +130,16 @@
   color: inherit;
   font: 500 16px/1 var(--fluid-font);
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
 }
 @media (hover: hover) {
+  .items a:hover,
   .items button:hover {
     background: color-mix(in srgb, var(--fluid-on-accent) 10%, transparent);
   }
 }
+.items a:focus-visible,
 .items button:focus-visible {
   outline: 2px solid var(--fluid-focus);
   outline-offset: -2px;
@@ -98,7 +147,9 @@
 @media (prefers-reduced-motion: reduce) {
   .items li,
   .title,
-  .bars {
+  .bars,
+  .toggle::before,
+  .toggle::after {
     transition: none;
   }
 }

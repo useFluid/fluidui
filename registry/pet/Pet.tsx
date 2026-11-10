@@ -43,15 +43,24 @@ const FACES: Record<Mood, Face> = {
   curious: { left: open(3.8, 5.5), right: open(6, 8), eyeY: 67, drop: -4, tilt: 6 },
 };
 
+function eyeAttrs(eye: Eye, cx: number, cy: number) {
+  const [lw, lb] = eye.line;
+  return {
+    oval: { cx, cy, rx: eye.oval[0], ry: eye.oval[1] },
+    line: { d: `M${cx - lw} ${cy} Q${cx} ${cy + lb * 1.6} ${cx + lw} ${cy}`, strokeWidth: lw > 0.4 ? 3.2 : 0 },
+  };
+}
+
 type Props = {
   mood?: Mood;
+  still?: boolean;
   follow?: boolean;
   look?: { x: number; y: number };
   label?: string;
   className?: string;
 };
 
-export function Pet({ mood = "idle", follow = false, look, label, className }: Props) {
+export function Pet({ mood = "idle", still = false, follow = false, look, label, className }: Props) {
   const reduced = useReducedMotion();
   const mask = `pet-${useId().replace(/[^a-zA-Z0-9-]/g, "")}`;
   const root = useRef<SVGSVGElement>(null);
@@ -83,7 +92,7 @@ export function Pet({ mood = "idle", follow = false, look, label, className }: P
   }, [follow]);
 
   useEffect(() => {
-    if (reduced || mood === "sleepy") return;
+    if (reduced || still || mood === "sleepy") return;
     let open: ReturnType<typeof setTimeout>;
     const timer = setInterval(() => {
       setBlink(true);
@@ -93,10 +102,11 @@ export function Pet({ mood = "idle", follow = false, look, label, className }: P
       clearInterval(timer);
       clearTimeout(open);
     };
-  }, [reduced, mood]);
+  }, [reduced, still, mood]);
 
   const f = FACES[mood];
   const g = follow ? gaze : (look ?? { x: 0, y: 0 });
+  const first = useRef({ l: eyeAttrs(f.left, 60 + g.x * 6 - 13, f.eyeY + g.y * 4 - f.tilt * 0.4), r: eyeAttrs(f.right, 60 + g.x * 6 + 13, f.eyeY + g.y * 4 + f.tilt * 0.4) });
 
   useSpring(
     {
@@ -145,6 +155,7 @@ export function Pet({ mood = "idle", follow = false, look, label, className }: P
       viewBox="0 0 120 120"
       className={[styles.pet, className].filter(Boolean).join(" ")}
       data-mood={mood}
+      data-still={still || undefined}
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
@@ -152,16 +163,16 @@ export function Pet({ mood = "idle", follow = false, look, label, className }: P
       <defs>
         <mask id={mask} maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
           <rect width="120" height="120" fill="#fff" />
-          <ellipse ref={ref("lOval")} fill="#000" />
-          <ellipse ref={ref("rOval")} fill="#000" />
-          <path ref={ref("lLine")} fill="none" stroke="#000" strokeLinecap="round" />
-          <path ref={ref("rLine")} fill="none" stroke="#000" strokeLinecap="round" />
+          <ellipse ref={ref("lOval")} fill="#000" {...first.current.l.oval} />
+          <ellipse ref={ref("rOval")} fill="#000" {...first.current.r.oval} />
+          <path ref={ref("lLine")} fill="none" stroke="#000" strokeLinecap="round" {...first.current.l.line} />
+          <path ref={ref("rLine")} fill="none" stroke="#000" strokeLinecap="round" {...first.current.r.line} />
         </mask>
       </defs>
       <g className={styles.body}>
         <MorphPath d={BODIES[mood]} fill="currentColor" mask={`url(#${mask})`} config={{ w: 12, z: 0.72, points: 120, spread: 0.1 }} />
       </g>
-      <g ref={ref("drop")} className={styles.dropWrap}>
+      <g ref={ref("drop")}>
         <circle cx="88" cy="22" r="6" fill="currentColor" className={styles.drop} />
       </g>
     </svg>

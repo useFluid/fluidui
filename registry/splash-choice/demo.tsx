@@ -25,7 +25,7 @@ export default function Demo() {
 
   return (
     <div style={{ position: "absolute", inset: 0, "--fluid-splash-height": "100%" } as CSSProperties}>
-      <SplashChoice logo={logo} title="Made for" word="you." options={options} value={value} onChange={setValue} play={play} />
+      <SplashChoice logo={logo} title="Made for" word="you." options={options} value={value} onChange={setValue} play={play} skippable={false} />
     </div>
   );
 }

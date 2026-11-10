@@ -47,3 +47,9 @@
   font: 500 15px/1 var(--fluid-font);
   white-space: nowrap;
 }
+@media (prefers-reduced-motion: reduce) {
+  .slot,
+  .slot * {
+    transition: none !important;
+  }
+}

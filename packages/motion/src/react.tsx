@@ -148,6 +148,21 @@ export function useSequence(times: number[], active = true) {
   return step;
 }
 
+export function useSkip(enabled = true, initial = false) {
+  const [skipped, setSkipped] = useState(initial);
+  useEffect(() => {
+    if (!enabled || skipped) return;
+    const skip = () => setSkipped(true);
+    addEventListener("keydown", skip);
+    addEventListener("pointerdown", skip);
+    return () => {
+      removeEventListener("keydown", skip);
+      removeEventListener("pointerdown", skip);
+    };
+  }, [enabled, skipped]);
+  return skipped;
+}
+
 export function useInView(ref: RefObject<Element | null>, threshold = 0.35) {
   const [seen, setSeen] = useState(false);
   useEffect(() => {

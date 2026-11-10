@@ -1,8 +1,8 @@
 "use client";
 
 import { sampleContours, springCss } from "@usefluid/motion";
-import { useSequence } from "@usefluid/motion/react";
-import { useMemo } from "react";
+import { useSequence, useSkip } from "@usefluid/motion/react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { TextReveal } from "../text-reveal/TextReveal";
 import styles from "./SplashDots.module.css";
 
@@ -16,8 +16,28 @@ function seeded(seed: number) {
   };
 }
 
-export function SplashDots({ logo, name, play = true }: { logo: string; name: string; play?: boolean }) {
-  const step = useSequence(TIMES, play);
+type Props = {
+  logo: string;
+  name: string;
+  as?: "h1" | "h2" | "p";
+  play?: boolean;
+  finished?: boolean;
+  skippable?: boolean;
+  onDone?(): void;
+};
+
+export function SplashDots({ logo, name, as: Name = "p", play = true, finished = false, skippable = true, onDone }: Props) {
+  const last = TIMES.length - 1;
+  const skipped = useSkip(play && skippable, finished);
+  const live = useSequence(TIMES, play && !skipped);
+  const step = skipped ? last : live;
+  const done = useRef(onDone);
+  useLayoutEffect(() => {
+    done.current = onDone;
+  });
+  useEffect(() => {
+    if (step === last) done.current?.();
+  }, [step, last]);
   const dots = useMemo(() => {
     const random = seeded(7);
     return sampleContours(logo, 40).flatMap((c) =>
@@ -41,9 +61,9 @@ export function SplashDots({ logo, name, play = true }: { logo: string; name: st
           />
         ))}
       </svg>
-      <p className={styles.name}>
-        <TextReveal text={name} play={step >= 3} stagger={36} />
-      </p>
+      <Name className={styles.name}>
+        {skipped ? name : <TextReveal text={name} play={step >= last} stagger={36} />}
+      </Name>
     </div>
   );
 }

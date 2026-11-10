@@ -1,35 +1,56 @@
 "use client";
 
 import { shapes, springCss, springs } from "@usefluid/motion";
-import { MorphPath, useSequence } from "@usefluid/motion/react";
-import { useLayoutEffect, useRef, useState } from "react";
-import { WordCycle } from "../word-cycle/WordCycle";
+import { MorphPath, useSequence, useSkip } from "@usefluid/motion/react";
+import { type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { SpringButton } from "../spring-button/SpringButton";
+import { WordCycle } from "../word-cycle/WordCycle";
 import styles from "./SplashShapes.module.css";
 
-const ROUTE = [shapes.dot, shapes.circle, shapes.triangle, shapes.flower, shapes.square, shapes.drop, shapes.capsule];
+const DEFAULT_ROUTE = [shapes.dot, shapes.circle, shapes.triangle, shapes.flower, shapes.square, shapes.drop, shapes.capsule];
 const BEAT = 0.36;
-const LOGO_AT = ROUTE.length * BEAT;
-const RISE_AT = LOGO_AT + 0.75;
-const ACTION_AT = RISE_AT + 1.5;
-const TIMES = [...ROUTE.map((_, i) => i * BEAT), LOGO_AT, RISE_AT, ACTION_AT];
-const STEP_LOGO = ROUTE.length;
-const STEP_RISE = STEP_LOGO + 1;
-const STEP_ACTION = STEP_RISE + 1;
-
 const rise = springCss(springs.soft);
 
 type Props = {
   logo: string;
   title: string;
   words: string[];
-  action: string;
+  action?: string;
   onAction?(): void;
+  children?: ReactNode;
+  route?: string[];
+  as?: "h1" | "h2";
   play?: boolean;
+  finished?: boolean;
+  skippable?: boolean;
+  onDone?(): void;
 };
 
-export function SplashShapes({ logo, title, words, action, onAction, play = true }: Props) {
-  const step = useSequence(TIMES, play);
+export function SplashShapes({
+  logo,
+  title,
+  words,
+  action,
+  onAction,
+  children,
+  route = DEFAULT_ROUTE,
+  as: Heading = "h2",
+  play = true,
+  finished = false,
+  skippable = true,
+  onDone,
+}: Props) {
+  const logoAt = route.length * BEAT;
+  const times = [...route.map((_, i) => i * BEAT), logoAt, logoAt + 0.75, logoAt + 1.5];
+  const stepLogo = route.length;
+  const last = times.length - 1;
+  const skipped = useSkip(play && skippable, finished);
+  const live = useSequence(times, play && !skipped);
+  const step = skipped ? last : live;
+  const done = useRef(onDone);
+  useLayoutEffect(() => {
+    done.current = onDone;
+  });
   const column = useRef<HTMLDivElement>(null);
   const slot = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -37,8 +58,7 @@ export function SplashShapes({ logo, title, words, action, onAction, play = true
   useLayoutEffect(() => {
     const measure = () => {
       if (!column.current || !slot.current) return;
-      const c = column.current.offsetHeight / 2;
-      setOffset(c - (slot.current.offsetTop + slot.current.offsetHeight / 2));
+      setOffset(column.current.offsetHeight / 2 - (slot.current.offsetTop + slot.current.offsetHeight / 2));
     };
     measure();
     const observer = new ResizeObserver(measure);
@@ -46,8 +66,12 @@ export function SplashShapes({ logo, title, words, action, onAction, play = true
     return () => observer.disconnect();
   }, []);
 
-  const d = step >= STEP_LOGO ? logo : ROUTE[step];
-  const stage = step >= STEP_ACTION ? "action" : step >= STEP_RISE ? "rise" : "shapes";
+  useEffect(() => {
+    if (step === last) done.current?.();
+  }, [step, last]);
+
+  const d = step >= stepLogo ? logo : route[step];
+  const stage = step >= last ? "action" : step >= stepLogo + 1 ? "rise" : "shapes";
 
   return (
     <div className={styles.root} data-stage={stage}>
@@ -64,14 +88,20 @@ export function SplashShapes({ logo, title, words, action, onAction, play = true
             <MorphPath d={d} fill="currentColor" config={{ w: 14, z: 0.74 }} />
           </svg>
         </div>
-        <h2 className={styles.title}>
+        <Heading className={styles.title}>
           <span className={styles.titleLine}>{title}</span>{" "}
           <span className={styles.words}>
-            <WordCycle key={stage === "shapes" ? "wait" : "go"} words={words} every={0.5} loop={false} play={stage !== "shapes"} />
+            <WordCycle
+              key={stage === "shapes" ? "wait" : skipped ? "end" : "go"}
+              words={skipped ? words.slice(-1) : words}
+              every={0.5}
+              loop={false}
+              play={stage !== "shapes" && !skipped}
+            />
           </span>
-        </h2>
-        <div className={styles.action}>
-          <SpringButton onClick={onAction} tabIndex={stage === "action" ? undefined : -1}>{action}</SpringButton>
+        </Heading>
+        <div className={styles.action} inert={stage !== "action"}>
+          {children ?? (action ? <SpringButton onClick={onAction}>{action}</SpringButton> : null)}
         </div>
       </div>
     </div>

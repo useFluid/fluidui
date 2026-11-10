@@ -33,7 +33,7 @@
 .scrim {
   position: absolute;
   inset: 0;
-  background: rgba(8, 8, 10, 0.5);
+  background: var(--fluid-scrim, rgba(8, 8, 10, 0.5));
   opacity: 0;
 }
 .surface {
@@ -56,13 +56,15 @@
   background: var(--fluid-surface);
 }
 .panel[data-rest] {
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 1px var(--fluid-border), 0 30px 90px rgba(0, 0, 0, 0.3);
 }
 .content {
   display: flex;
   flex: 1;
   flex-direction: column;
   min-height: 0;
+  margin: -4px;
+  padding: 4px;
   overflow: auto;
   opacity: 0;
 }

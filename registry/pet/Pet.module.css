@@ -10,7 +10,9 @@
   animation: breathe 3.2s ease-in-out infinite;
 }
 .pet[data-mood="happy"] .body {
-  animation: hop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+  animation:
+    hop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 2,
+    breathe 3.2s ease-in-out 1.8s infinite;
 }
 .pet[data-mood="sleepy"] .body {
   animation-duration: 4.8s;
@@ -34,6 +36,10 @@
 @keyframes float {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-3px) scale(0.9); }
+}
+.pet[data-still] .body,
+.pet[data-still] .drop {
+  animation: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .body,

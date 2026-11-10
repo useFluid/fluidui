@@ -11,6 +11,7 @@ const SCRIPT: { state: BotState; add?: Message }[] = [
   { state: "done" },
   { state: "listening", add: { id: "3", from: "person", text: "Thanks!" } },
   { state: "done", add: { id: "4", from: "bot", text: "Anytime. Just call if you need anything." } },
+  { state: "idle" },
 ];
 
 export default function Demo() {
