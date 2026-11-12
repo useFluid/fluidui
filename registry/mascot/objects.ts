@@ -196,7 +196,7 @@ export const objects: MascotObject[] = [
     d: "M18 28C46 12 74 12 102 28L60 108Z",
     eyes: { x: 60, y: 42, gap: 11, size: 0.9 },
     color: "#fb923c",
-    words: ["pizza", "pizzaria", "food", "comida", "restaurant", "restaurante", "delivery", "fast food", "lanchonete", "snack"],
+    words: ["pizza", "pizzaria", "pizzeria", "pizzas", "food", "comida", "restaurant", "restaurante", "delivery", "fast food", "lanchonete", "snack", "burger", "hamburger", "hamburgueria", "lanches", "grill", "churrascaria", "bistro", "bar"],
   },
   {
     id: "cupcake",
@@ -306,16 +306,33 @@ export const objects: MascotObject[] = [
 
 const normal = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
+const tokens = (s: string) => normal(s).split(/[^a-z0-9]+/).filter(Boolean);
+
+const near = (a: string, b: string) => {
+  if (a === b || a === `${b}s` || b === `${a}s`) return 1;
+  const short = Math.min(a.length, b.length);
+  if (short < 4) return 0;
+  let i = 0;
+  while (i < short && a[i] === b[i]) i++;
+  return i >= 4 && i / short >= 0.75 ? 0.6 : 0;
+};
+
 export function pickObject(description: string): MascotObject {
-  const text = ` ${normal(description)} `;
+  const text = tokens(description);
+  const joined = ` ${text.join(" ")} `;
   let best: MascotObject | null = null;
   let score = 0;
   for (const o of objects) {
     let s = 0;
     for (const word of o.words) {
-      const w = normal(word);
-      if (text.includes(` ${w} `) || text.includes(` ${w}s `) || text.includes(` ${w},`) || text.includes(` ${w}.`)) s += w.length;
-      else if (w.length > 4 && text.includes(w)) s += w.length / 2;
+      const w = tokens(word);
+      if (w.length > 1) {
+        if (joined.includes(` ${w.join(" ")} `)) s += w.join("").length * 1.5;
+        continue;
+      }
+      let hit = 0;
+      for (const t of text) hit = Math.max(hit, near(t, w[0]));
+      s += hit * w[0].length;
     }
     if (s > score) {
       score = s;
