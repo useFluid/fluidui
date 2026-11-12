@@ -48,11 +48,13 @@ function eyeAttrs(eye: Eye, cx: number, cy: number, size: number) {
   const lb = eye.line[1] * size;
   return {
     oval: { cx, cy, rx: eye.oval[0] * size, ry: eye.oval[1] * size },
-    line: { d: `M${cx - lw} ${cy} Q${cx} ${cy + lb * 1.6} ${cx + lw} ${cy}`, strokeWidth: lw > 0.4 ? 3.2 * size : 0 },
+    line: { d: `M${cx - lw} ${cy} Q${cx} ${cy + lb * 1.6} ${cx + lw} ${cy}`, strokeWidth: lw > 0.4 ? 4.4 * size : 0 },
   };
 }
 
 export type Eyes = { x: number; y: number; gap?: number; size?: number };
+
+const OBJECT_CURIOUS: Face = { left: open(4.4, 6.2), right: open(5.4, 7.6), eyeY: 66, drop: 0, tilt: 2 };
 
 type Props = {
   mood?: Mood;
@@ -110,7 +112,7 @@ export function Pet({ mood = "idle", shape, eyes, drop = !shape, still = false, 
     };
   }, [reduced, still, mood]);
 
-  const f = FACES[mood];
+  const f = shape && mood === "curious" ? OBJECT_CURIOUS : FACES[mood];
   const g = follow ? gaze : (look ?? { x: 0, y: 0 });
   const ex = eyes?.x ?? 60;
   const size = eyes?.size ?? 1;
@@ -151,7 +153,7 @@ export function Pet({ mood = "idle", shape, eyes, drop = !shape, still = false, 
         set(p[`${side}Oval`], { cx, cy, rx: Math.max(0, ow), ry: Math.max(0, oh) });
         set(p[`${side}Line`], {
           d: `M${cx - lw} ${cy} Q${cx} ${cy + lb * 1.6} ${cx + lw} ${cy}`,
-          "stroke-width": lw > 0.4 ? 3.2 * v.size : 0,
+          "stroke-width": lw > 0.4 ? 4.4 * v.size : 0,
         });
       };
       eye("l", x - v.gap, y - v.tilt * 0.4, v.low, v.loh, v.llw, v.llb);

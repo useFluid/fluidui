@@ -38,9 +38,17 @@ export function MascotGenerator() {
   return (
     <section className={styles.generator}>
       <div className={styles.stage}>
-        <div className={styles.big}>
-          <Mascot object={object} mood={mood} follow label={object.name[lang]} />
-        </div>
+        <button
+          type="button"
+          className={styles.big}
+          aria-label={`${object.name[lang]}. ${m.next}`}
+          onClick={() => {
+            setObject((current) => objects[(objects.indexOf(current) + 7) % objects.length]);
+            setMood("happy");
+          }}
+        >
+          <Mascot object={object} mood={mood} follow />
+        </button>
         <p className={styles.name} aria-live="polite">{object.name[lang]}</p>
       </div>
       <div className={styles.controls}>
@@ -75,30 +83,44 @@ export function MascotGenerator() {
   );
 }
 
+function GalleryTile({ start }: { start: number }) {
+  const { lang, t } = useLang();
+  const [index, setIndex] = useState(start);
+  const [happy, setHappy] = useState(false);
+  const o = objects[index % objects.length];
+
+  useEffect(() => {
+    if (!happy) return;
+    const timer = setTimeout(() => setHappy(false), 1600);
+    return () => clearTimeout(timer);
+  }, [happy, index]);
+
+  return (
+    <li>
+      <button
+        type="button"
+        className={styles.tile}
+        aria-label={`${o.name[lang]}. ${t.mascots.next}`}
+        onClick={() => {
+          setIndex((i) => i + 7);
+          setHappy(true);
+        }}
+      >
+        <span className={styles.small}>
+          <Mascot object={o} mood={happy ? "happy" : "idle"} follow />
+        </span>
+        <span className={styles.tileName} aria-live="polite">{o.name[lang]}</span>
+      </button>
+    </li>
+  );
+}
+
 export function MascotGallery() {
-  const { lang } = useLang();
-  const [moods, setMoods] = useState<Record<string, number>>({});
   return (
     <ul className={styles.gallery}>
-      {objects.map((o) => {
-        const step = moods[o.id] ?? 0;
-        const mood = MOODS[step % MOODS.length];
-        return (
-          <li key={o.id}>
-            <button
-              type="button"
-              className={styles.tile}
-              aria-label={`${o.name[lang]}: ${mood}`}
-              onClick={() => setMoods((all) => ({ ...all, [o.id]: step + 1 }))}
-            >
-              <span className={styles.small}>
-                <Mascot object={o} mood={mood} follow />
-              </span>
-              <span className={styles.tileName}>{o.name[lang]}</span>
-            </button>
-          </li>
-        );
-      })}
+      {objects.map((o, i) => (
+        <GalleryTile key={o.id} start={i} />
+      ))}
     </ul>
   );
 }

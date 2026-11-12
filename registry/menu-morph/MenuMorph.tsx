@@ -28,9 +28,10 @@ type Props = {
   title?: string;
   label?: string;
   side?: "left" | "right";
+  width?: number;
 };
 
-export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", side = "right" }: Props) {
+export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", side = "right", width = 320 }: Props) {
   const id = useId();
   const root = useRef<HTMLDivElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
@@ -82,7 +83,7 @@ export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", si
         aria-label={open ? `Close ${label.toLowerCase()}` : label}
         onClick={() => onOpenChange(!open)}
       />
-      <div className={styles.card} style={{ aspectRatio: `${W} / ${height}` }}>
+      <div className={styles.card} style={{ aspectRatio: `${W} / ${height}`, width: `min(${width}px, calc(100vw - 32px))` }}>
         <svg viewBox={`0 0 ${W} ${height}`} className={styles.svg} aria-hidden>
           <MorphPath d={open ? bodyOpen : bodyClosed} config={BODY_SPRING} className={styles.body} />
           <MorphPath d={open ? barsOpen : barsClosed} config={BAR_SPRING} className={styles.bars} />

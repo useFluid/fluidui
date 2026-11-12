@@ -31,6 +31,7 @@ const [open, setOpen] = useState(false);
 | title | string |  | Heading shown on the open card. |
 | label | string | "Menu" | Accessible name of the button. |
 | side | "left" \| "right" | "right" | The side the card opens towards. Put the menu at that edge of your header. |
+| width | number | 320 | Width of the open card in px; it never exceeds the screen. |
 
 ## Keyboard and screen readers
 
