@@ -4,7 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { type Page, expect, test } from "@playwright/test";
 
 const SLUGS = [...readFileSync(path.join(__dirname, "../../../registry/index.ts"), "utf8").matchAll(/slug: "([a-z-]+)"/g)].map((m) => m[1]);
-const PAGES = ["/", "/components", "/splash", "/prompts", "/docs"];
+const PAGES = ["/", "/components", "/mascots", "/splash", "/prompts", "/docs"];
 const PT_PAGES = PAGES.map((p) => (p === "/" ? "/pt" : `/pt${p}`));
 
 function watchErrors(page: Page) {

@@ -9,13 +9,13 @@ import { useLang } from "./LangProvider";
 import { SameWidth } from "./SameWidth";
 import styles from "./Header.module.css";
 
-const PATHS = ["/components", "/splash", "/prompts", "/docs"] as const;
+const PATHS = ["/components", "/mascots", "/splash", "/prompts", "/docs"] as const;
 
 export function NavLinks() {
   const { lang, t } = useLang();
   const path = visiblePath(usePathname(), lang);
   const links = PATHS.map((p) => {
-    const key = p.slice(1) as "components" | "splash" | "prompts" | "docs";
+    const key = p.slice(1) as "components" | "mascots" | "splash" | "prompts" | "docs";
     return { href: href(lang, p), texts: { en: dictionaries.en.nav[key], pt: dictionaries.pt.nav[key] } };
   });
   const nav = useRef<HTMLElement>(null);

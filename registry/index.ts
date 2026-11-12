@@ -169,6 +169,25 @@ const [from, setFrom] = useState<HTMLElement | null>(null);
     },
   },
   {
+    slug: "mascot",
+    name: "Mascot",
+    category: "Characters",
+    size: "m",
+    usage: `<Mascot object="mug" mood={saved ? "happy" : "idle"} follow />
+
+const coffee = pickObject("we run a small coffee shop");
+
+<Mascot object={coffee} color="var(--fluid-accent)" />`,
+    description: "Over thirty object mascots, from a coffee mug to a dumbbell, that blink, follow the pointer and flow into each other.",
+    how: "Each object is one silhouette in a 120 box with its own eye spot. Changing the object is Metamorph: the outline flows from a mug into a dumbbell. The eyes are cut out of the body by a mask and move on springs, and each mood changes the pose: it stretches when surprised, sinks when sleepy, tilts when curious and hops when happy.",
+    task: "Give my product a mascot with Mascot. Pick the object that matches what we do with pickObject, wear our accent colour and tie its moods to real events.",
+    pt: {
+      description: "Mais de trinta mascotes de objetos, de uma caneca a um haltere, que piscam, seguem o ponteiro e fluem de um para o outro.",
+      how: "Cada objeto é uma silhueta numa caixa de 120 com o lugar dos olhos. Trocar de objeto é Metamorfo: o contorno flui da caneca até o haltere. Os olhos são recortados do corpo por uma máscara e se movem em molas, e cada humor muda a pose: estica quando surpreso, afunda com sono, inclina curioso e pula feliz.",
+      task: "Dê um mascote ao meu produto com Mascot. Escolha o objeto que combina com o que fazemos com pickObject, use a nossa cor de destaque e ligue os humores a eventos reais.",
+    },
+  },
+  {
     slug: "segmented-picker",
     name: "Segmented Picker",
     category: "Controls",

@@ -43,16 +43,22 @@ const FACES: Record<Mood, Face> = {
   curious: { left: open(3.8, 5.5), right: open(6, 8), eyeY: 67, drop: -4, tilt: 6 },
 };
 
-function eyeAttrs(eye: Eye, cx: number, cy: number) {
-  const [lw, lb] = eye.line;
+function eyeAttrs(eye: Eye, cx: number, cy: number, size: number) {
+  const lw = eye.line[0] * size;
+  const lb = eye.line[1] * size;
   return {
-    oval: { cx, cy, rx: eye.oval[0], ry: eye.oval[1] },
-    line: { d: `M${cx - lw} ${cy} Q${cx} ${cy + lb * 1.6} ${cx + lw} ${cy}`, strokeWidth: lw > 0.4 ? 3.2 : 0 },
+    oval: { cx, cy, rx: eye.oval[0] * size, ry: eye.oval[1] * size },
+    line: { d: `M${cx - lw} ${cy} Q${cx} ${cy + lb * 1.6} ${cx + lw} ${cy}`, strokeWidth: lw > 0.4 ? 3.2 * size : 0 },
   };
 }
 
+export type Eyes = { x: number; y: number; gap?: number; size?: number };
+
 type Props = {
   mood?: Mood;
+  shape?: string;
+  eyes?: Eyes;
+  drop?: boolean;
   still?: boolean;
   follow?: boolean;
   look?: { x: number; y: number };
@@ -60,7 +66,7 @@ type Props = {
   className?: string;
 };
 
-export function Pet({ mood = "idle", still = false, follow = false, look, label, className }: Props) {
+export function Pet({ mood = "idle", shape, eyes, drop = !shape, still = false, follow = false, look, label, className }: Props) {
   const reduced = useReducedMotion();
   const mask = `pet-${useId().replace(/[^a-zA-Z0-9-]/g, "")}`;
   const root = useRef<SVGSVGElement>(null);
@@ -106,27 +112,37 @@ export function Pet({ mood = "idle", still = false, follow = false, look, label,
 
   const f = FACES[mood];
   const g = follow ? gaze : (look ?? { x: 0, y: 0 });
-  const first = useRef({ l: eyeAttrs(f.left, 60 + g.x * 6 - 13, f.eyeY + g.y * 4 - f.tilt * 0.4), r: eyeAttrs(f.right, 60 + g.x * 6 + 13, f.eyeY + g.y * 4 + f.tilt * 0.4) });
+  const ex = eyes?.x ?? 60;
+  const size = eyes?.size ?? 1;
+  const gap = eyes?.gap ?? 13;
+  const ey = (eyes?.y ?? 68) + (f.eyeY - 68) * size;
+  const first = useRef({
+    l: eyeAttrs(f.left, ex + g.x * 6 * size - gap, ey + g.y * 4 * size - f.tilt * 0.4, size),
+    r: eyeAttrs(f.right, ex + g.x * 6 * size + gap, ey + g.y * 4 * size + f.tilt * 0.4, size),
+  });
 
   useSpring(
     {
-      lx: g.x * 6,
-      ly: g.y * 4,
-      ey: f.eyeY,
-      low: f.left.oval[0],
-      loh: blink ? 0.8 : f.left.oval[1],
-      llw: f.left.line[0],
-      llb: f.left.line[1],
-      row: f.right.oval[0],
-      roh: blink ? 0.8 : f.right.oval[1],
-      rlw: f.right.line[0],
-      rlb: f.right.line[1],
+      lx: g.x * 6 * size,
+      ly: g.y * 4 * size,
+      ex,
+      ey,
+      gap,
+      size,
+      low: f.left.oval[0] * size,
+      loh: (blink ? 0.8 : f.left.oval[1]) * size,
+      llw: f.left.line[0] * size,
+      llb: f.left.line[1] * size,
+      row: f.right.oval[0] * size,
+      roh: (blink ? 0.8 : f.right.oval[1]) * size,
+      rlw: f.right.line[0] * size,
+      rlb: f.right.line[1] * size,
       drop: f.drop,
       tilt: f.tilt,
     },
     (v) => {
       const p = parts.current;
-      const x = 60 + v.lx;
+      const x = v.ex + v.lx;
       const y = v.ey + v.ly;
       const set = (el: SVGElement | null, attrs: Record<string, number | string>) => {
         if (el) for (const k in attrs) el.setAttribute(k, String(attrs[k]));
@@ -135,11 +151,11 @@ export function Pet({ mood = "idle", still = false, follow = false, look, label,
         set(p[`${side}Oval`], { cx, cy, rx: Math.max(0, ow), ry: Math.max(0, oh) });
         set(p[`${side}Line`], {
           d: `M${cx - lw} ${cy} Q${cx} ${cy + lb * 1.6} ${cx + lw} ${cy}`,
-          "stroke-width": lw > 0.4 ? 3.2 : 0,
+          "stroke-width": lw > 0.4 ? 3.2 * v.size : 0,
         });
       };
-      eye("l", x - 13, y - v.tilt * 0.4, v.low, v.loh, v.llw, v.llb);
-      eye("r", x + 13, y + v.tilt * 0.4, v.row, v.roh, v.rlw, v.rlb);
+      eye("l", x - v.gap, y - v.tilt * 0.4, v.low, v.loh, v.llw, v.llb);
+      eye("r", x + v.gap, y + v.tilt * 0.4, v.row, v.roh, v.rlw, v.rlb);
       if (p.drop) p.drop.setAttribute("transform", `translate(0 ${v.drop}) rotate(${v.tilt * 2} 88 22)`);
     },
     springs.snappy,
@@ -155,6 +171,7 @@ export function Pet({ mood = "idle", still = false, follow = false, look, label,
       viewBox="0 0 120 120"
       className={[styles.pet, className].filter(Boolean).join(" ")}
       data-mood={mood}
+      data-shape={shape ? "" : undefined}
       data-still={still || undefined}
       role={label ? "img" : undefined}
       aria-label={label}
@@ -169,12 +186,16 @@ export function Pet({ mood = "idle", still = false, follow = false, look, label,
           <path ref={ref("rLine")} fill="none" stroke="#000" strokeLinecap="round" {...first.current.r.line} />
         </mask>
       </defs>
-      <g className={styles.body}>
-        <MorphPath d={BODIES[mood]} fill="currentColor" mask={`url(#${mask})`} config={{ w: 12, z: 0.72, points: 120, spread: 0.1 }} />
+      <g className={styles.pose}>
+        <g className={styles.body}>
+          <MorphPath d={shape ?? BODIES[mood]} fill="currentColor" mask={`url(#${mask})`} config={{ w: 12, z: 0.72, points: 120, spread: 0.1 }} />
+        </g>
       </g>
-      <g ref={ref("drop")}>
-        <circle cx="88" cy="22" r="6" fill="currentColor" className={styles.drop} />
-      </g>
+      {drop && (
+        <g ref={ref("drop")}>
+          <circle cx="88" cy="22" r="6" fill="currentColor" className={styles.drop} />
+        </g>
+      )}
     </svg>
   );
 }

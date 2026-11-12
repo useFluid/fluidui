@@ -6,6 +6,7 @@ import IconMorph from "./icon-morph/demo";
 import CopyMorph from "./copy-morph/demo";
 import IslandToast from "./island-toast/demo";
 import LogoWipe from "./logo-wipe/demo";
+import MascotDemo from "./mascot/demo";
 import MenuMorph from "./menu-morph/demo";
 import MorphDialog from "./morph-dialog/demo";
 import PillTabs from "./pill-tabs/demo";
@@ -29,6 +30,7 @@ export const demos: Record<string, ComponentType> = {
   "morph-loader": MorphLoader,
   pet: Pet,
   bot: Bot,
+  mascot: MascotDemo,
   "morph-button": MorphButton,
   "segmented-picker": SegmentedPicker,
   "spring-switch": SpringSwitch,
