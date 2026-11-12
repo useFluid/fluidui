@@ -47,6 +47,20 @@ const kettle = {
 
 Draw it filled in a 120 x 120 box. Parts must not overlap: where two parts overlap, the overlap becomes a hole. Put `eyes` on the largest flat area.
 
+## Colours
+
+Each object comes with its own colour. To change it:
+
+```tsx
+<Mascot object="mug" color="#ff5a1f" />
+
+<Mascot object="mug" color="var(--fluid-accent)" />
+
+<Mascot object="mug" color="var(--brand-500)" />
+```
+
+Any CSS colour works: hex, `rgb()`, `oklch()` or a variable from your theme. The colour change is animated, so you can tie it to state, for example green when a payment succeeds. The eyes are holes cut out of the shape and show the background behind the mascot.
+
 ## Keyboard and screen readers
 
 Decorative unless labelled; with `label` it is an image with that name. Reduced motion stops breathing, blinking and the pose changes. Never the only way information is given.

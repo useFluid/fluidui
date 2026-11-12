@@ -31,10 +31,24 @@ export function NavLinks() {
       setBox(el ? { left: el.offsetLeft, right: el.offsetLeft + el.offsetWidth } : null);
     };
     measure();
-    const observer = new ResizeObserver(measure);
+    const el = nav.current;
+    const current = el?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (el && current) {
+      const room = el.clientWidth;
+      if (el.scrollWidth > room) el.scrollLeft = current.offsetLeft - (room - current.offsetWidth) / 2;
+    }
+    edge();
+    const observer = new ResizeObserver(() => { measure(); edge(); });
     if (nav.current) observer.observe(nav.current);
     return () => observer.disconnect();
   }, [active]);
+
+  const edge = () => {
+    const el = nav.current;
+    if (!el) return;
+    el.dataset.start = String(el.scrollLeft > 2);
+    el.dataset.end = String(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  };
 
   const edges = useRef({ left: 0, right: 0 });
   const paint = () => {
@@ -49,7 +63,7 @@ export function NavLinks() {
   if (box) placed.current = true;
 
   return (
-    <nav ref={nav} aria-label={t.nav.label} className={styles.nav}>
+    <nav ref={nav} aria-label={t.nav.label} className={styles.nav} onScroll={edge}>
       <span ref={pill} className={styles.navPill} data-on={box ? "" : undefined} aria-hidden />
       {links.map((link, i) => (
         <Link key={link.href} href={link.href} className={styles.link} aria-current={i === active ? "page" : undefined}>

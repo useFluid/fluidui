@@ -18,59 +18,7 @@ type Props = {
   priority?: boolean;
 };
 
-const MAX = 3;
-const TURN_MS = 5000;
-type Slot = { el: HTMLElement; on: boolean; set(on: boolean): void };
-const slots = new Set<Slot>();
-let offset = 0;
-let rotation: ReturnType<typeof setInterval> | undefined;
-
-function distance(el: HTMLElement) {
-  const r = el.getBoundingClientRect();
-  return Math.abs(r.top + r.height / 2 - innerHeight / 2);
-}
-
-function deal() {
-  const list = [...slots].sort((a, b) => distance(a.el) - distance(b.el));
-  const chosen = new Set(list.length <= MAX ? list : Array.from({ length: MAX }, (_, i) => list[(offset + i) % list.length]));
-  for (const slot of slots) {
-    const on = chosen.has(slot);
-    if (on !== slot.on) {
-      slot.on = on;
-      slot.set(on);
-    }
-  }
-  if (list.length > MAX && !rotation) {
-    rotation = setInterval(() => {
-      offset += MAX;
-      deal();
-    }, TURN_MS);
-  } else if (list.length <= MAX && rotation) {
-    clearInterval(rotation);
-    rotation = undefined;
-    offset = 0;
-  }
-}
-
-function useTurn(ref: RefObject<HTMLElement | null>, visible: boolean, always: boolean) {
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (always || !visible || !el) {
-      setOn(always && visible);
-      return;
-    }
-    const slot: Slot = { el, on: false, set: setOn };
-    slots.add(slot);
-    deal();
-    return () => {
-      slots.delete(slot);
-      setOn(false);
-      deal();
-    };
-  }, [ref, visible, always]);
-  return on;
-}
+const IDLE_MS = 4000;
 
 function useVisible(ref: RefObject<Element | null>) {
   const [near, setNear] = useState(false);
@@ -102,13 +50,21 @@ export function Stage({ slug, loop, className, vars, preview, brand: fixed, prio
   const brand = fixed ?? chosen;
   const root = useRef<HTMLDivElement>(null);
   const { near, visible } = useVisible(root);
-  const turn = useTurn(root, visible, priority);
   const [seen, setSeen] = useState(false);
   if (visible && !seen) setSeen(true);
   const reduced = useReducedMotion();
   const [held, setHeld] = useState(false);
+  const idle = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [take, setTake] = useState(0);
-  const auto = turn && !held && !reduced;
+  const auto = (visible || priority) && !held && !reduced;
+
+  const touch = () => {
+    setHeld(true);
+    clearTimeout(idle.current);
+    idle.current = setTimeout(() => setHeld(false), IDLE_MS);
+  };
+
+  useEffect(() => () => clearTimeout(idle.current), []);
   const Demo = demos[slug];
 
   useEffect(() => {
@@ -124,11 +80,11 @@ export function Stage({ slug, loop, className, vars, preview, brand: fixed, prio
       ref={root}
       className={[styles.stage, className].filter(Boolean).join(" ")}
       style={{ ...brand.vars, ...vars } as CSSProperties}
+      data-stage={slug}
       data-offscreen={visible ? undefined : ""}
-      onPointerEnter={preview ? undefined : (e) => { if (e.pointerType === "mouse") setHeld(true); }}
-      onPointerLeave={preview ? undefined : () => setHeld(false)}
-      onFocus={preview ? undefined : () => setHeld(true)}
-      onBlur={preview ? undefined : (e) => { if (!e.currentTarget.contains(e.relatedTarget)) setHeld(false); }}
+      onPointerDown={preview ? undefined : touch}
+      onKeyDown={preview ? undefined : touch}
+      onInput={preview ? undefined : touch}
     >
       <div className={styles.inner} inert={preview} aria-hidden={preview || undefined}>
         {near && (

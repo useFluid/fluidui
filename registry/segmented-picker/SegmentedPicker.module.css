@@ -48,7 +48,8 @@
     width: 100%;
   }
   .option {
-    flex: 1 1 0;
-    padding: 0 8px;
+    flex: 1 0 auto;
+    padding: 0 10px;
+    font-size: 13px;
   }
 }

@@ -19,7 +19,7 @@ export function CatalogNav({ groups }: { groups: Group[] }) {
   return (
     <nav aria-label={t.catalog.label} className={styles.nav}>
       <Link href={all} className={styles.all} aria-current={path === all ? "page" : undefined}>
-        <SameWidth lang={lang} texts={both((d) => d.catalog.all)} /> <span>{total}</span>
+        <SameWidth lang={lang} texts={both((d) => d.catalog.all)} /> <span className={styles.count}>{total}</span>
       </Link>
       {groups.map((group) => (
         <div key={group.category.en} className={styles.group}>

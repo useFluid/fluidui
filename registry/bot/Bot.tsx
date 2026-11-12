@@ -25,16 +25,17 @@ type Props = {
   you?: string;
   status?: Partial<Record<BotState, string>>;
   still?: boolean;
+  color?: string;
   children?: ReactNode;
 };
 
-export function Bot({ state, messages, name = "Assistant", you = "You", status, still = false, children }: Props) {
+export function Bot({ state, messages, name = "Assistant", you = "You", status, still = false, color, children }: Props) {
   const label = { ...STATUS, ...status }[state];
   return (
     <section className={styles.bot} aria-label={name}>
       <div className={styles.head}>
         <div className={styles.avatar} data-state={state}>
-          <Pet mood={MOOD[state]} look={LOOK[state]} still={still} />
+          <Pet mood={MOOD[state]} look={LOOK[state]} still={still} color={color} />
         </div>
         <div>
           <p className={styles.name}>{name}</p>

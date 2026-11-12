@@ -99,9 +99,9 @@ export function MorphPath({
   const target = useRef(first);
 
   useLayoutEffect(() => {
+    if (d === target.current && !stop.current) return;
     morpher.current ??= createMorpher(first, config);
     const m = morpher.current;
-    if (d === target.current && !stop.current) return;
     target.current = d;
     stop.current?.();
     if (isReduced()) {

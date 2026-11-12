@@ -143,7 +143,10 @@ const [from, setFrom] = useState<HTMLElement | null>(null);
     name: "Pet",
     category: "Characters",
     size: "m",
-    usage: `<Pet mood="happy" follow label="Store mascot" />`,
+    usage: `<Pet mood="happy" follow label="Store mascot" />
+
+<Pet color="#ff5a1f" />
+<Pet color="var(--brand-500)" />`,
     description: "A soft little square that shows its mood with its eyes alone, and the eyes follow the pointer.",
     how: "The body is a square with soft corners, a single contour, and the morph engine takes one mood's silhouette to the next. The eyes are cut-outs in a mask, each one an oval and a stroke on springs: as one shrinks the other grows, so an open eye turns into a smile or a sleepy line without a cut. That is why the face never tears. The drop above the head floats like a splash, it blinks by itself, and everything stops with reduced motion.",
     task: "Create my product's mascot with Pet, in my brand colour, and use the moods to react to what people do.",
@@ -158,7 +161,9 @@ const [from, setFrom] = useState<HTMLElement | null>(null);
     name: "Bot",
     category: "Characters",
     size: "m",
-    usage: `<Bot state={state} messages={messages} name="Help" />`,
+    usage: `<Bot state={state} messages={messages} name="Help" />
+
+<Bot color="#0ea5e9" state={state} messages={messages} />`,
     description: "A chat assistant with a face: it listens, thinks and answers by changing shape.",
     how: "The bot's face is the Pet. Each state of the conversation becomes a mood and a direction for the eyes: listening, it looks at your message; thinking, it looks up; answering, it looks at the reply. Messages arrive out of a blur, and the state goes to screen readers.",
     task: "Use Bot in my product's support chat, wired to the real messages.",
@@ -177,7 +182,8 @@ const [from, setFrom] = useState<HTMLElement | null>(null);
 
 const coffee = pickObject("we run a small coffee shop");
 
-<Mascot object={coffee} color="var(--fluid-accent)" />`,
+<Mascot object={coffee} color="var(--fluid-accent)" />
+<Mascot object="pizza" color="#ff5a1f" />`,
     description: "Over thirty object mascots, from a coffee mug to a dumbbell, that blink, follow the pointer and flow into each other.",
     how: "Each object is one silhouette in a 120 box with its own eye spot. Changing the object is Metamorph: the outline flows from a mug into a dumbbell. The eyes are cut out of the body by a mask and move on springs, and each mood changes the pose: it stretches when surprised, sinks when sleepy, tilts when curious and hops when happy.",
     task: "Give my product a mascot with Mascot. Pick the object that matches what we do with pickObject, wear our accent colour and tie its moods to real events.",

@@ -54,6 +54,49 @@ function eyeAttrs(eye: Eye, cx: number, cy: number, size: number) {
 
 export type Eyes = { x: number; y: number; gap?: number; size?: number };
 
+type Watcher = (x: number, y: number, touch: boolean) => void;
+const watchers = new Set<Watcher>();
+let pointer = { x: 0, y: 0, touch: false };
+let frame = 0;
+
+const flush = () => {
+  frame = 0;
+  for (const watch of watchers) watch(pointer.x, pointer.y, pointer.touch);
+};
+
+const onPointer = (e: PointerEvent) => {
+  pointer = { x: e.clientX, y: e.clientY, touch: e.pointerType !== "mouse" };
+  if (!frame) frame = requestAnimationFrame(flush);
+};
+
+function watch(fn: Watcher) {
+  if (!watchers.size) {
+    addEventListener("pointermove", onPointer, { passive: true });
+    addEventListener("pointerdown", onPointer, { passive: true });
+  }
+  watchers.add(fn);
+  return () => {
+    watchers.delete(fn);
+    if (watchers.size) return;
+    removeEventListener("pointermove", onPointer);
+    removeEventListener("pointerdown", onPointer);
+    cancelAnimationFrame(frame);
+    frame = 0;
+  };
+}
+
+function useVisible(ref: { current: Element | null }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return setVisible(true);
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: "120px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref]);
+  return visible;
+}
+
 const OBJECT_CURIOUS: Face = { left: open(4.4, 6.2), right: open(5.4, 7.6), eyeY: 66, drop: 0, tilt: 2 };
 
 type Props = {
@@ -65,42 +108,41 @@ type Props = {
   follow?: boolean;
   look?: { x: number; y: number };
   label?: string;
+  color?: string;
   className?: string;
 };
 
-export function Pet({ mood = "idle", shape, eyes, drop = !shape, still = false, follow = false, look, label, className }: Props) {
+export function Pet({ mood = "idle", shape, eyes, drop = !shape, still = false, follow = false, look, label, color, className }: Props) {
   const reduced = useReducedMotion();
   const mask = `pet-${useId().replace(/[^a-zA-Z0-9-]/g, "")}`;
   const root = useRef<SVGSVGElement>(null);
   const parts = useRef<Record<string, SVGElement | null>>({});
   const [gaze, setGaze] = useState({ x: 0, y: 0 });
   const [blink, setBlink] = useState(false);
+  const visible = useVisible(root);
 
   useEffect(() => {
-    if (!follow) return;
+    if (!follow || !visible) return;
     let back: ReturnType<typeof setTimeout> | undefined;
-    const onMove = (e: PointerEvent) => {
+    const stop = watch((px, py, touch) => {
       clearTimeout(back);
-      if (e.pointerType !== "mouse") back = setTimeout(() => setGaze({ x: 0, y: 0 }), 1200);
+      if (touch) back = setTimeout(() => setGaze({ x: 0, y: 0 }), 1200);
       const box = root.current?.getBoundingClientRect();
-      if (!box) return;
-      const dx = (e.clientX - (box.left + box.width / 2)) / (box.width * 2);
-      const dy = (e.clientY - (box.top + box.height / 2)) / (box.height * 2);
+      if (!box?.width) return;
+      const dx = (px - (box.left + box.width / 2)) / (box.width * 2);
+      const dy = (py - (box.top + box.height / 2)) / (box.height * 2);
       const x = Math.round(Math.max(-1, Math.min(1, dx)) * 10) / 10;
       const y = Math.round(Math.max(-1, Math.min(1, dy)) * 10) / 10;
       setGaze((g) => (g.x === x && g.y === y ? g : { x, y }));
-    };
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerdown", onMove);
+    });
     return () => {
       clearTimeout(back);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerdown", onMove);
+      stop();
     };
-  }, [follow]);
+  }, [follow, visible]);
 
   useEffect(() => {
-    if (reduced || still || mood === "sleepy") return;
+    if (reduced || still || !visible || mood === "sleepy") return;
     let open: ReturnType<typeof setTimeout>;
     const timer = setInterval(() => {
       setBlink(true);
@@ -110,7 +152,7 @@ export function Pet({ mood = "idle", shape, eyes, drop = !shape, still = false, 
       clearInterval(timer);
       clearTimeout(open);
     };
-  }, [reduced, still, mood]);
+  }, [reduced, still, visible, mood]);
 
   const f = shape && mood === "curious" ? OBJECT_CURIOUS : FACES[mood];
   const g = follow ? gaze : (look ?? { x: 0, y: 0 });
@@ -172,6 +214,7 @@ export function Pet({ mood = "idle", shape, eyes, drop = !shape, still = false, 
       ref={root}
       viewBox="0 0 120 120"
       className={[styles.pet, className].filter(Boolean).join(" ")}
+      style={color ? { color } : undefined}
       data-mood={mood}
       data-shape={shape ? "" : undefined}
       data-still={still || undefined}

@@ -7,6 +7,23 @@ import styles from "./CopyMorph.module.css";
 const COPY = "M44 14h48a14 14 0 0 1 14 14v48H92V28H44z M28 40h44a14 14 0 0 1 14 14v44a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V54a14 14 0 0 1 14-14z";
 const CHECK = "M14 62L30 46L50 66L90 26L106 42L50 98Z";
 
+async function copy(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+    document.body.append(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    area.remove();
+    return ok;
+  }
+}
+
 type Props = {
   text: string;
   label?: string;
@@ -58,11 +75,7 @@ export function CopyMorph({ text, label = "Copy", doneLabel = "Copied", done: fo
         className={styles.button}
         data-done={done}
         onClick={async () => {
-          try {
-            await navigator.clipboard.writeText(text);
-            setCopied(true);
-          } catch {
-          }
+          if (await copy(text)) setCopied(true);
         }}
       >
         <span className={styles.inner}>

@@ -145,21 +145,25 @@ test("pieces on the wall can be played with", async ({ page }) => {
   await walk(page);
   const sw = page.getByRole("switch", { name: "Notifications" }).first();
   await sw.scrollIntoViewIfNeeded();
-  await sw.hover();
+  await sw.click();
   const before = await sw.getAttribute("aria-checked");
   await sw.click();
   await expect(sw).not.toHaveAttribute("aria-checked", before ?? "");
 });
 
-test("pieces move on their own and stop when touched", async ({ page }) => {
+test("pieces move on their own, pause when touched and carry on after", async ({ page }) => {
   await page.goto("/components/spring-switch");
   const sw = page.getByRole("switch", { name: "Notifications" }).first();
   const first = await sw.getAttribute("aria-checked");
   await expect.poll(() => sw.getAttribute("aria-checked"), { timeout: 4000 }).not.toBe(first);
   await sw.hover();
+  const hovered = await sw.getAttribute("aria-checked");
+  await expect.poll(() => sw.getAttribute("aria-checked"), { timeout: 4000 }).not.toBe(hovered);
+  await sw.click();
   const held = await sw.getAttribute("aria-checked");
   await page.waitForTimeout(2500);
   expect(await sw.getAttribute("aria-checked")).toBe(held);
+  await expect.poll(() => sw.getAttribute("aria-checked"), { timeout: 8000 }).not.toBe(held);
 });
 
 test("the recording page shows one piece alone", async ({ page }) => {

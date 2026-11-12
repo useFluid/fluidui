@@ -100,6 +100,11 @@ export const dictionaries = {
       galleryText: "Click any of them and it flows into another object. Each one is a single outline, so any of them can become any other.",
       next: "Click to turn it into another one",
       use: "Use it",
+      colour: "Colour",
+      own: "Its own",
+      pick: "Pick any colour",
+      colourTitle: "Change the colour",
+      colourText: "Pass any CSS colour to color: a hex, an oklch() or a variable from your theme. The change is animated, so you can tie it to state, like green when a payment goes through. Pet and Bot take the same prop. Without it, they wear --fluid-accent, so changing that one variable recolours all of them. The eyes are holes in the shape and show the background behind them.",
     },
     prompts: { title: "Prompts", lead: "Every piece has a ready request to paste into your agent, which adapts it to your project." },
     docs: {
@@ -214,6 +219,11 @@ export const dictionaries = {
       galleryText: "Clique em qualquer um e ele flui para outro objeto. Cada um é um único contorno, então qualquer um vira qualquer outro.",
       next: "Clique para transformar em outro",
       use: "Como usar",
+      colour: "Cor",
+      own: "A dele",
+      pick: "Escolher qualquer cor",
+      colourTitle: "Mudar a cor",
+      colourText: "Passe qualquer cor CSS em color: um hex, um oklch() ou uma variável do seu tema. A troca é animada, então dá para ligar ao estado, como verde quando um pagamento passa. Pet e Bot aceitam a mesma prop. Sem ela, eles usam --fluid-accent, então mudar essa única variável muda a cor de todos. Os olhos são furos na forma e mostram o fundo atrás deles.",
     },
     prompts: { title: "Prompts", lead: "Cada peça tem um pedido pronto para colar no seu agente, que adapta tudo ao seu projeto." },
     docs: {

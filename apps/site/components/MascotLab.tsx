@@ -9,6 +9,7 @@ import { useLang } from "./LangProvider";
 import styles from "./MascotLab.module.css";
 
 const MOODS: Mood[] = ["idle", "happy", "curious", "surprised", "sleepy"];
+const SWATCHES = ["#ff5a1f", "#e11d48", "#7c3aed", "#0ea5e9", "#16a34a", "#11100f"];
 
 export function MascotGenerator() {
   const { lang, t } = useLang();
@@ -16,6 +17,7 @@ export function MascotGenerator() {
   const [text, setText] = useState("");
   const [object, setObject] = useState(objects[0]);
   const [mood, setMood] = useState<Mood>("idle");
+  const [color, setColor] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!text.trim()) return;
@@ -47,7 +49,7 @@ export function MascotGenerator() {
             setMood("happy");
           }}
         >
-          <Mascot object={object} mood={mood} follow />
+          <Mascot object={object} mood={mood} color={color} follow />
         </button>
         <p className={styles.name} aria-live="polite">{object.name[lang]}</p>
       </div>
@@ -78,6 +80,28 @@ export function MascotGenerator() {
           onChange={setMood}
           options={MOODS.map((value) => ({ value, label: m.moods[value] }))}
         />
+        <fieldset className={styles.colours}>
+          <legend className={styles.try}>{m.colour}</legend>
+          <button type="button" className={styles.chip} aria-pressed={!color} onClick={() => setColor(undefined)}>
+            <span className={styles.dot} style={{ background: object.color }} />
+            {m.own}
+          </button>
+          {SWATCHES.map((swatch) => (
+            <button
+              key={swatch}
+              type="button"
+              className={styles.swatch}
+              style={{ background: swatch }}
+              aria-label={swatch}
+              aria-pressed={color === swatch}
+              onClick={() => setColor(swatch)}
+            />
+          ))}
+          <label className={styles.picker} style={{ background: color && !SWATCHES.includes(color) ? color : undefined }}>
+            <span className={styles.srOnly}>{m.pick}</span>
+            <input type="color" value={color ?? object.color} onChange={(e) => setColor(e.target.value)} />
+          </label>
+        </fieldset>
       </div>
     </section>
   );
