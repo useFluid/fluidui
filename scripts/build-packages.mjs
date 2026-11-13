@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const VERSION = "0.1.0";
+const VERSION = process.env.FLUID_VERSION || "0.1.0";
 const links = (directory) => ({
   homepage: "https://fluidui.willradoux.com",
   repository: { type: "git", url: "git+https://github.com/willradoux/fluidui.git", directory },
