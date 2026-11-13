@@ -56,7 +56,10 @@ export function SplashDots({ logo, name, as: Name = "p", play = true, finished =
             className={styles.dot}
             style={{
               transform: step === 0 ? `translate(${dot.sx}px, ${dot.sy}px)` : `translate(${dot.x}px, ${dot.y}px)`,
-              transition: `transform ${fly.duration}ms ${fly.easing} ${dot.delay}ms, opacity 300ms ease`,
+              transitionProperty: "transform, opacity",
+              transitionDuration: `${fly.duration}ms, 300ms`,
+              transitionDelay: `${dot.delay}ms, 0ms`,
+              transitionTimingFunction: `${fly.easing}, ease`,
             }}
           />
         ))}

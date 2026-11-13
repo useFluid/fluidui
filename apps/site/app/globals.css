@@ -232,3 +232,12 @@ html[data-locked] {
     transition-delay: 0ms !important;
   }
 }
+
+[data-stage] {
+  --theme-accent: var(--accent-light);
+  --theme-on-accent: var(--on-accent-light);
+}
+[data-theme="dark"] [data-stage] {
+  --theme-accent: var(--accent-dark);
+  --theme-on-accent: var(--on-accent-dark);
+}

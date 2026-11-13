@@ -5,7 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { type Lang, swapLang } from "@/lib/i18n";
 import { useLang } from "./LangProvider";
 
-type Doc = Document & { startViewTransition?: (o: { update: () => Promise<void>; types: string[] }) => unknown };
+type Update = () => Promise<void>;
+type Doc = Document & { startViewTransition?: (o: Update | { update: Update; types: string[] }) => unknown };
+
+const typed = () => typeof ViewTransition !== "undefined" && "types" in ViewTransition.prototype;
 
 function languageIs(code: string) {
   return new Promise<void>((resolve) => {
@@ -34,13 +37,15 @@ export function LangSwitch() {
         const go = () => router.push(swapLang(path, next as Lang), { scroll: false, transitionTypes: ["lang"] });
         const doc = document as Doc;
         if (!doc.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) return go();
-        doc.startViewTransition({
-          types: ["lang"],
-          update: () => {
-            go();
-            return languageIs(next === "pt" ? "pt-BR" : "en");
-          },
-        });
+        const update = () => {
+          go();
+          return languageIs(next === "pt" ? "pt-BR" : "en");
+        };
+        try {
+          doc.startViewTransition(typed() ? { types: ["lang"], update } : update);
+        } catch {
+          go();
+        }
       }}
       options={[
         { value: "en", label: "EN", ariaLabel: "English" },

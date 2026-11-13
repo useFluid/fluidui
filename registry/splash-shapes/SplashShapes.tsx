@@ -88,7 +88,7 @@ export function SplashShapes({
           className={styles.slot}
           style={{
             transform: stage === "shapes" ? `translateY(${offset}px) scale(1.35)` : "none",
-            transition: placed ? `transform ${rise.duration}ms ${rise.easing}` : "none",
+            ...(placed ? rise.transition("transform") : { transitionProperty: "none" }),
           }}
         >
           <svg viewBox="-8 -8 136 136" aria-hidden>

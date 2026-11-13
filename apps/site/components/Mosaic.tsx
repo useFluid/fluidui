@@ -42,8 +42,12 @@ export function paintVars(paint: Paint | "white", brand: Brand): Record<string, 
       return set("#6fc4fd", "#11100f", accent, onAccent, "#ffffff");
     case "white":
       return {
-        ...set("var(--surface)", "var(--text)", `light-dark(${accent}, ${onDark})`, `light-dark(${onAccent}, #11100f)`, "transparent"),
+        ...set("var(--surface)", "var(--text)", "var(--theme-accent)", "var(--theme-on-accent)", "transparent"),
         "--fluid-text-2": "var(--text-2)",
+        "--accent-light": accent,
+        "--accent-dark": onDark,
+        "--on-accent-light": onAccent,
+        "--on-accent-dark": "#11100f",
       };
   }
 }

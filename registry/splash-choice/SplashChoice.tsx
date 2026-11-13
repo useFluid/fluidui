@@ -95,7 +95,7 @@ export function SplashChoice({
           className={styles.slot}
           style={{
             transform: risen ? "none" : `translateY(${offset}px) scale(1.3)`,
-            transition: placed ? `transform ${rise.duration}ms ${rise.easing}` : "none",
+            ...(placed ? rise.transition("transform") : { transitionProperty: "none" }),
           }}
         >
           <svg viewBox="-8 -8 136 136" aria-hidden>

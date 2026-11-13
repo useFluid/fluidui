@@ -90,5 +90,18 @@ export function springCss(config: SpringConfig = springs.snappy, samples = 40) {
     stops.push(replay.value.toFixed(4));
   }
   stops.push("1");
-  return { easing: `linear(${stops.join(", ")})`, duration: Math.round(t * 1000) };
+  const easing = `linear(${stops.join(", ")})`;
+  const duration = Math.round(t * 1000);
+  return {
+    easing,
+    duration,
+    transition(property: string, delay = 0) {
+      return {
+        transitionProperty: property,
+        transitionDuration: `${duration}ms`,
+        transitionDelay: `${delay}ms`,
+        transitionTimingFunction: easing,
+      };
+    },
+  };
 }

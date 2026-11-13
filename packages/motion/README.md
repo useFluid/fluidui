@@ -22,7 +22,7 @@ play((dt) => {
 });
 ```
 
-Presets: `springs.snappy`, `springs.soft`, `springs.bouncy`, `springs.firm`. `springCss(config)` turns a spring into a CSS `linear()` easing and its duration, for cheap transitions.
+Presets: `springs.snappy`, `springs.soft`, `springs.bouncy`, `springs.firm`. `springCss(config)` turns a spring into a CSS `linear()` easing and its duration, for cheap transitions. Its `transition(property, delay)` returns the transition as separate properties, so a browser without `linear()` (Safari before 17.2) only drops the curve and still animates: `style={{ transform, ...rise.transition("transform") }}`.
 
 ## Metamorph
 
