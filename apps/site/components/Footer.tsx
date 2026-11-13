@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { type Lang, both, dictionaries, href } from "@/lib/i18n";
+import { REPO_URL } from "@/lib/site";
 import { SameWidth } from "./SameWidth";
 import { BigMark } from "./BigMark";
 import { CopyButton } from "./CopyButton";
@@ -17,6 +18,7 @@ export function Footer({ lang }: { lang: Lang }) {
         [t.nav.splash, "/splash"],
         [t.nav.prompts, "/prompts"],
         [t.nav.docs, "/docs"],
+        ["GitHub", REPO_URL],
       ],
     },
     {
@@ -49,7 +51,7 @@ export function Footer({ lang }: { lang: Lang }) {
               <p className={styles.colTitle}>{col.title}</p>
               <ul>
                 {col.links.map(([label, path]) => (
-                  <li key={path}><Link href={href(lang, path)}>{label}</Link></li>
+                  <li key={path}>{path.startsWith("http") ? <a href={path}>{label}</a> : <Link href={href(lang, path)}>{label}</Link>}</li>
                 ))}
               </ul>
             </div>

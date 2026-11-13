@@ -1,3 +1,4 @@
+import { REPO } from "@/lib/site";
 import { catalog } from "@usefluid/registry";
 import Link from "next/link";
 import { BigMark } from "@/components/BigMark";
@@ -50,7 +51,7 @@ const VIDEO_CODE = `npx @usefluid/cli record http://localhost:3000/intro --forma
 npx @usefluid/cli record http://localhost:3000/pet --format square --seconds 4`;
 
 const INSTALL = "npm i @usefluid/motion";
-const SKILLS = "npx skills@latest add willradoux/Fluid-UI";
+const SKILLS = `npx skills@latest add ${REPO}`;
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const lang = (await params).lang as Lang;

@@ -17,8 +17,8 @@ Start with `fluid-brand`: the others use what it sets up.
 ## Install
 
 ```bash
-npx skills@latest add willradoux/Fluid-UI
-npx skills@latest add willradoux/Fluid-UI --skill fluid-splash
+npx skills@latest add willradoux/fluidui
+npx skills@latest add willradoux/fluidui --skill fluid-splash
 ```
 
 Or copy a skill folder into `.claude/skills/` in your project.

@@ -5,6 +5,11 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const VERSION = "0.1.0";
+const links = (directory) => ({
+  homepage: "https://fluidui.willradoux.com",
+  repository: { type: "git", url: "git+https://github.com/willradoux/fluidui.git", directory },
+  bugs: { url: "https://github.com/willradoux/fluidui/issues" },
+});
 const node = (script, args, cwd = root) => execFileSync(process.execPath, [script, ...args], { cwd, stdio: "inherit" });
 const tsc = join(root, "node_modules", "typescript", "bin", "tsc");
 const npm = [join(dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js"), join(dirname(process.execPath), "..", "lib", "node_modules", "npm", "bin", "npm-cli.js")].find(existsSync);
@@ -49,6 +54,7 @@ writeFileSync(
       peerDependencies: { react: ">=18" },
       peerDependenciesMeta: { react: { optional: true } },
       keywords: ["animation", "spring", "morph", "svg", "react", "motion", "logo"],
+      ...links("packages/motion"),
     },
     null,
     2,
@@ -96,6 +102,7 @@ writeFileSync(
       peerDependencies: { "playwright-core": ">=1.45" },
       peerDependenciesMeta: { "playwright-core": { optional: true } },
       keywords: ["animation", "components", "cli", "react", "motion"],
+      ...links("packages/cli"),
     },
     null,
     2,

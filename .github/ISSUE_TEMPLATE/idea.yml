@@ -1,0 +1,16 @@
+name: Idea
+description: A new piece, a new option for an existing one, or a better way to do something.
+labels: [idea]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What it is and where you would use it. A link to a reference or a sketch helps.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it belongs in Fluid
+      description: What it would do that the current pieces do not.

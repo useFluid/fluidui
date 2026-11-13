@@ -9,6 +9,7 @@ import { Header } from "@/components/Header";
 import { LangProvider } from "@/components/LangProvider";
 import { PieceDialogProvider } from "@/components/PieceDialog";
 import { dictionaries, isLang, langs } from "@/lib/i18n";
+import { SITE_URL } from "@/lib/site";
 
 const sans = Inter_Tight({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap", preload: false });
@@ -24,9 +25,17 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const t = dictionaries[isLang(lang) ? lang : "en"];
   return {
+    metadataBase: new URL(SITE_URL),
     title: { default: t.meta.title, template: "%s · Fluid" },
     description: t.meta.description,
-    alternates: { languages: { en: "/", pt: "/pt" } },
+    openGraph: {
+      type: "website",
+      siteName: "Fluid",
+      title: t.meta.title,
+      description: t.meta.description,
+      locale: lang === "pt" ? "pt_BR" : "en_US",
+    },
+    twitter: { card: "summary_large_image", title: t.meta.title, description: t.meta.description },
   };
 }
 

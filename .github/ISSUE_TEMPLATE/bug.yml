@@ -1,0 +1,31 @@
+name: Bug
+description: Something in a piece, the engine, the CLI or a skill does not work as it should.
+labels: [bug]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: The piece, package or skill, for example Morph Dialog, @usefluid/motion or fluid-splash.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+      description: What you did, what you expected and what happened instead. A screenshot or a short video helps a lot with motion.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: Safari 18 on iPhone 15, Chrome 140 on Windows
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Code
+      description: The smallest snippet that shows the problem, if you have one.
+      render: tsx

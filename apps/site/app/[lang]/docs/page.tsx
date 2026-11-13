@@ -1,3 +1,4 @@
+import { REPO } from "@/lib/site";
 import type { Metadata } from "next";
 import { CodeBlock } from "@/components/CodeBlock";
 import { highlight } from "@/lib/highlight";
@@ -21,7 +22,7 @@ const USE = `import { MorphButton } from "@/components/fluid/morph-button/MorphB
 const VIDEO = `npm i -D playwright-core
 npx @usefluid/cli record http://localhost:3000/intro --format story --seconds 8`;
 
-const SKILLS = `npx skills@latest add willradoux/Fluid-UI`;
+const SKILLS = `npx skills@latest add ${REPO}`;
 
 export default async function Docs({ params }: { params: Promise<{ lang: string }> }) {
   const lang = (await params).lang as Lang;
