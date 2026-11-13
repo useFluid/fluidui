@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "npm run dev -w @usefluid/site",
     "build": "npm run build -w @usefluid/site",
-    "start": "npm run start -w @usefluid/site",
     "typecheck": "tsc --noEmit -p packages/motion && tsc --noEmit -p apps/site",
     "test": "vitest run",
     "test:e2e": "npm run test:e2e -w @usefluid/site",

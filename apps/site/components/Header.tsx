@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { type Lang, dictionaries, href } from "@/lib/i18n";
+import { GitHubLink } from "./GitHubLink";
 import { LangSwitch } from "./LangSwitch";
 import { Mark } from "./Mark";
 import { NavLinks } from "./NavLinks";
@@ -23,6 +24,7 @@ export function Header({ lang }: { lang: Lang }) {
               <LangSwitch />
               <ThemeSwitch />
             </div>
+            <GitHubLink label={t.nav.github} />
             <Link href={href(lang, "/docs")} className={styles.cta}><SameWidth lang={lang} texts={{ en: dictionaries.en.nav.start, pt: dictionaries.pt.nav.start }} /></Link>
           </div>
         </div>

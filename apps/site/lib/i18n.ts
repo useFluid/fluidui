@@ -21,6 +21,7 @@ export const dictionaries = {
     },
     skip: "Skip to content",
     nav: {
+      github: "Fluid on GitHub",
       label: "Main",
       home: "Fluid, home",
       components: "Components",
@@ -220,6 +221,7 @@ export const dictionaries = {
     },
     skip: "Pular para o conteúdo",
     nav: {
+      github: "Fluid no GitHub",
       label: "Principal",
       home: "Fluid, início",
       components: "Componentes",
