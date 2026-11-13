@@ -191,7 +191,7 @@ export const dictionaries = {
     docs: {
       title: "Docs",
       lead: "From an empty project to your brand in motion, in four commands.",
-      status: "The packages are not on npm yet. The commands below are the ones that will work at launch.",
+      status: "Both packages are on npm: @usefluid/motion, the engine, and @usefluid/cli, which copies the pieces.",
       installTitle: "1. Install",
       installText: "The engine is the only runtime dependency. The CLI copies pieces into your project, so they are your code from then on.",
       themeTitle: "2. Your brand in ten variables",
@@ -391,7 +391,7 @@ export const dictionaries = {
     docs: {
       title: "Docs",
       lead: "De um projeto vazio à sua marca em movimento, em quatro comandos.",
-      status: "Os pacotes ainda não estão no npm. Os comandos abaixo são os que vão funcionar no lançamento.",
+      status: "Os dois pacotes estão no npm: @usefluid/motion, o motor, e @usefluid/cli, que copia as peças.",
       installTitle: "1. Instalar",
       installText: "O motor é a única dependência. A CLI copia as peças para o seu projeto, e daí em diante o código é seu.",
       themeTitle: "2. A sua marca em dez variáveis",
