@@ -1,10 +1,15 @@
 {
   "name": "fluid-monorepo",
   "private": true,
-  "workspaces": ["apps/*", "packages/*", "registry"],
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "registry"
+  ],
   "scripts": {
     "dev": "npm run dev -w @usefluid/site",
     "build": "npm run build -w @usefluid/site",
+    "start": "npm run start -w @usefluid/site",
     "typecheck": "tsc --noEmit -p packages/motion && tsc --noEmit -p apps/site",
     "test": "vitest run",
     "test:e2e": "npm run test:e2e -w @usefluid/site",
@@ -16,5 +21,8 @@
     "playwright-core": "^1.64.1",
     "typescript": "7.0.2",
     "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
