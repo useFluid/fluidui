@@ -2,7 +2,7 @@
 
 **Your brand, in motion.** Open-source motion for React, built on one idea: outlines that flow on real springs. Shapes become your logo, pills flow between options, words come out of a blur, and windows grow out of the card that opened them. Every piece wears your logo, colours and font.
 
-[Site](https://fluidui.willradoux.com) · [Components](https://fluidui.willradoux.com/components) · [Mascots](https://fluidui.willradoux.com/mascots) · [Docs](https://fluidui.willradoux.com/docs)
+[Documentation](https://fluidui.willradoux.com/docs) · [Components](https://fluidui.willradoux.com/components) · [Mascots](https://fluidui.willradoux.com/mascots) · [Changelog](CHANGELOG.md)
 
 [![CI](https://github.com/willradoux/fluidui/actions/workflows/ci.yml/badge.svg)](https://github.com/willradoux/fluidui/actions/workflows/ci.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-black)](LICENSE)
@@ -89,6 +89,8 @@ npx skills@latest add willradoux/fluidui
 
 They only start when the project uses Fluid or you ask for it by name. More in [skills](skills/README.md).
 
+Agents can also read the docs directly: every piece page is plain Markdown with `.md` at the end of its address, and [llms.txt](https://fluidui.willradoux.com/llms.txt) lists them all.
+
 ## Repository
 
 ```
@@ -123,7 +125,7 @@ node scripts/build-packages.mjs
 | `new` | A new piece with its component, demo and README |
 | `build-packages` | Builds the engine and the CLI into `dist/` and packs them into `pack/` |
 
-See [CONTRIBUTING](CONTRIBUTING.md) for what every piece needs.
+See [CONTRIBUTING](CONTRIBUTING.md) for what every piece needs, and the [code of conduct](CODE_OF_CONDUCT.md). Security problems go through [SECURITY](SECURITY.md).
 
 ## License
 

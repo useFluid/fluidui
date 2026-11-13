@@ -102,7 +102,11 @@
   }
   .all {
     justify-content: space-between;
+    margin-top: var(--space-4);
     background: var(--surface-2);
+  }
+  .group:first-child {
+    margin-top: 0;
   }
   .link:hover {
     transform: translateX(3px);

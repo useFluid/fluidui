@@ -8,3 +8,6 @@
 .same > [data-off] {
   visibility: hidden;
 }
+.same[data-start] {
+  justify-items: start;
+}

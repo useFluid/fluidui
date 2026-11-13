@@ -17,7 +17,7 @@ import { SpringButton } from "./SpringButton";
 |---|---|---|---|
 | variant | "solid" \| "quiet" | "solid" | Main or secondary action. |
 | pressed | boolean |  | Show it held down, for showcases. |
-| ...button props |  |  |  |
+| ...button props | ButtonHTMLAttributes |  | Everything a native button takes: onClick, type, disabled, aria-*. |
 
 ## Keyboard and screen readers
 

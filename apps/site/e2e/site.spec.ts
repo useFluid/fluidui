@@ -4,7 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { type Page, expect, test } from "@playwright/test";
 
 const SLUGS = [...readFileSync(path.join(__dirname, "../../../registry/index.ts"), "utf8").matchAll(/slug: "([a-z-]+)"/g)].map((m) => m[1]);
-const PAGES = ["/", "/components", "/mascots", "/splash", "/prompts", "/docs"];
+const PAGES = ["/", "/components", "/mascots", "/splash", "/prompts", "/docs", "/docs/installation", "/docs/cli", "/docs/engine", "/docs/contributing"];
 const PT_PAGES = PAGES.map((p) => (p === "/" ? "/pt" : `/pt${p}`));
 
 function watchErrors(page: Page) {
@@ -211,8 +211,37 @@ test("the pages work without JavaScript", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("/components/splash-shapes");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Splash Shapes");
-  await expect(page.locator("main")).toContainText("Example");
+  await expect(page.getByRole("heading", { name: "Usage" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "API reference" })).toBeVisible();
   await context.close();
+});
+
+test("a piece page documents installation, usage and every prop", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/components/morph-dialog");
+  await expect(page.getByRole("tab", { name: "Command" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByText("npx @usefluid/cli add morph-dialog")).toBeVisible();
+  await page.getByRole("tab", { name: "pnpm" }).click();
+  await expect(page.getByText("pnpm dlx @usefluid/cli add morph-dialog")).toBeVisible();
+  await page.getByRole("tab", { name: "Manual" }).click();
+  await expect(page.getByText("components/fluid/morph-dialog/MorphDialog.tsx")).toBeVisible();
+  const api = page.getByRole("table");
+  for (const prop of ["open", "onClose", "from", "labelledBy", "contained"]) await expect(api.getByRole("cell", { name: prop, exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "View code" }).click();
+  await expect(page.getByText("demo.tsx")).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "On this page" }).getByRole("link", { name: "API reference" })).toHaveAttribute("href", "#api");
+});
+
+test("the docs read as Markdown for agents", async ({ request }) => {
+  const md = await request.get("/components/morph-dialog.md");
+  expect(md.headers()["content-type"]).toContain("text/markdown");
+  const text = await md.text();
+  expect(text).toContain("# Morph Dialog");
+  expect(text).toContain("npx @usefluid/cli add morph-dialog");
+  expect(text).toContain("| labelledBy |");
+  const llms = await (await request.get("/llms.txt")).text();
+  expect(llms).toContain("/components/mascot.md");
+  expect(llms).toContain("/docs/installation");
 });
 
 test("copy buttons copy", async ({ page, context, baseURL }) => {

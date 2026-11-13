@@ -1,0 +1,28 @@
+.wrap {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: 500 14px/1 var(--font-sans), sans-serif;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .button:hover {
+    background: color-mix(in srgb, var(--text) 12%, transparent);
+  }
+}
+.button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
