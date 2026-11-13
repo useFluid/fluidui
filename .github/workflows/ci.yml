@@ -5,8 +5,13 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
+    name: Types, tests and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -19,3 +24,26 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: node scripts/build-packages.mjs
+
+  e2e:
+    name: Site in Edge and WebKit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps msedge webkit
+        working-directory: apps/site
+      - run: npx playwright test
+        working-directory: apps/site
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: apps/site/test-results
+          retention-days: 7
