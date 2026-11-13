@@ -5,7 +5,7 @@ Thanks for helping. Bug reports, new pieces and fixes to the docs are all welcom
 ## Setup
 
 ```bash
-git clone https://github.com/willradoux/fluidui.git
+git clone https://github.com/useFluid/fluidui.git
 cd fluidui
 npm install
 npm run dev

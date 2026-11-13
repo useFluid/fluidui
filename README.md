@@ -4,7 +4,7 @@
 
 [Documentation](https://fluidui.willradoux.com/docs) · [Components](https://fluidui.willradoux.com/components) · [Mascots](https://fluidui.willradoux.com/mascots) · [Changelog](CHANGELOG.md)
 
-[![CI](https://github.com/willradoux/fluidui/actions/workflows/ci.yml/badge.svg)](https://github.com/willradoux/fluidui/actions/workflows/ci.yml)
+[![CI](https://github.com/useFluid/fluidui/actions/workflows/ci.yml/badge.svg)](https://github.com/useFluid/fluidui/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@usefluid/motion?label=%40usefluid%2Fmotion&color=black)](https://www.npmjs.com/package/@usefluid/motion)
 [![MIT License](https://img.shields.io/badge/license-MIT-black)](LICENSE)
 
@@ -73,7 +73,7 @@ Full API: [packages/motion](packages/motion/README.md) and [packages/cli](packag
 ## Agent skills
 
 ```bash
-npx skills@latest add willradoux/fluidui
+npx skills@latest add useFluid/fluidui
 ```
 
 | Skill | For |

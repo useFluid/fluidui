@@ -7,8 +7,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const VERSION = process.env.FLUID_VERSION || "0.1.0";
 const links = (directory) => ({
   homepage: "https://fluidui.willradoux.com",
-  repository: { type: "git", url: "git+https://github.com/willradoux/fluidui.git", directory },
-  bugs: { url: "https://github.com/willradoux/fluidui/issues" },
+  repository: { type: "git", url: "git+https://github.com/useFluid/fluidui.git", directory },
+  bugs: { url: "https://github.com/useFluid/fluidui/issues" },
 });
 const node = (script, args, cwd = root) => execFileSync(process.execPath, [script, ...args], { cwd, stdio: "inherit" });
 const tsc = join(root, "node_modules", "typescript", "bin", "tsc");
