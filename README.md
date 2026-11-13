@@ -5,6 +5,7 @@
 [Documentation](https://fluidui.willradoux.com/docs) · [Components](https://fluidui.willradoux.com/components) · [Mascots](https://fluidui.willradoux.com/mascots) · [Changelog](CHANGELOG.md)
 
 [![CI](https://github.com/willradoux/fluidui/actions/workflows/ci.yml/badge.svg)](https://github.com/willradoux/fluidui/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@usefluid/motion?label=%40usefluid%2Fmotion&color=black)](https://www.npmjs.com/package/@usefluid/motion)
 [![MIT License](https://img.shields.io/badge/license-MIT-black)](LICENSE)
 
 ![Fluid pieces playing on the site](.github/assets/preview.gif)
@@ -14,8 +15,6 @@ Fluid has three parts:
 - **An engine**, `@usefluid/motion`: closed-form springs and **Metamorph**, contour morphing between any two shapes or logos. No dependencies.
 - **Pieces** you copy into your project with the CLI: openings, controls, characters, text and transitions, all made with the engine.
 - **Agent skills** that teach your coding agent to set up your brand, pick and adapt pieces, build new ones and record them as video.
-
-> The packages are not on npm yet. Everything below runs from this repository.
 
 ## Pieces
 
