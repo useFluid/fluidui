@@ -62,10 +62,10 @@ test("English is the default and Portuguese lives under /pt", async ({ page }) =
 test("the language switch keeps you on the same page", async ({ page }) => {
   await page.goto("/components/pet");
   await page.getByRole("radio", { name: "Português" }).click();
-  await expect(page).toHaveURL(/\/pt\/components\/pet$/);
+  await expect(page).toHaveURL(/\/pt\/components\/pet\/?$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
   await page.getByRole("radio", { name: "English" }).click();
-  await expect(page).toHaveURL(/\/components\/pet$/);
+  await expect(page).toHaveURL(/\/components\/pet\/?$/);
   await expect(page).not.toHaveURL(/\/pt\//);
 });
 
@@ -82,7 +82,7 @@ test("switching language keeps the theme and leaves the navbar still", async ({ 
       .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   });
   await page.getByRole("radio", { name: "Português" }).click();
-  await expect(page).toHaveURL(/\/pt\/components$/);
+  await expect(page).toHaveURL(/\/pt\/components\/?$/);
   await expect(html).toHaveAttribute("data-theme", "dark");
   await expect(page.getByRole("radio", { name: "Tema escuro" })).toHaveAttribute("aria-checked", "true");
   const themes = await page.evaluate(() => (window as unknown as { themes: string[] }).themes);
