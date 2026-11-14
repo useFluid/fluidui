@@ -14,26 +14,44 @@
   color: var(--text-body);
   line-height: 1.5;
 }
-.field {
-  display: block;
+.controls {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
   margin-top: var(--space-4);
-  font-size: 14px;
-  font-weight: 500;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.yours {
+  display: grid;
+  grid-template-rows: 0fr;
+  width: min(100%, 420px);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  transform-origin: 0 0;
+}
+.yours[data-open] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: none;
+}
+.clip {
+  min-height: 0;
+  overflow: hidden;
 }
 .input {
-  width: min(100%, 420px);
+  width: 100%;
   height: 48px;
-  margin-top: 8px;
   padding: 0 16px;
   border: 0;
-  border-radius: 14px;
+  border-radius: 999px;
   background: var(--surface-2);
   color: var(--text);
   font: inherit;
 }
 .input:focus-visible {
   outline: 2px solid var(--focus);
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 .pair {
   display: grid;

@@ -255,9 +255,10 @@ test("copy buttons copy", async ({ page, context, baseURL }) => {
 test("the splash page compares a short and a long brand name", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto("/splash");
-  const field = page.getByRole("textbox", { name: "Long name" });
-  await field.fill("Supercalifragilistic Expialidocious Ltd");
-  await field.scrollIntoViewIfNeeded();
-  await expect(page.getByText("Long · 39 characters")).toBeVisible();
+  await page.getByRole("radio", { name: "Very long" }).click();
+  await expect(page.getByText("Padaria e Confeitaria Dona Maria · 32 characters")).toBeVisible();
+  await page.getByRole("radio", { name: "Yours" }).click();
+  await page.getByRole("textbox", { name: "Type your brand's name" }).fill("Supercalifragilistic Expialidocious Ltd");
+  await expect(page.getByText("Supercalifragilistic Expialidocious Ltd · 39 characters")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
