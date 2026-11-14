@@ -18,7 +18,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npx next start -H 127.0.0.1 -p 3200",
+    command: "node ../../scripts/serve-static.mjs out",
     url: "http://127.0.0.1:3200",
     reuseExistingServer: !ci,
     timeout: 60_000,

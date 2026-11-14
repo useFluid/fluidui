@@ -6,12 +6,11 @@ export const langs: Lang[] = ["en", "pt"];
 
 export const href = (lang: Lang, path: string) => (lang === "en" ? path : path === "/" ? "/pt" : `/pt${path}`);
 
-export const visiblePath = (pathname: string, lang: Lang) => href(lang, pathname.replace(/^\/(pt|en)(?=\/|$)/, "") || "/");
+const bare = (pathname: string) => pathname.replace(/^\/(pt|en)(?=\/|$)/, "").replace(/\/+$/, "") || "/";
 
-export const swapLang = (pathname: string, to: Lang) => {
-  const bare = pathname.replace(/^\/(pt|en)(?=\/|$)/, "") || "/";
-  return href(to, bare);
-};
+export const visiblePath = (pathname: string, lang: Lang) => href(lang, bare(pathname));
+
+export const swapLang = (pathname: string, to: Lang) => href(to, bare(pathname));
 
 export const dictionaries = {
   en: {
