@@ -30,4 +30,6 @@ The name is read as text. Reduced motion shows the final screen.
 
 It fills the screen by default; set `--fluid-splash-height` to fit it in a box.
 
+The name scales with its length, so a long name stays on one or two centred lines. It is never smaller than 20 px.
+
 Every colour comes from the `--fluid-*` variables, and the piece is yours to change.

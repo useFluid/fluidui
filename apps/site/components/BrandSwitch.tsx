@@ -25,7 +25,7 @@ const icon = (d: string) => (
 );
 
 export function BrandSwitch() {
-  const { brandId, custom, select, setCustom } = useBrand();
+  const { brandId, custom, name, select, setCustom, setName } = useBrand();
   const { t } = useLang();
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState("#d6336c");
@@ -91,6 +91,17 @@ export function BrandSwitch() {
         <div className={styles.panel} role="group" aria-label={t.brand.add}>
           <p className={styles.panelTitle}>{t.brand.title}</p>
           <p className={styles.panelText}>{t.brand.text}</p>
+          <label className={styles.field}>
+            <span>{t.brand.name}</span>
+            <input
+              type="text"
+              className={styles.text}
+              value={name}
+              maxLength={40}
+              placeholder={t.brand.namePlaceholder}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </label>
           <label className={styles.field}>
             <span>{t.brand.color}</span>
             <input

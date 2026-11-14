@@ -1,5 +1,6 @@
 import { catalog } from "@usefluid/registry";
 import type { Metadata } from "next";
+import { NameCompare } from "@/components/NameCompare";
 import { Wall } from "@/components/Wall";
 import { type Lang, dictionaries } from "@/lib/i18n";
 import styles from "../inner.module.css";
@@ -16,6 +17,7 @@ export default async function Splash({ params }: { params: Promise<{ lang: strin
       <div className={styles.wide}>
         <Wall headingLevel="h2" lang={lang} entries={catalog.filter((e) => e.category === "Splash")} />
       </div>
+      <NameCompare />
     </div>
   );
 }
