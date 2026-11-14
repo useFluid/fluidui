@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && node ../../scripts/default-language.mjs out",
+    "start": "node ../../scripts/serve-static.mjs out",
     "test:e2e": "playwright test"
   },
   "dependencies": {

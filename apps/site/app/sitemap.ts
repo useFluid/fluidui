@@ -4,6 +4,8 @@ import { SITE_URL } from "@/lib/site";
 
 const PAGES = ["/", "/components", "/mascots", "/splash", "/prompts", "/docs", ...catalog.map((e) => `/components/${e.slug}`)];
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return PAGES.map((path) => ({
     url: `${SITE_URL}${path === "/" ? "" : path}`,
