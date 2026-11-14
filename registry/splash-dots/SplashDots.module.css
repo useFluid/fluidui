@@ -36,11 +36,14 @@
   transition: opacity 380ms ease;
 }
 .name {
+  max-width: 92cqw;
   margin: 0;
   min-height: 1.1em;
   color: var(--fluid-text);
-  font: 600 clamp(26px, 11cqmin, 60px) / 1.1 var(--fluid-font);
+  font: 600 clamp(20px, min(11cqmin, 165cqw / var(--chars, 8)), 60px) / 1.1 var(--fluid-font);
   letter-spacing: -0.04em;
+  text-align: center;
+  text-wrap: balance;
 }
 @media (prefers-reduced-motion: reduce) {
   .dot {

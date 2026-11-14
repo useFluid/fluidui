@@ -2,7 +2,7 @@
 
 import { sampleContours, springCss } from "@usefluid/motion";
 import { useSequence, useSkip } from "@usefluid/motion/react";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { TextReveal } from "../text-reveal/TextReveal";
 import styles from "./SplashDots.module.css";
 
@@ -64,7 +64,7 @@ export function SplashDots({ logo, name, as: Name = "p", play = true, finished =
           />
         ))}
       </svg>
-      <Name className={styles.name}>
+      <Name className={styles.name} style={{ "--chars": Math.max(name.length, 6) } as CSSProperties}>
         {skipped ? name : <TextReveal text={name} play={step >= last} stagger={36} />}
       </Name>
     </div>

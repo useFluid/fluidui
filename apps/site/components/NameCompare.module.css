@@ -1,0 +1,64 @@
+.compare {
+  margin-top: var(--space-7, 96px);
+}
+.title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+.text {
+  max-width: 56ch;
+  margin: var(--space-3) 0 0;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+.field {
+  display: block;
+  margin-top: var(--space-4);
+  font-size: 14px;
+  font-weight: 500;
+}
+.input {
+  width: min(100%, 420px);
+  height: 48px;
+  margin-top: 8px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+}
+.input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.item {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+}
+.item figcaption {
+  color: var(--text-2);
+  font-size: 14px;
+}
+.stage {
+  aspect-ratio: 1;
+}
+@media (max-width: 640px) {
+  .pair {
+    grid-template-columns: 1fr;
+  }
+  .stage {
+    aspect-ratio: 4 / 5;
+  }
+}

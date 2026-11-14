@@ -12,8 +12,10 @@ type Value = {
   brand: Brand;
   brandId: string;
   custom: Custom | null;
+  name: string;
   select(id: string): void;
   setCustom(custom: Custom): void;
+  setName(name: string): void;
 };
 
 const Context = createContext<Value | null>(null);
@@ -41,7 +43,7 @@ function customBrand(custom: Custom): Brand {
   };
 }
 
-function readStored(): { id: string; custom: Custom | null } | null {
+function readStored(): { id: string; custom: Custom | null; name: string } | null {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return null;
@@ -50,7 +52,7 @@ function readStored(): { id: string; custom: Custom | null } | null {
     if (data.custom && /^#[0-9a-f]{6}$/i.test(data.custom.color)) {
       custom = { logo: fitPath(data.custom.logo, 120), color: data.custom.color };
     }
-    return { id: String(data.id), custom };
+    return { id: String(data.id), custom, name: typeof data.name === "string" ? data.name.slice(0, 40) : "" };
   } catch {
     return null;
   }
@@ -59,40 +61,49 @@ function readStored(): { id: string; custom: Custom | null } | null {
 export function BrandProvider({ children }: { children: React.ReactNode }) {
   const [brandId, setBrandId] = useState(brands[0].id);
   const [custom, setCustomState] = useState<Custom | null>(null);
+  const [name, setNameState] = useState("");
 
   useEffect(() => {
     const stored = readStored();
     if (stored) {
       setCustomState(stored.custom);
+      setNameState(stored.name);
       if (stored.id !== CUSTOM_ID || stored.custom) setBrandId(stored.id);
     }
   }, []);
 
-  const persist = useCallback((id: string, c: Custom | null) => {
+  const persist = useCallback((id: string, c: Custom | null, n: string) => {
     try {
-      localStorage.setItem(KEY, JSON.stringify({ id, custom: c }));
+      localStorage.setItem(KEY, JSON.stringify({ id, custom: c, name: n }));
     } catch {
     }
   }, []);
 
   const value = useMemo<Value>(() => {
-    const brand =
+    const base =
       brandId === CUSTOM_ID && custom ? customBrand(custom) : (brands.find((b) => b.id === brandId) ?? brands[0]);
+    const brand = name.trim() ? { ...base, name: name.trim() } : base;
     return {
       brand,
       brandId: brand.id,
       custom,
+      name,
       select(id) {
         setBrandId(id);
-        persist(id, custom);
+        persist(id, custom, name);
       },
       setCustom(next) {
         setCustomState(next);
         setBrandId(CUSTOM_ID);
-        persist(CUSTOM_ID, next);
+        persist(CUSTOM_ID, next, name);
+      },
+      setName(next) {
+        const clean = next.slice(0, 40);
+        setNameState(clean);
+        persist(brandId, custom, clean);
       },
     };
-  }, [brandId, custom, persist]);
+  }, [brandId, custom, name, persist]);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }

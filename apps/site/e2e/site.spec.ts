@@ -114,7 +114,7 @@ test("the navbar marks the current page and switches the theme", async ({ page }
 
 test("your own SVG logo becomes the brand, and a bad file is refused", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Try your own logo" }).click();
+  await page.getByRole("button", { name: "Try your own brand" }).click();
   const input = page.locator('input[type="file"]');
   await input.setInputFiles({ name: "bad.svg", mimeType: "image/svg+xml", buffer: Buffer.from("<svg><script>alert(1)</script></svg>") });
   await expect(page.getByText("This file could not be read")).toBeVisible();
@@ -250,4 +250,14 @@ test("copy buttons copy", async ({ page, context, baseURL }) => {
   await page.getByRole("button", { name: "Copy" }).first().click();
   const text = await page.evaluate(() => navigator.clipboard.readText());
   expect(text).toContain("Fluid library");
+});
+
+test("the splash page compares a short and a long brand name", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto("/splash");
+  const field = page.getByRole("textbox", { name: "Long name" });
+  await field.fill("Supercalifragilistic Expialidocious Ltd");
+  await field.scrollIntoViewIfNeeded();
+  await expect(page.getByText("Long · 39 characters")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
