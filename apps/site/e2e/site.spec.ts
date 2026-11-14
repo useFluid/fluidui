@@ -114,7 +114,7 @@ test("the navbar marks the current page and switches the theme", async ({ page }
 
 test("your own SVG logo becomes the brand, and a bad file is refused", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Try your own logo" }).click();
+  await page.getByRole("button", { name: "Try your own brand" }).click();
   const input = page.locator('input[type="file"]');
   await input.setInputFiles({ name: "bad.svg", mimeType: "image/svg+xml", buffer: Buffer.from("<svg><script>alert(1)</script></svg>") });
   await expect(page.getByText("This file could not be read")).toBeVisible();
