@@ -26,6 +26,7 @@ export function SegmentedPicker<T extends string>({ label, value, onChange, opti
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(el);
+    for (const option of el.querySelectorAll('[role="radio"]')) observer.observe(option);
     return () => observer.disconnect();
   }, [value]);
 
