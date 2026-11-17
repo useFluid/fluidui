@@ -148,7 +148,12 @@
   padding: 1px 5px;
   border-radius: 6px;
   background: var(--surface-2);
-  font: 0.88em ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  font:
+    0.88em ui-monospace,
+    "Cascadia Code",
+    Menlo,
+    Consolas,
+    monospace;
   overflow-wrap: anywhere;
 }
 .status {

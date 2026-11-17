@@ -72,7 +72,9 @@ export function NameCompare() {
   const both = (full: string, short: string): ReactNode => (
     <>
       <span className={styles.full}>{full}</span>
-      <span className={styles.short} aria-hidden>{short}</span>
+      <span className={styles.short} aria-hidden>
+        {short}
+      </span>
     </>
   );
   const options = [
@@ -84,7 +86,9 @@ export function NameCompare() {
       ariaLabel: c.yours,
       label: (
         <span className={styles.slot} data-open={open || undefined} style={spring.transition("width")}>
-          <span className={styles.slotLabel} aria-hidden>{c.yours}</span>
+          <span className={styles.slotLabel} aria-hidden>
+            {c.yours}
+          </span>
         </span>
       ),
     },
@@ -92,11 +96,15 @@ export function NameCompare() {
 
   return (
     <section className={styles.compare} aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`} className={styles.title}>{c.title}</h2>
+      <h2 id={`${id}-title`} className={styles.title}>
+        {c.title}
+      </h2>
       <p className={styles.text}>{c.text}</p>
       <div ref={controls} className={styles.controls} data-open={open || undefined}>
         <SegmentedPicker label={c.label} value={preset} onChange={choose} options={options} />
-        <label className="srOnly" htmlFor={`${id}-name`}>{c.type}</label>
+        <label className="srOnly" htmlFor={`${id}-name`}>
+          {c.type}
+        </label>
         <input
           ref={field}
           id={`${id}-name`}
@@ -115,11 +123,15 @@ export function NameCompare() {
       <div className={styles.pair}>
         <figure className={styles.item}>
           <Stage key={`short-${take}`} slug="splash-dots" brand={brand} className={styles.stage} />
-          <figcaption>{c.short} · {brand.name.length} {c.chars}</figcaption>
+          <figcaption>
+            {c.short} · {brand.name.length} {c.chars}
+          </figcaption>
         </figure>
         <figure className={styles.item}>
           <Stage key={`long-${take}`} slug="splash-dots" brand={named} className={styles.stage} />
-          <figcaption aria-live="polite">{name} · {name.length} {c.chars}</figcaption>
+          <figcaption aria-live="polite">
+            {name} · {name.length} {c.chars}
+          </figcaption>
         </figure>
       </div>
     </section>

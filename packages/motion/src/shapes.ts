@@ -11,8 +11,7 @@ function polar(radius: (a: number) => number) {
   return `${d}Z`;
 }
 
-const squircle = (w: number, h: number, n: number) => (a: number) =>
-  (Math.abs(Math.cos(a) / w) ** n + Math.abs(Math.sin(a) / h) ** n) ** (-1 / n);
+const squircle = (w: number, h: number, n: number) => (a: number) => (Math.abs(Math.cos(a) / w) ** n + Math.abs(Math.sin(a) / h) ** n) ** (-1 / n);
 
 function polygon(sides: number, radius: number, rounding: number) {
   const k = TAU / sides;

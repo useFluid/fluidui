@@ -51,10 +51,14 @@ export function MascotGenerator() {
         >
           <Mascot object={object} mood={mood} color={color} follow />
         </button>
-        <p className={styles.name} aria-live="polite">{object.name[lang]}</p>
+        <p className={styles.name} aria-live="polite">
+          {object.name[lang]}
+        </p>
       </div>
       <div className={styles.controls}>
-        <label className={styles.label} htmlFor="mascot-text">{m.label}</label>
+        <label className={styles.label} htmlFor="mascot-text">
+          {m.label}
+        </label>
         <input
           id="mascot-text"
           className={styles.input}
@@ -74,12 +78,7 @@ export function MascotGenerator() {
             </button>
           ))}
         </div>
-        <SegmentedPicker<Mood>
-          label={m.mood}
-          value={mood}
-          onChange={setMood}
-          options={MOODS.map((value) => ({ value, label: m.moods[value] }))}
-        />
+        <SegmentedPicker<Mood> label={m.mood} value={mood} onChange={setMood} options={MOODS.map((value) => ({ value, label: m.moods[value] }))} />
         <fieldset className={styles.colours}>
           <legend className={styles.try}>{m.colour}</legend>
           <button type="button" className={styles.chip} aria-pressed={!color} onClick={() => setColor(undefined)}>
@@ -133,7 +132,9 @@ function GalleryTile({ start }: { start: number }) {
         <span className={styles.small}>
           <Mascot object={o} mood={happy ? "happy" : "idle"} follow />
         </span>
-        <span className={styles.tileName} aria-live="polite">{o.name[lang]}</span>
+        <span className={styles.tileName} aria-live="polite">
+          {o.name[lang]}
+        </span>
       </button>
     </li>
   );

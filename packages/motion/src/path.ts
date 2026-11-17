@@ -1,17 +1,55 @@
-export type Command =
-  | { c: "M"; x: number; y: number }
-  | { c: "C"; x1: number; y1: number; x2: number; y2: number; x: number; y: number }
-  | { c: "Z" };
+import { FLUID_DEV_ONLY, docsLink } from "./dev.ts";
 
-export class PathError extends Error {}
+export type Command = { c: "M"; x: number; y: number } | { c: "C"; x1: number; y1: number; x2: number; y2: number; x: number; y: number } | { c: "Z" };
+
+export type PathErrorCode =
+  | "FLUID_PATH_START"
+  | "FLUID_PATH_NUMBER"
+  | "FLUID_PATH_FLAG"
+  | "FLUID_PATH_COMMAND"
+  | "FLUID_PATH_CHARACTER"
+  | "FLUID_PATH_EMPTY"
+  | "FLUID_PATH_NO_SIZE"
+  | "FLUID_VIEWBOX";
+
+const isCode = (value: string): value is PathErrorCode => /^FLUID_(PATH_[A-Z_]+|VIEWBOX)$/.test(value);
+
+export class PathError extends Error {
+  readonly code?: PathErrorCode;
+  constructor(code: PathErrorCode, at?: number | string);
+  constructor(message: string);
+  constructor(code: string, at?: number | string) {
+    super(isCode(code) ? `${code}: see ${docsLink(code)}` : code);
+    this.name = "PathError";
+    if (!isCode(code)) return;
+    this.code = code;
+    try {
+      if (process.env.NODE_ENV !== "production") {
+        const where = typeof at === "number" ? ` at position ${at}` : at ? ` ${at}` : "";
+        this.message = `${code}${where}\n${explain(code)}\nMore: ${docsLink(code)}`;
+      }
+    } catch {}
+  }
+}
+
+function explain(code: PathErrorCode) {
+  const help: Record<PathErrorCode, string> = {
+    FLUID_PATH_START: 'An SVG path has to begin with a move command. Fix: start the d attribute with M, for example "M10 10L20 20".',
+    FLUID_PATH_NUMBER: "A command is missing a number. Fix: check the path was copied whole; every command needs all its coordinates.",
+    FLUID_PATH_FLAG: "Arc commands need two flags that are 0 or 1. Fix: re-export the SVG from your editor, or convert arcs to curves.",
+    FLUID_PATH_COMMAND: "This letter is not an SVG path command. Fix: pass only the d attribute of a <path>, not the whole SVG markup.",
+    FLUID_PATH_CHARACTER: "There is a value where no command expects one. Fix: pass only the d attribute of a <path>, without extra text.",
+    FLUID_PATH_EMPTY: "The path has commands but draws no line or curve. Fix: pass a shape with at least one segment.",
+    FLUID_PATH_NO_SIZE: "The path has no width or height, so it cannot be fitted. Fix: pass a shape with an area, not a single point.",
+    FLUID_VIEWBOX: 'The box must be a positive number or a viewBox string "minX minY width height". Fix: scalePath(icon, 24) or scalePath(icon, "0 0 24 24").',
+  };
+  return `${help[code]}${help[FLUID_DEV_ONLY as PathErrorCode] ?? ""}`;
+}
 
 const NUMBER = /[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/y;
 const KNOWN = "MLHVCSQTAZ";
 
-function arcToCubics(
-  x0: number, y0: number, rx: number, ry: number, deg: number,
-  large: number, sweep: number, x: number, y: number,
-) {
+function arcToCubics(x0: number, y0: number, rx: number, ry: number, deg: number, large: number, sweep: number, x: number, y: number) {
   const result: Command[] = [];
   if (x0 === x && y0 === y) return result;
   rx = Math.abs(rx);
@@ -67,20 +105,24 @@ export function parsePath(d: string): Command[] {
     skip();
     NUMBER.lastIndex = i;
     const m = NUMBER.exec(d);
-    if (!m) throw new PathError(`Expected a number at position ${i}`);
+    if (!m) throw new PathError("FLUID_PATH_NUMBER", i);
     i = NUMBER.lastIndex;
     return Number(m[0]);
   };
   const flag = () => {
     skip();
     const f = d[i];
-    if (f !== "0" && f !== "1") throw new PathError(`Expected an arc flag at position ${i}`);
+    if (f !== "0" && f !== "1") throw new PathError("FLUID_PATH_FLAG", i);
     i++;
     return Number(f);
   };
 
-  let x = 0, y = 0, sx = 0, sy = 0;
-  let cx = 0, cy = 0;
+  let x = 0,
+    y = 0,
+    sx = 0,
+    sy = 0;
+  let cx = 0,
+    cy = 0;
   let prev = "";
   let cmd = "";
 
@@ -99,9 +141,12 @@ export function parsePath(d: string): Command[] {
   const quad = (qx: number, qy: number, nx: number, ny: number) => {
     out.push({
       c: "C",
-      x1: x + (2 / 3) * (qx - x), y1: y + (2 / 3) * (qy - y),
-      x2: nx + (2 / 3) * (qx - nx), y2: ny + (2 / 3) * (qy - ny),
-      x: nx, y: ny,
+      x1: x + (2 / 3) * (qx - x),
+      y1: y + (2 / 3) * (qy - y),
+      x2: nx + (2 / 3) * (qx - nx),
+      y2: ny + (2 / 3) * (qy - ny),
+      x: nx,
+      y: ny,
     });
     cx = qx;
     cy = qy;
@@ -113,15 +158,15 @@ export function parsePath(d: string): Command[] {
   while (i < d.length) {
     if (/[a-zA-Z]/.test(d[i])) {
       cmd = d[i++];
-      if (!KNOWN.includes(cmd.toUpperCase())) throw new PathError(`Unknown command ${cmd}`);
+      if (!KNOWN.includes(cmd.toUpperCase())) throw new PathError("FLUID_PATH_COMMAND", cmd);
     } else if (!cmd || cmd === "z" || cmd === "Z") {
-      throw new PathError(`Unexpected character at position ${i}`);
+      throw new PathError("FLUID_PATH_CHARACTER", i);
     }
     const up = cmd.toUpperCase();
     const rel = cmd !== up;
     const ox = rel ? x : 0;
     const oy = rel ? y : 0;
-    if (!out.length && up !== "M") throw new PathError("A path must start with M");
+    if (!out.length && up !== "M") throw new PathError("FLUID_PATH_START");
 
     switch (up) {
       case "M": {
@@ -143,33 +188,47 @@ export function parsePath(d: string): Command[] {
         line(x, number() + oy);
         break;
       case "C": {
-        const x1 = number() + ox, y1 = number() + oy, x2 = number() + ox, y2 = number() + oy;
+        const x1 = number() + ox,
+          y1 = number() + oy,
+          x2 = number() + ox,
+          y2 = number() + oy;
         const nx = number() + ox;
         cubic(x1, y1, x2, y2, nx, number() + oy);
         break;
       }
       case "S": {
         const smooth = prev === "C" || prev === "S";
-        const x1 = smooth ? 2 * x - cx : x, y1 = smooth ? 2 * y - cy : y;
-        const x2 = number() + ox, y2 = number() + oy, nx = number() + ox;
+        const x1 = smooth ? 2 * x - cx : x,
+          y1 = smooth ? 2 * y - cy : y;
+        const x2 = number() + ox,
+          y2 = number() + oy,
+          nx = number() + ox;
         cubic(x1, y1, x2, y2, nx, number() + oy);
         break;
       }
       case "Q": {
-        const qx = number() + ox, qy = number() + oy, nx = number() + ox;
+        const qx = number() + ox,
+          qy = number() + oy,
+          nx = number() + ox;
         quad(qx, qy, nx, number() + oy);
         break;
       }
       case "T": {
         const smooth = prev === "Q" || prev === "T";
-        const qx = smooth ? 2 * x - cx : x, qy = smooth ? 2 * y - cy : y;
+        const qx = smooth ? 2 * x - cx : x,
+          qy = smooth ? 2 * y - cy : y;
         const nx = number() + ox;
         quad(qx, qy, nx, number() + oy);
         break;
       }
       case "A": {
-        const rx = number(), ry = number(), deg = number(), large = flag(), sweep = flag();
-        const nx = number() + ox, ny = number() + oy;
+        const rx = number(),
+          ry = number(),
+          deg = number(),
+          large = flag(),
+          sweep = flag();
+        const nx = number() + ox,
+          ny = number() + oy;
         out.push(...arcToCubics(x, y, rx, ry, deg, large, sweep, nx, ny));
         x = nx;
         y = ny;
@@ -185,7 +244,7 @@ export function parsePath(d: string): Command[] {
     prev = up;
     skip();
   }
-  if (!out.some((c) => c.c === "C")) throw new PathError("This path draws nothing");
+  if (!out.some((c) => c.c === "C")) throw new PathError("FLUID_PATH_EMPTY");
   return out;
 }
 
@@ -194,9 +253,11 @@ const round = (n: number) => +n.toFixed(2);
 export function serializePath(commands: Command[]) {
   return commands
     .map((c) =>
-      c.c === "M" ? `M${round(c.x)} ${round(c.y)}`
-      : c.c === "Z" ? "Z"
-      : `C${round(c.x1)} ${round(c.y1)} ${round(c.x2)} ${round(c.y2)} ${round(c.x)} ${round(c.y)}`,
+      c.c === "M"
+        ? `M${round(c.x)} ${round(c.y)}`
+        : c.c === "Z"
+          ? "Z"
+          : `C${round(c.x1)} ${round(c.y1)} ${round(c.x2)} ${round(c.y2)} ${round(c.x)} ${round(c.y)}`,
     )
     .join("");
 }
@@ -211,7 +272,10 @@ type Poly = { x: number[]; y: number[] };
 function flatten(commands: Command[], steps = 28) {
   const polys: Poly[] = [];
   let cur: Poly | null = null;
-  let x = 0, y = 0, sx = 0, sy = 0;
+  let x = 0,
+    y = 0,
+    sx = 0,
+    sy = 0;
   for (const c of commands) {
     if (c.c === "M") {
       cur = { x: [c.x], y: [c.y] };
@@ -243,7 +307,10 @@ function flatten(commands: Command[], steps = 28) {
 
 export function fitPath(d: string, size = 120, padding = 0) {
   const commands = parsePath(d);
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
   for (const p of flatten(commands)) {
     for (let i = 0; i < p.x.length; i++) {
       minX = Math.min(minX, p.x[i]);
@@ -253,15 +320,48 @@ export function fitPath(d: string, size = 120, padding = 0) {
     }
   }
   const span = Math.max(maxX - minX, maxY - minY);
-  if (!(span > 0) || !isFinite(span)) throw new PathError("This path has no size");
+  if (!(span > 0) || !Number.isFinite(span)) throw new PathError("FLUID_PATH_NO_SIZE");
   const k = (size - padding * 2) / span;
-  const X = (v: number) => (v - (minX + maxX) / 2) * k + size / 2;
-  const Y = (v: number) => (v - (minY + maxY) / 2) * k + size / 2;
+  const toX = (v: number) => (v - (minX + maxX) / 2) * k + size / 2;
+  const toY = (v: number) => (v - (minY + maxY) / 2) * k + size / 2;
   return serializePath(
-    commands.map((c): Command =>
-      c.c === "M" ? { c: "M", x: X(c.x), y: Y(c.y) }
-      : c.c === "Z" ? c
-      : { c: "C", x1: X(c.x1), y1: Y(c.y1), x2: X(c.x2), y2: Y(c.y2), x: X(c.x), y: Y(c.y) },
+    commands.map(
+      (c): Command =>
+        c.c === "M"
+          ? { c: "M", x: toX(c.x), y: toY(c.y) }
+          : c.c === "Z"
+            ? c
+            : { c: "C", x1: toX(c.x1), y1: toY(c.y1), x2: toX(c.x2), y2: toY(c.y2), x: toX(c.x), y: toY(c.y) },
+    ),
+  );
+}
+
+export function scalePath(d: string, from: number | string, size = 120) {
+  const box =
+    typeof from === "number"
+      ? [0, 0, from, from]
+      : from
+          .trim()
+          .split(/[\s,]+/)
+          .map(Number);
+  const [minX, minY, width, height] = box;
+  if (box.length !== 4 || !box.every(Number.isFinite) || !(width > 0) || !(height > 0)) {
+    throw new PathError("FLUID_VIEWBOX", JSON.stringify(from));
+  }
+  const side = Math.max(width, height);
+  const k = size / side;
+  const shiftX = (side - width) / 2;
+  const shiftY = (side - height) / 2;
+  const toX = (v: number) => (v - minX + shiftX) * k;
+  const toY = (v: number) => (v - minY + shiftY) * k;
+  return serializePath(
+    parsePath(d).map(
+      (c): Command =>
+        c.c === "M"
+          ? { c: "M", x: toX(c.x), y: toY(c.y) }
+          : c.c === "Z"
+            ? c
+            : { c: "C", x1: toX(c.x1), y1: toY(c.y1), x2: toX(c.x2), y2: toY(c.y2), x: toX(c.x), y: toY(c.y) },
     ),
   );
 }
@@ -274,7 +374,26 @@ export type Contour = {
   cy: number;
 };
 
+const CACHE_SIZE = 16;
+const sampled = new Map<string, Contour[]>();
+
+const copyContour = (c: Contour): Contour => ({ x: c.x.slice(), y: c.y.slice(), area: c.area, cx: c.cx, cy: c.cy });
+
 export function sampleContours(d: string, count = 160): Contour[] {
+  const key = `${count}|${d}`;
+  const hit = sampled.get(key);
+  if (hit) {
+    sampled.delete(key);
+    sampled.set(key, hit);
+    return hit.map(copyContour);
+  }
+  const fresh = measureContours(d, count);
+  sampled.set(key, fresh);
+  if (sampled.size > CACHE_SIZE) sampled.delete(sampled.keys().next().value as string);
+  return fresh.map(copyContour);
+}
+
+function measureContours(d: string, count: number): Contour[] {
   const contours = flatten(parsePath(d)).map((p): Contour => {
     const n = p.x.length;
     const lengths = new Float64Array(n + 1);
@@ -295,7 +414,9 @@ export function sampleContours(d: string, count = 160): Contour[] {
       x[i] = p.x[seg] + (p.x[j] - p.x[seg]) * t;
       y[i] = p.y[seg] + (p.y[j] - p.y[seg]) * t;
     }
-    let signed = 0, cx = 0, cy = 0;
+    let signed = 0,
+      cx = 0,
+      cy = 0;
     for (let i = 0; i < count; i++) {
       const j = (i + 1) % count;
       signed += x[i] * y[j] - x[j] * y[i];

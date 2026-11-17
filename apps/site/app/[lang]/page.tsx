@@ -57,14 +57,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const lang = (await params).lang as Lang;
   const t = dictionaries[lang];
   const s = t.sections;
-  const [hero, logo, video] = await Promise.all([
-    highlight(HERO_CODE, "tsx"),
-    highlight(LOGO_CODE, "tsx"),
-    highlight(VIDEO_CODE, "bash"),
-  ]);
+  const [hero, logo, video] = await Promise.all([highlight(HERO_CODE, "tsx"), highlight(LOGO_CODE, "tsx"), highlight(VIDEO_CODE, "bash")]);
   const splash = catalog.find((e) => e.slug === "splash-choice")!;
   const eyebrow = (n: number, text: string) => (
-    <p className={styles.eyebrow}><span>{String(n).padStart(2, "0")}</span>{text}</p>
+    <p className={styles.eyebrow}>
+      <span>{String(n).padStart(2, "0")}</span>
+      {text}
+    </p>
   );
 
   return (
@@ -72,10 +71,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.hero} aria-labelledby="title">
         <div className={`container ${styles.heroGrid}`}>
           <div>
-            <h1 id="title" className={styles.title}>{t.hero.title}</h1>
+            <h1 id="title" className={styles.title}>
+              {t.hero.title}
+            </h1>
             <p className={styles.lead}>{t.hero.lead}</p>
             <div className={styles.actions}>
-              <Link href={href(lang, "/components")} className={styles.primary}>{t.hero.primary}</Link>
+              <Link href={href(lang, "/components")} className={styles.primary}>
+                {t.hero.primary}
+              </Link>
               <div className={styles.install}>
                 <code>{INSTALL}</code>
                 <CopyButton text={INSTALL} />
@@ -89,7 +92,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <div className={`container ${styles.showcase}`}>
         <div className={styles.editor}>
           <div className={styles.editorBar}>
-            <span className={styles.dots} aria-hidden><i /><i /><i /></span>
+            <span className={styles.dots} aria-hidden>
+              <i />
+              <i />
+              <i />
+            </span>
             <span>Opening.tsx</span>
           </div>
           <div className={`${styles.editorCode} scroll-dark`} dangerouslySetInnerHTML={{ __html: hero }} />
@@ -99,10 +106,22 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
       <div className="container">
         <dl className={styles.stats}>
-          <div><dt>{t.stats.pieces}</dt><dd>{catalog.length}</dd></div>
-          <div><dt>{t.stats.deps}</dt><dd>0</dd></div>
-          <div><dt>{t.stats.skills}</dt><dd>{t.skills.length}</dd></div>
-          <div><dt>{t.stats.formats}</dt><dd>4</dd></div>
+          <div>
+            <dt>{t.stats.pieces}</dt>
+            <dd>{catalog.length}</dd>
+          </div>
+          <div>
+            <dt>{t.stats.deps}</dt>
+            <dd>0</dd>
+          </div>
+          <div>
+            <dt>{t.stats.skills}</dt>
+            <dd>{t.skills.length}</dd>
+          </div>
+          <div>
+            <dt>{t.stats.formats}</dt>
+            <dd>4</dd>
+          </div>
         </dl>
       </div>
 
@@ -110,7 +129,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className="container">
           <Reveal className={styles.head}>
             {eyebrow(1, s.catalog.eyebrow)}
-            <h2 id="wall" className={styles.sectionTitle}>{s.catalog.title}</h2>
+            <h2 id="wall" className={styles.sectionTitle}>
+              {s.catalog.title}
+            </h2>
             <p className={styles.text}>{s.catalog.text}</p>
           </Reveal>
           <Mosaic entries={catalog.map(({ slug, name, loop }) => ({ slug, name, loop }))} />
@@ -121,7 +142,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className="container">
           <Reveal className={styles.head}>
             {eyebrow(2, s.brands.eyebrow)}
-            <h2 id="brands" className={styles.sectionTitle}>{s.brands.title}</h2>
+            <h2 id="brands" className={styles.sectionTitle}>
+              {s.brands.title}
+            </h2>
             <p className={styles.text}>{s.brands.text}</p>
           </Reveal>
           <BrandsRow loop={splash.loop} />
@@ -132,7 +155,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className={`container ${styles.split}`}>
           <Reveal>
             {eyebrow(3, s.contour.eyebrow)}
-            <h2 id="logo" className={styles.sectionTitle}>{s.contour.title}</h2>
+            <h2 id="logo" className={styles.sectionTitle}>
+              {s.contour.title}
+            </h2>
             <p className={styles.text}>{s.contour.text}</p>
             <BrandToolbar lang={lang} />
             <div className={styles.editor}>
@@ -147,7 +172,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className="container">
           <Reveal className={styles.head}>
             {eyebrow(4, s.physics.eyebrow)}
-            <h2 id="physics" className={styles.sectionTitle}>{s.physics.title}</h2>
+            <h2 id="physics" className={styles.sectionTitle}>
+              {s.physics.title}
+            </h2>
             <p className={styles.text}>{s.physics.text}</p>
           </Reveal>
           <SpringLab />
@@ -158,7 +185,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className="container">
           <Reveal className={styles.head}>
             {eyebrow(5, s.characters.eyebrow)}
-            <h2 id="characters" className={styles.sectionTitle}>{s.characters.title}</h2>
+            <h2 id="characters" className={styles.sectionTitle}>
+              {s.characters.title}
+            </h2>
             <p className={styles.text}>{s.characters.text}</p>
           </Reveal>
           <PetParade />
@@ -169,7 +198,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className={`container ${styles.split}`}>
           <Reveal>
             {eyebrow(6, s.video.eyebrow)}
-            <h2 id="video" className={styles.sectionTitle}>{s.video.title}</h2>
+            <h2 id="video" className={styles.sectionTitle}>
+              {s.video.title}
+            </h2>
             <p className={styles.text}>{s.video.text}</p>
             <div className={styles.editor}>
               <div className={`${styles.editorCode} scroll-dark`} dangerouslySetInnerHTML={{ __html: video }} />
@@ -186,7 +217,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className={`container ${styles.split}`}>
           <Reveal>
             {eyebrow(7, s.agents.eyebrow)}
-            <h2 id="agents" className={styles.sectionTitle}>{s.agents.title}</h2>
+            <h2 id="agents" className={styles.sectionTitle}>
+              {s.agents.title}
+            </h2>
             <p className={styles.text}>{s.agents.text}</p>
             <div className={styles.install}>
               <code>{SKILLS}</code>

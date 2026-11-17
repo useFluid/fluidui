@@ -1,0 +1,24 @@
+.stage {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  border-radius: var(--radius-card, 24px);
+  background: var(--fluid-surface-2);
+  color: var(--fluid-text);
+}
+.button {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fluid-accent);
+  color: var(--fluid-on-accent);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.button:focus-visible {
+  outline: 2px solid var(--fluid-focus);
+  outline-offset: 3px;
+}

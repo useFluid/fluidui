@@ -24,11 +24,7 @@ export function TextReveal({ text, play = true, stagger = 28 }: { text: string; 
 
   let index = 0;
   return (
-    <span
-      className={styles.root}
-      data-play={shown}
-      style={{ "--easing": spring.easing, "--duration": `${spring.duration}ms` } as React.CSSProperties}
-    >
+    <span className={styles.root} data-play={shown} style={{ "--easing": spring.easing, "--duration": `${spring.duration}ms` } as React.CSSProperties}>
       <span className={styles.srOnly}>{text}</span>
       <span aria-hidden>
         {text.split(" ").map((word, w) => (
@@ -37,8 +33,7 @@ export function TextReveal({ text, play = true, stagger = 28 }: { text: string; 
               <span key={c} className={styles.char} style={{ transitionDelay: shown ? `${index++ * stagger}ms` : "0ms" }}>
                 {char}
               </span>
-            ))}
-            {" "}
+            ))}{" "}
           </span>
         ))}
       </span>

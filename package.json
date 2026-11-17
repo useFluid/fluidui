@@ -13,10 +13,18 @@
     "test": "vitest run",
     "test:e2e": "npm run test:e2e -w @usefluid/site",
     "new": "node scripts/new-piece.mjs",
-    "record": "node scripts/record.mjs"
+    "record": "node scripts/record.mjs",
+    "lint": "biome ci .",
+    "format": "biome format --write .",
+    "size": "node scripts/size.mjs",
+    "bench": "node scripts/bench.mjs"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.6.8",
+    "@happy-dom/global-registrator": "^21.0.4",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
     "playwright-core": "^1.64.1",
     "typescript": "7.0.2",
     "vitest": "^5.1.0"

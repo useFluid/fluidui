@@ -75,13 +75,11 @@ export function BrandProvider({ children }: { children: React.ReactNode }) {
   const persist = useCallback((id: string, c: Custom | null, n: string) => {
     try {
       localStorage.setItem(KEY, JSON.stringify({ id, custom: c, name: n }));
-    } catch {
-    }
+    } catch {}
   }, []);
 
   const value = useMemo<Value>(() => {
-    const base =
-      brandId === CUSTOM_ID && custom ? customBrand(custom) : (brands.find((b) => b.id === brandId) ?? brands[0]);
+    const base = brandId === CUSTOM_ID && custom ? customBrand(custom) : (brands.find((b) => b.id === brandId) ?? brands[0]);
     const brand = name.trim() ? { ...base, name: name.trim() } : base;
     return {
       brand,

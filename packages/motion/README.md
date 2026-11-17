@@ -41,6 +41,23 @@ play((dt) => {
 });
 ```
 
+Paths from other places come in other boxes. Two helpers bring them into the 120 box:
+
+| Helper             | Use it for                                                                                           | What it does                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `scalePath(d, 24)` | Filled icons from a set (`viewBox="0 0 24 24"`), such as Heroicons solid or Phosphor fill, or `scalePath(d, "0 0 20 20")` for other boxes | Rescales from that box, keeping the icon's size and position inside it |
+| `fitPath(d)`       | Your logo, from any SVG                                                                              | Fills the box with the drawing, centred                                |
+
+```tsx
+const check = scalePath(heroiconCheckSolid, 24);
+
+<svg viewBox="0 0 120 120">
+  <MorphPath d={done ? check : shapes.circle} fill="currentColor" />
+</svg>;
+```
+
+Errors carry a code, like `FLUID_PATH_NUMBER`. Each one has an entry, with the fix, on the [troubleshooting page](https://fluidui.willradoux.com/docs/troubleshooting). In development the message also explains it.
+
 Rules that keep a morph clean:
 
 - Parts pair up by size, biggest first. Keep the same order of sizes between states, or parts swap places on the way.

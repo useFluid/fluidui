@@ -36,11 +36,19 @@ function sections(md: string) {
 export function pieceDoc(slug: string): PieceDoc {
   const { intro, list } = sections(readme(slug));
   const take = (name: string) => list.find((s) => s.title === name)?.body ?? "";
-  const example = take("Example").match(/```tsx\n([\s\S]*?)```/)?.[1]?.trim() ?? "";
+  const example =
+    take("Example")
+      .match(/```tsx\n([\s\S]*?)```/)?.[1]
+      ?.trim() ?? "";
   const props = take("Props")
     .split("\n")
     .filter((l) => l.startsWith("|") && !l.startsWith("|---") && !l.startsWith("| Prop"))
-    .map((l) => l.slice(1, -1).split(/(?<!\\)\|/).map(cell))
+    .map((l) =>
+      l
+        .slice(1, -1)
+        .split(/(?<!\\)\|/)
+        .map(cell),
+    )
     .map(([name, type, fallback, text]) => ({ name, type, fallback, text }));
   const known = new Set(["Example", "Props", "Keyboard and screen readers", "Notes"]);
   return {
@@ -72,7 +80,9 @@ export function dependencies(slug: string): string[] {
 }
 
 export function pieceMarkdown(slug: string, name: string, description: string) {
-  const body = readme(slug).replace(/^# .*\n+/, "").trim();
+  const body = readme(slug)
+    .replace(/^# .*\n+/, "")
+    .trim();
   const install = ["```bash", `npx @usefluid/cli add ${slug}`, "```"].join("\n");
   return `${[`# ${name}`, description, "## Installation", install, body].join("\n\n")}\n`;
 }

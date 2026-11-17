@@ -29,7 +29,7 @@
   border-radius: var(--fluid-radius);
   background: none;
   color: var(--fluid-text);
-  font: 500 14px/1 var(--fluid-font);
+  font: 500 14px / 1 var(--fluid-font);
   white-space: nowrap;
   cursor: pointer;
   touch-action: manipulation;

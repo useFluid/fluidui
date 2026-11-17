@@ -1,4 +1,3 @@
-
 export const categories = ["Metamorph", "Characters", "Controls", "Text", "Transitions", "Splash"] as const;
 export type Category = (typeof categories)[number];
 

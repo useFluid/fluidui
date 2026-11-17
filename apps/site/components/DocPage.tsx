@@ -39,7 +39,9 @@ export function DocPage({ eyebrow, title, lead, toc, tocLabel, markdown, childre
 export function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
     <section className={styles.section} aria-labelledby={id}>
-      <h2 id={id} className={styles.h2}>{title}</h2>
+      <h2 id={id} className={styles.h2}>
+        {title}
+      </h2>
       {children}
     </section>
   );

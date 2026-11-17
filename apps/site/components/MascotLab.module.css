@@ -60,7 +60,9 @@
   border-radius: 999px;
   background: var(--page);
   color: var(--text);
-  font: 500 17px/1 var(--font-sans), sans-serif;
+  font:
+    500 17px / 1 var(--font-sans),
+    sans-serif;
 }
 .input:focus-visible {
   outline: 2px solid var(--text);
@@ -83,7 +85,9 @@
   border-radius: 999px;
   background: color-mix(in srgb, var(--text) 7%, transparent);
   color: var(--text);
-  font: 500 14px/1 var(--font-sans), sans-serif;
+  font:
+    500 14px / 1 var(--font-sans),
+    sans-serif;
   cursor: pointer;
 }
 @media (hover: hover) {

@@ -2,7 +2,7 @@
 
 **Your brand, in motion.** Open-source motion for React, built on one idea: outlines that flow on real springs. Shapes become your logo, pills flow between options, words come out of a blur, and windows grow out of the card that opened them. Every piece wears your logo, colours and font.
 
-[Documentation](https://fluidui.willradoux.com/docs) · [Components](https://fluidui.willradoux.com/components) · [Mascots](https://fluidui.willradoux.com/mascots) · [Changelog](CHANGELOG.md)
+[Documentation](https://fluidui.willradoux.com/docs) · [Start by hand](https://fluidui.willradoux.com/docs/by-hand) · [Components](https://fluidui.willradoux.com/components) · [Mascots](https://fluidui.willradoux.com/mascots) · [Changelog](CHANGELOG.md)
 
 [![CI](https://github.com/useFluid/fluidui/actions/workflows/ci.yml/badge.svg)](https://github.com/useFluid/fluidui/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@usefluid/motion?label=%40usefluid%2Fmotion&color=black)](https://www.npmjs.com/package/@usefluid/motion)

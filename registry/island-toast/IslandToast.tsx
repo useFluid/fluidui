@@ -44,18 +44,27 @@ export function IslandToast({ message, icon = CHECK }: Props) {
   );
   useSpring(
     { y: open ? 0 : -72 },
-    ({ y }) => { if (body.current) body.current.style.translate = `0 ${y}px`; },
+    ({ y }) => {
+      if (body.current) body.current.style.translate = `0 ${y}px`;
+    },
     DROP,
   );
 
   return (
     <div className={styles.slot}>
       <span ref={measure} className={styles.measure} aria-hidden>
-        <span className={styles.row}>{icon && <span className={styles.icon}>{icon}</span>}{shown}</span>
+        <span className={styles.row}>
+          {icon && <span className={styles.icon}>{icon}</span>}
+          {shown}
+        </span>
       </span>
       <div ref={body} className={styles.island} data-open={open}>
         <span className={styles.row} role="status">
-          {icon && <span className={styles.icon} aria-hidden>{icon}</span>}
+          {icon && (
+            <span className={styles.icon} aria-hidden>
+              {icon}
+            </span>
+          )}
           {open ? shown : ""}
         </span>
       </div>

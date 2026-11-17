@@ -35,7 +35,10 @@
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
-  transition: background-color 200ms ease, color 200ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .count {
   display: grid;

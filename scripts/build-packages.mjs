@@ -12,7 +12,10 @@ const links = (directory) => ({
 });
 const node = (script, args, cwd = root) => execFileSync(process.execPath, [script, ...args], { cwd, stdio: "inherit" });
 const tsc = join(root, "node_modules", "typescript", "bin", "tsc");
-const npm = [join(dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js"), join(dirname(process.execPath), "..", "lib", "node_modules", "npm", "bin", "npm-cli.js")].find(existsSync);
+const npm = [
+  join(dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js"),
+  join(dirname(process.execPath), "..", "lib", "node_modules", "npm", "bin", "npm-cli.js"),
+].find(existsSync);
 if (!npm) throw new Error("Could not find npm next to this Node.js");
 
 const clean = (dir) => {

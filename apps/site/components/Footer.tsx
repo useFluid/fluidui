@@ -38,7 +38,9 @@ export function Footer({ lang }: { lang: Lang }) {
           <h2 className={styles.title}>{t.footer.title}</h2>
           <p className={styles.text}>{t.footer.text}</p>
           <div className={styles.actions}>
-            <Link href={href(lang, "/components")} className={styles.primary}>{t.hero.primary}</Link>
+            <Link href={href(lang, "/components")} className={styles.primary}>
+              {t.hero.primary}
+            </Link>
             <div className={styles.install}>
               <code>{INSTALL}</code>
               <CopyButton text={INSTALL} />
@@ -64,7 +66,9 @@ export function Footer({ lang }: { lang: Lang }) {
       </div>
       <div className={`container ${styles.bottom}`}>
         <p>{t.footer.bottom}</p>
-        <a href="#content" className={styles.top2}><SameWidth lang={lang} texts={both((d) => d.footer.top)} /></a>
+        <a href="#content" className={styles.top2}>
+          <SameWidth lang={lang} texts={both((d) => d.footer.top)} />
+        </a>
       </div>
     </footer>
   );

@@ -38,7 +38,9 @@ export function MorphButton({ state, labels = { idle: "Send", done: "Sent" }, cl
   const width = state === "loading" ? ROUND : state === "done" ? widths.done : widths.idle;
   useSpring(
     { w: width },
-    ({ w }) => { if (button.current && w > 0) button.current.style.width = `${w}px`; },
+    ({ w }) => {
+      if (button.current && w > 0) button.current.style.width = `${w}px`;
+    },
     { w: 18, z: 0.8, immediate: widths.idle === 0 },
   );
 
@@ -48,8 +50,14 @@ export function MorphButton({ state, labels = { idle: "Send", done: "Sent" }, cl
   return (
     <>
       <span ref={measure} className={styles.measure} aria-hidden>
-        <span className={styles.inner}><span className={styles.iconBox} />{labels.idle}</span>
-        <span className={styles.inner}><span className={styles.iconBox} />{labels.done}</span>
+        <span className={styles.inner}>
+          <span className={styles.iconBox} />
+          {labels.idle}
+        </span>
+        <span className={styles.inner}>
+          <span className={styles.iconBox} />
+          {labels.done}
+        </span>
       </span>
       <button
         {...props}
@@ -72,7 +80,9 @@ export function MorphButton({ state, labels = { idle: "Send", done: "Sent" }, cl
         </span>
         <span className={styles.srOnly}>{text}</span>
       </button>
-      <span className={styles.srOnly} role="status">{state === "idle" ? "" : text}</span>
+      <span className={styles.srOnly} role="status">
+        {state === "idle" ? "" : text}
+      </span>
     </>
   );
 }

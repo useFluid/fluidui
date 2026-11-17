@@ -22,13 +22,7 @@ type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
 
 export function IconMorph({ on, off, onIcon, label, className, ...props }: Props) {
   return (
-    <button
-      type="button"
-      aria-pressed={on}
-      aria-label={label}
-      className={[styles.button, className].filter(Boolean).join(" ")}
-      {...props}
-    >
+    <button type="button" aria-pressed={on} aria-label={label} className={[styles.button, className].filter(Boolean).join(" ")} {...props}>
       <svg viewBox="0 0 120 120" aria-hidden className={styles.icon}>
         <MorphPath d={on ? onIcon : off} fill="currentColor" config={{ w: 20, z: 0.76, points: 96 }} />
       </svg>

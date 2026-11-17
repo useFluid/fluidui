@@ -2,11 +2,12 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { GUIDE, type GuidePage as Page, guidePath } from "@/lib/guide";
+import { BY_HAND, GUIDE, type GuidePage as Page, guidePath } from "@/lib/guide";
 import { highlight } from "@/lib/highlight";
 import { type Lang, dictionaries, href } from "@/lib/i18n";
 import { REPO } from "@/lib/site";
 import { CodeBlock } from "./CodeBlock";
+import { IconRecipe } from "./IconRecipe";
 import { DocPage, Section } from "./DocPage";
 import { Markdown } from "./Markdown";
 import doc from "./DocPage.module.css";
@@ -31,7 +32,9 @@ function Table({ head, rows }: { head: [string, string]; rows: string[][] }) {
         <tbody>
           {rows.map(([a, b]) => (
             <tr key={a}>
-              <td><code>{a}</code></td>
+              <td>
+                <code>{a}</code>
+              </td>
               <td>{b}</td>
             </tr>
           ))}
@@ -54,6 +57,28 @@ const THEME = (font: string) => `:root {
   --fluid-font: ${font}, sans-serif;
 }`;
 
+const sectionId = (title: string) =>
+  /^FLUID_[A-Z_]+$/.test(title)
+    ? title
+    : title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+export const byHandSource = (page: (typeof BY_HAND)[number]) => readFileSync(path.join(process.cwd(), "content", `${page}.md`), "utf8").replace(/\r\n/g, "\n");
+
+function byHand(page: (typeof BY_HAND)[number]) {
+  const [head, ...sections] = byHandSource(page).split(/^## /m);
+  const title = head.match(/^# (.*)$/m)?.[1]?.trim() ?? page;
+  const lead = head.replace(/^# .*$/m, "").trim();
+  const list: Part[] = sections.map((section) => {
+    const [heading, ...rest] = section.split("\n");
+    return { id: sectionId(heading.trim()), title: heading.trim(), body: <Markdown source={rest.join("\n").trim()} name="Example" /> };
+  });
+  if (page === "recipes") list.unshift({ id: "try-it", title: "Try it", body: <IconRecipe /> });
+  return { title, lead, parts: list };
+}
+
 async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: string; parts: Part[] }> {
   const t = dictionaries[lang];
   const g = t.guide;
@@ -61,6 +86,11 @@ async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: str
   const p = (text: string) => <p className={doc.text}>{text}</p>;
   const n = (text: string) => text.replace(/^\d+\.\s*/, "");
   switch (page) {
+    case "by-hand":
+    case "recipes":
+    case "troubleshooting":
+    case "reference":
+      return byHand(page);
     case "intro":
       return {
         title: g.introTitle,
@@ -85,7 +115,13 @@ async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: str
           {
             id: "principles",
             title: g.principlesTitle,
-            body: <ul className={doc.bullets}>{g.principles.map((x) => <li key={x}>{x}</li>)}</ul>,
+            body: (
+              <ul className={doc.bullets}>
+                {g.principles.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
+              </ul>
+            ),
           },
           {
             id: "next",
@@ -109,8 +145,27 @@ async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: str
         title: g.pages.installation,
         lead: d.lead,
         parts: [
-          { id: "status", title: n(d.installTitle), body: <>{p(d.status)}{p(d.installText)}{await code("npm i @usefluid/motion\nnpx @usefluid/cli init --out src/styles/fluid-theme.css", "bash")}</> },
-          { id: "logo", title: n(d.logoTitle), body: <>{p(d.logoText)}{await code("npx @usefluid/cli logo logo.svg --out src/lib/logo.ts", "bash")}</> },
+          {
+            id: "status",
+            title: n(d.installTitle),
+            body: (
+              <>
+                {p(d.status)}
+                {p(d.installText)}
+                {await code("npm i @usefluid/motion\nnpx @usefluid/cli init --out src/styles/fluid-theme.css", "bash")}
+              </>
+            ),
+          },
+          {
+            id: "logo",
+            title: n(d.logoTitle),
+            body: (
+              <>
+                {p(d.logoText)}
+                {await code("npx @usefluid/cli logo logo.svg --out src/lib/logo.ts", "bash")}
+              </>
+            ),
+          },
           {
             id: "add",
             title: n(d.addTitle),
@@ -118,7 +173,12 @@ async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: str
               <>
                 {p(d.addText)}
                 {await code("npx @usefluid/cli list\nnpx @usefluid/cli add splash-choice morph-button pet", "bash")}
-                {await code(`import { MorphButton } from "@/components/fluid/morph-button/MorphButton";\n\n<MorphButton state={state} onClick={send} />;`, "tsx")}
+                {
+                  await code(
+                    `import { MorphButton } from "@/components/fluid/morph-button/MorphButton";\n\n<MorphButton state={state} onClick={send} />;`,
+                    "tsx",
+                  )
+                }
               </>
             ),
           },
@@ -130,7 +190,16 @@ async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: str
         lead: d.themeText,
         parts: [
           { id: "variables", title: n(d.themeTitle), body: await code(THEME(d.font), "css") },
-          { id: "logo", title: n(d.logoTitle), body: <>{p(d.logoText)}{await code("npx @usefluid/cli logo logo.svg --out src/lib/logo.ts", "bash")}</> },
+          {
+            id: "logo",
+            title: n(d.logoTitle),
+            body: (
+              <>
+                {p(d.logoText)}
+                {await code("npx @usefluid/cli logo logo.svg --out src/lib/logo.ts", "bash")}
+              </>
+            ),
+          },
         ],
       };
     case "engine": {
@@ -146,10 +215,14 @@ useSpring({ x: open ? 200 : 0 }, ({ x }) => {
   <MorphPath d={open ? logo : shapes.circle} fill="currentColor" />
 </svg>;`;
       const readme = readFileSync(path.join(process.cwd(), "../../packages/motion/README.md"), "utf8").replace(/\r\n/g, "\n");
-      const body = readme.split(/^## /m).slice(1).filter((s) => !s.startsWith("Licen")).map((s) => {
-        const [title, ...rest] = s.split("\n");
-        return { id: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), title: title.trim(), body: <Markdown source={rest.join("\n").trim()} name="Engine" /> };
-      });
+      const body = readme
+        .split(/^## /m)
+        .slice(1)
+        .filter((s) => !s.startsWith("Licen"))
+        .map((s) => {
+          const [title, ...rest] = s.split("\n");
+          return { id: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), title: title.trim(), body: <Markdown source={rest.join("\n").trim()} name="Engine" /> };
+        });
       return {
         title: g.pages.engine,
         lead: d.engineText,
@@ -160,14 +233,29 @@ useSpring({ x: open ? 200 : 0 }, ({ x }) => {
       return {
         title: g.cliTitle,
         lead: g.cliLead,
-        parts: [{ id: "commands", title: g.commandCol, body: <>{await code("npx @usefluid/cli <command>", "bash")}<Table head={[g.commandCol, g.whatCol]} rows={g.commands} /></> }],
+        parts: [
+          {
+            id: "commands",
+            title: g.commandCol,
+            body: (
+              <>
+                {await code("npx @usefluid/cli <command>", "bash")}
+                <Table head={[g.commandCol, g.whatCol]} rows={g.commands} />
+              </>
+            ),
+          },
+        ],
       };
     case "skills":
       return {
         title: g.pages.skills,
         lead: g.skillsLead,
         parts: [
-          { id: "install", title: g.installation, body: await code(`npx skills@latest add ${REPO}\nnpx skills@latest add ${REPO} --skill fluid-splash`, "bash") },
+          {
+            id: "install",
+            title: g.installation,
+            body: await code(`npx skills@latest add ${REPO}\nnpx skills@latest add ${REPO} --skill fluid-splash`, "bash"),
+          },
           { id: "list", title: g.skillCol, body: <Table head={[g.skillCol, g.forCol]} rows={g.skillList} /> },
           { id: "llms", title: g.llmsTitle, body: p(g.llmsText) },
         ],
@@ -176,23 +264,42 @@ useSpring({ x: open ? 200 : 0 }, ({ x }) => {
       return {
         title: g.pages.video,
         lead: d.videoText,
-        parts: [{ id: "record", title: n(d.videoTitle), body: await code("npm i -D playwright-core\nnpx @usefluid/cli record http://localhost:3000/intro --format story --seconds 8", "bash") }],
+        parts: [
+          {
+            id: "record",
+            title: n(d.videoTitle),
+            body: await code("npm i -D playwright-core\nnpx @usefluid/cli record http://localhost:3000/intro --format story --seconds 8", "bash"),
+          },
+        ],
       };
     case "accessibility":
       return {
         title: g.pages.accessibility,
         lead: g.a11yLead,
         parts: [
-          { id: "rules", title: g.principlesTitle, body: <ul className={doc.bullets}>{g.a11y.map((x) => <li key={x}>{x}</li>)}</ul> },
+          {
+            id: "rules",
+            title: g.principlesTitle,
+            body: (
+              <ul className={doc.bullets}>
+                {g.a11y.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
+              </ul>
+            ),
+          },
           { id: "reduced", title: d.reducedTitle, body: p(d.reducedText) },
         ],
       };
     case "contributing": {
       const source = readFileSync(path.join(process.cwd(), "../../CONTRIBUTING.md"), "utf8").replace(/\r\n/g, "\n");
-      const body = source.split(/^## /m).slice(1).map((s) => {
-        const [title, ...rest] = s.split("\n");
-        return { id: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), title: title.trim(), body: <Markdown source={rest.join("\n").trim()} /> };
-      });
+      const body = source
+        .split(/^## /m)
+        .slice(1)
+        .map((s) => {
+          const [title, ...rest] = s.split("\n");
+          return { id: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"), title: title.trim(), body: <Markdown source={rest.join("\n").trim()} /> };
+        });
       return { title: g.pages.contributing, lead: g.contributingLead, parts: body };
     }
   }

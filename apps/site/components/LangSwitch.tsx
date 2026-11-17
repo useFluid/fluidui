@@ -19,7 +19,9 @@ function languageIs(code: string) {
       clearTimeout(timer);
       resolve();
     };
-    const observer = new MutationObserver(() => { if (html.lang === code) done(); });
+    const observer = new MutationObserver(() => {
+      if (html.lang === code) done();
+    });
     observer.observe(html, { attributes: true, attributeFilter: ["lang"] });
     const timer = setTimeout(done, 1000);
   });

@@ -69,8 +69,16 @@
   transform-origin: 100% 100%;
 }
 @keyframes arrive {
-  from { opacity: 0; transform: scale(0.6); filter: blur(4px); }
-  to { opacity: 1; transform: none; filter: blur(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
 }
 .dots {
   display: inline-flex;
@@ -85,11 +93,22 @@
   opacity: 0.4;
   animation: dot 1s ease-in-out infinite;
 }
-.dots i:nth-child(2) { animation-delay: 0.15s; }
-.dots i:nth-child(3) { animation-delay: 0.3s; }
+.dots i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
 @keyframes dot {
-  0%, 100% { transform: translateY(0); opacity: 0.4; }
-  40% { transform: translateY(-4px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .message,

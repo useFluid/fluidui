@@ -20,7 +20,9 @@ export default async function Prompts({ params }: { params: Promise<{ lang: stri
           return (
             <li key={entry.slug} className={styles.prompt}>
               <div className={styles.promptHead}>
-                <h2><Link href={href(lang, `/components/${entry.slug}`)}>{entry.name}</Link></h2>
+                <h2>
+                  <Link href={href(lang, `/components/${entry.slug}`)}>{entry.name}</Link>
+                </h2>
                 <CopyButton text={prompt} />
               </div>
               <p>{prompt}</p>

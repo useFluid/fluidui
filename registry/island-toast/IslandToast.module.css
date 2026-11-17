@@ -14,7 +14,7 @@
   border-radius: 999px;
   background: var(--fluid-accent);
   color: var(--fluid-on-accent);
-  font: 500 15px/1 var(--fluid-font);
+  font: 500 15px / 1 var(--fluid-font);
   white-space: nowrap;
 }
 .row {
@@ -22,7 +22,9 @@
   align-items: center;
   gap: 10px;
   padding: 0 20px 0 16px;
-  transition: opacity 180ms ease, filter 180ms ease;
+  transition:
+    opacity 180ms ease,
+    filter 180ms ease;
 }
 .island[data-open="false"] .row {
   opacity: 0;
@@ -44,7 +46,7 @@
   position: absolute;
   visibility: hidden;
   pointer-events: none;
-  font: 500 15px/1 var(--fluid-font);
+  font: 500 15px / 1 var(--fluid-font);
   white-space: nowrap;
 }
 @media (prefers-reduced-motion: reduce) {

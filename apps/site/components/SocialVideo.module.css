@@ -71,7 +71,9 @@
   padding: 8px;
   border-radius: 40px;
   background: #11100f;
-  box-shadow: 0 30px 80px rgba(17, 16, 15, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 30px 80px rgba(17, 16, 15, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 .story {
   position: relative;

@@ -53,8 +53,14 @@
   animation: drop 260ms var(--ease-out) both;
 }
 @keyframes drop {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .panelTitle {
   font-size: 17px;

@@ -1,20 +1,8 @@
 import { describe, expect, it } from "vitest";
-import {
-  PathError,
-  createMorpher,
-  createSpring,
-  fitPath,
-  parsePath,
-  sampleContours,
-  shapes,
-  springCss,
-  springs,
-  stepSpring,
-} from "../src/index";
+import { PathError, createMorpher, createSpring, fitPath, parsePath, sampleContours, shapes, springCss, springs, stepSpring } from "../src/index";
 
 const LETTER_C = "M90 30A42 42 0 1 0 90 90L74 76A21 21 0 1 1 74 44Z";
-const RING_AND_DOT =
-  "M60 20a40 40 0 1 0 0 80a40 40 0 1 0 0-80ZM60 40a20 20 0 1 1 0 40a20 20 0 1 1 0-40ZM105 15a8 8 0 1 0 0 16a8 8 0 1 0 0-16Z";
+const RING_AND_DOT = "M60 20a40 40 0 1 0 0 80a40 40 0 1 0 0-80ZM60 40a20 20 0 1 1 0 40a20 20 0 1 1 0-40ZM105 15a8 8 0 1 0 0 16a8 8 0 1 0 0-16Z";
 
 describe("spring", () => {
   it("gives the same result at any frame rate", () => {
@@ -120,11 +108,15 @@ describe("morph", () => {
       const m = createMorpher(shapes.circle);
       m.to(shapes.flower);
       for (let i = 0; i < fps / 5; i++) m.step(1 / fps);
-      return m.path().split(/[MLZ ]/).filter(Boolean).map(Number);
+      return m
+        .path()
+        .split(/[MLZ ]/)
+        .filter(Boolean)
+        .map(Number);
     };
     const a = run(30);
     const b = run(240);
-    a.forEach((v, i) => expect(Math.abs(v - b[i])).toBeLessThan(0.02));
+    for (const [i, v] of a.entries()) expect(Math.abs(v - b[i])).toBeLessThan(0.02);
   });
 
   it("does not shake once it arrives", () => {

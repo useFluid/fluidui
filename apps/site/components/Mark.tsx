@@ -56,8 +56,13 @@ export function Mark({ size = 28 }: { size?: number }) {
       height={Math.round(size * 0.75)}
       aria-hidden
       overflow="visible"
-      onPointerEnter={() => { target.current = HOVER; wake.current(); }}
-      onPointerLeave={() => { target.current = 0; }}
+      onPointerEnter={() => {
+        target.current = HOVER;
+        wake.current();
+      }}
+      onPointerLeave={() => {
+        target.current = 0;
+      }}
     >
       <path ref={path} d={MARK} fill="currentColor" />
     </svg>

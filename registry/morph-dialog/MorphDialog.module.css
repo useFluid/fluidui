@@ -56,7 +56,9 @@
   background: var(--fluid-surface);
 }
 .panel[data-rest] {
-  box-shadow: 0 0 0 1px var(--fluid-border), 0 30px 90px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 0 1px var(--fluid-border),
+    0 30px 90px rgba(0, 0, 0, 0.3);
 }
 .content {
   display: flex;

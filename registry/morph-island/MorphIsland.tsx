@@ -17,9 +17,7 @@ type Props = {
   onOpenChange?(open: boolean): void;
 };
 
-export function MorphIsland({
-  label, closeLabel = "Close", children, width = 300, height = 170, closedWidth = 150, open: controlled, onOpenChange,
-}: Props) {
+export function MorphIsland({ label, closeLabel = "Close", children, width = 300, height = 170, closedWidth = 150, open: controlled, onOpenChange }: Props) {
   const [own, setOwn] = useState(false);
   const open = controlled ?? own;
   const body = useRef<HTMLDivElement>(null);
@@ -51,7 +49,14 @@ export function MorphIsland({
   }, [open]);
 
   return (
-    <div ref={body} className={styles.body} data-open={open} onKeyDown={(e) => { if (e.key === "Escape") set(false); }}>
+    <div
+      ref={body}
+      className={styles.body}
+      data-open={open}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") set(false);
+      }}
+    >
       <button ref={trigger} type="button" aria-expanded={open} className={styles.trigger} inert={open} onClick={() => set(true)}>
         {label}
       </button>

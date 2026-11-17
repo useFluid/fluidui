@@ -24,7 +24,8 @@ const icon = (d: string) => (
   </svg>
 );
 
-const SUN = "M12 4V2.5M12 21.5V20M4 12H2.5M21.5 12H20M6.3 6.3 5.2 5.2M18.8 18.8l-1.1-1.1M6.3 17.7l-1.1 1.1M18.8 5.2l-1.1 1.1M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z";
+const SUN =
+  "M12 4V2.5M12 21.5V20M4 12H2.5M21.5 12H20M6.3 6.3 5.2 5.2M18.8 18.8l-1.1-1.1M6.3 17.7l-1.1 1.1M18.8 5.2l-1.1 1.1M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z";
 const MOON = "M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z";
 
 export function ThemeSwitch() {
@@ -34,8 +35,7 @@ export function ThemeSwitch() {
     let stored: string | null = null;
     try {
       stored = localStorage.getItem(KEY);
-    } catch {
-    }
+    } catch {}
     remembered = stored === "light" || stored === "dark" ? stored : "auto";
     setChoice(remembered);
   }, []);
@@ -60,8 +60,7 @@ export function ThemeSwitch() {
         try {
           if (c === "auto") localStorage.removeItem(KEY);
           else localStorage.setItem(KEY, c);
-        } catch {
-        }
+        } catch {}
       }}
       options={[
         { value: "light", label: icon(SUN), ariaLabel: t.theme.light },

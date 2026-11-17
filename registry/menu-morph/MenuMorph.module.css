@@ -58,7 +58,9 @@
   border-radius: 2px;
   background: var(--fluid-on-accent);
   opacity: 0;
-  transition: opacity 200ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 200ms ease,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .root[data-open="true"] .toggle::before {
   opacity: 1;
@@ -83,7 +85,9 @@
   line-height: 16px;
   opacity: 0;
   transform: translateY(-4px);
-  transition: opacity 200ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 200ms ease,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .root[data-side="right"] .title {
   left: 20px;
@@ -108,7 +112,10 @@
   opacity: 0;
   filter: blur(6px);
   transform: translateY(8px);
-  transition: opacity 240ms ease, filter 240ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 240ms ease,
+    filter 240ms ease,
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .root[data-open="true"] .items li {
   opacity: 1;
@@ -127,7 +134,7 @@
   border-radius: 999px;
   background: none;
   color: inherit;
-  font: 500 16px/1 var(--fluid-font);
+  font: 500 16px / 1 var(--fluid-font);
   text-align: left;
   text-decoration: none;
   cursor: pointer;

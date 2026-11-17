@@ -1,6 +1,8 @@
 @import "./tokens.css";
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 html {
@@ -73,19 +75,35 @@ a {
   pointer-events: none;
 }
 @keyframes vt-fade {
-  from { opacity: 0; filter: blur(8px); }
-  to { opacity: 1; filter: blur(0); }
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
 }
 @keyframes vt-rise {
-  from { transform: translateY(32px) scale(0.985); }
-  to { transform: none; }
+  from {
+    transform: translateY(32px) scale(0.985);
+  }
+  to {
+    transform: none;
+  }
 }
 @keyframes vt-sink {
-  to { transform: translateY(-12px) scale(0.99); }
+  to {
+    transform: translateY(-12px) scale(0.99);
+  }
 }
 @keyframes vt-slide {
-  from { translate: var(--slide-offset); }
-  to { translate: 0; }
+  from {
+    translate: var(--slide-offset);
+  }
+  to {
+    translate: 0;
+  }
 }
 ::view-transition-old(.page-out) {
   animation:
@@ -137,10 +155,16 @@ html[data-switching] *::after {
   transition: none !important;
 }
 @keyframes vt-blur-out {
-  to { opacity: 0; filter: blur(6px); }
+  to {
+    opacity: 0;
+    filter: blur(6px);
+  }
 }
 @keyframes vt-blur-in {
-  from { opacity: 0; filter: blur(6px); }
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
 }
 html:active-view-transition-type(lang)::view-transition-old(root),
 html:active-view-transition-type(lang)::view-transition-old(site-nav) {
@@ -164,7 +188,10 @@ html:active-view-transition-type(lang)::view-transition-new(site-nav) {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
-h1, h2, h3, p {
+h1,
+h2,
+h3,
+p {
   margin: 0;
 }
 .container {
@@ -225,7 +252,9 @@ html[data-locked] {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 1ms !important;
     animation-delay: 0ms !important;
     transition-duration: 1ms !important;

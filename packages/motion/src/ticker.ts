@@ -1,4 +1,4 @@
-export type Tick = (dt: number) => boolean | void;
+export type Tick = (dt: number) => boolean | undefined;
 
 const ticks = new Set<Tick>();
 let raf = 0;
