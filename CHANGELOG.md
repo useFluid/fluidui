@@ -9,6 +9,7 @@ Fluid by hand: the same quality without an agent.
 - `MorphPath` never crashes on a bad `d`: it keeps the last good shape, or waits for the first valid one, and in development warns once with the code. Also in development, it warns with the fix when a path does not fit its svg viewBox. The warnings work with Next.js, Vite, webpack and esbuild, and none of their text reaches production builds.
 - The morph is about 2.3 times faster: a circle-to-logo frame went from 24,163 to 56,420 per second, and a two-part logo from 8,851 to 20,215. Its output matches the previous engine within 0.01. Contours of a path are measured once and reused.
 - A failed `to()` or `jump()` no longer leaves a morph half changed.
+- A frame time that is not a positive number (`NaN`, `Infinity`, zero or negative) is skipped: a morph no longer jumps to its end, and a spring no longer gets stuck at `NaN`.
 - New docs for working without AI: [Start by hand](https://fluidui.willradoux.com/docs/by-hand), [Recipes](https://fluidui.willradoux.com/docs/recipes), [Troubleshooting](https://fluidui.willradoux.com/docs/troubleshooting) and a [Reference](https://fluidui.willradoux.com/docs/reference) of every export.
 - For contributors:
   - [ENGINEERING.md](ENGINEERING.md) sets the rules for the API, errors, size, performance and tests;
