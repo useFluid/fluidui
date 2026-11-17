@@ -185,6 +185,10 @@ export const dictionaries = {
       pages: {
         intro: "Introduction",
         installation: "Installation",
+        "by-hand": "Start by hand",
+        recipes: "Recipes",
+        troubleshooting: "Troubleshooting",
+        reference: "Reference",
         theming: "Theming",
         engine: "Engine",
         cli: "CLI",
@@ -473,6 +477,10 @@ export const dictionaries = {
       pages: {
         intro: "Introdução",
         installation: "Instalação",
+        "by-hand": "Start by hand",
+        recipes: "Recipes",
+        troubleshooting: "Troubleshooting",
+        reference: "Reference",
         theming: "Tema",
         engine: "Motor",
         cli: "CLI",

@@ -4,7 +4,22 @@ import AxeBuilder from "@axe-core/playwright";
 import { type Page, expect, test } from "@playwright/test";
 
 const SLUGS = [...readFileSync(path.join(__dirname, "../../../registry/index.ts"), "utf8").matchAll(/slug: "([a-z-]+)"/g)].map((m) => m[1]);
-const PAGES = ["/", "/components", "/mascots", "/splash", "/prompts", "/docs", "/docs/installation", "/docs/cli", "/docs/engine", "/docs/contributing"];
+const PAGES = [
+  "/",
+  "/components",
+  "/mascots",
+  "/splash",
+  "/prompts",
+  "/docs",
+  "/docs/installation",
+  "/docs/by-hand",
+  "/docs/recipes",
+  "/docs/troubleshooting",
+  "/docs/reference",
+  "/docs/cli",
+  "/docs/engine",
+  "/docs/contributing",
+];
 const PT_PAGES = PAGES.map((p) => (p === "/" ? "/pt" : `/pt${p}`));
 
 function watchErrors(page: Page) {
@@ -269,4 +284,51 @@ test("the splash page compares a short and a long brand name", async ({ page }) 
   await page.getByRole("textbox", { name: "Type your brand's name" }).fill("Supercalifragilistic Expialidocious Ltd");
   await expect(page.getByText("Supercalifragilistic Expialidocious Ltd · 39 characters")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
+const BY_HAND = [
+  ["/docs/by-hand", "Start by hand"],
+  ["/docs/recipes", "Recipes"],
+  ["/docs/troubleshooting", "Troubleshooting"],
+  ["/docs/reference", "Reference"],
+] as const;
+
+test("the by-hand docs exist in both languages, in English", async ({ page }) => {
+  for (const [path, title] of BY_HAND) {
+    for (const prefix of ["", "/pt"]) {
+      await page.goto(`${prefix}${path}`);
+      await expect(page.locator("h1")).toHaveText(title);
+    }
+  }
+});
+
+test("every error code has a troubleshooting entry", async ({ page }) => {
+  await page.goto("/docs/troubleshooting");
+  for (const code of [
+    "FLUID_PATH_START",
+    "FLUID_PATH_NUMBER",
+    "FLUID_PATH_FLAG",
+    "FLUID_PATH_COMMAND",
+    "FLUID_PATH_CHARACTER",
+    "FLUID_PATH_EMPTY",
+    "FLUID_PATH_NO_SIZE",
+    "FLUID_VIEWBOX",
+    "FLUID_BOX_MISMATCH",
+  ]) {
+    await expect(page.locator(`[id="${code}"]`)).toHaveCount(1);
+  }
+});
+
+test("the recipe morphs a Lucide icon without warnings", async ({ page }) => {
+  const warnings: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "warning" || m.type() === "error") warnings.push(m.text());
+  });
+  await page.goto("/docs/recipes");
+  const demo = page.getByTestId("icon-recipe");
+  await demo.scrollIntoViewIfNeeded();
+  await demo.getByRole("button").click();
+  await page.waitForTimeout(2000);
+  await expect(demo.locator("path")).toHaveCount(1);
+  expect(warnings.filter((w) => w.includes("FLUID_"))).toEqual([]);
 });

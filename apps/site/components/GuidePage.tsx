@@ -2,11 +2,12 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { GUIDE, type GuidePage as Page, guidePath } from "@/lib/guide";
+import { BY_HAND, GUIDE, type GuidePage as Page, guidePath } from "@/lib/guide";
 import { highlight } from "@/lib/highlight";
 import { type Lang, dictionaries, href } from "@/lib/i18n";
 import { REPO } from "@/lib/site";
 import { CodeBlock } from "./CodeBlock";
+import { IconRecipe } from "./IconRecipe";
 import { DocPage, Section } from "./DocPage";
 import { Markdown } from "./Markdown";
 import doc from "./DocPage.module.css";
@@ -56,6 +57,28 @@ const THEME = (font: string) => `:root {
   --fluid-font: ${font}, sans-serif;
 }`;
 
+const sectionId = (title: string) =>
+  /^FLUID_[A-Z_]+$/.test(title)
+    ? title
+    : title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+export const byHandSource = (page: (typeof BY_HAND)[number]) => readFileSync(path.join(process.cwd(), "content", `${page}.md`), "utf8").replace(/\r\n/g, "\n");
+
+function byHand(page: (typeof BY_HAND)[number]) {
+  const [head, ...sections] = byHandSource(page).split(/^## /m);
+  const title = head.match(/^# (.*)$/m)?.[1]?.trim() ?? page;
+  const lead = head.replace(/^# .*$/m, "").trim();
+  const list: Part[] = sections.map((section) => {
+    const [heading, ...rest] = section.split("\n");
+    return { id: sectionId(heading.trim()), title: heading.trim(), body: <Markdown source={rest.join("\n").trim()} name="Example" /> };
+  });
+  if (page === "recipes") list.unshift({ id: "try-it", title: "Try it", body: <IconRecipe /> });
+  return { title, lead, parts: list };
+}
+
 async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: string; parts: Part[] }> {
   const t = dictionaries[lang];
   const g = t.guide;
@@ -63,6 +86,11 @@ async function parts(page: Page, lang: Lang): Promise<{ title: string; lead: str
   const p = (text: string) => <p className={doc.text}>{text}</p>;
   const n = (text: string) => text.replace(/^\d+\.\s*/, "");
   switch (page) {
+    case "by-hand":
+    case "recipes":
+    case "troubleshooting":
+    case "reference":
+      return byHand(page);
     case "intro":
       return {
         title: g.introTitle,

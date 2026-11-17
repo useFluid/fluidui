@@ -56,7 +56,7 @@ const check = scalePath(lucideCheckPath, 24);
 </svg>;
 ```
 
-Errors carry a code, like `FLUID_PATH_NUMBER`. Each one has an entry, with the fix, at [fluidui.willradoux.com/docs/troubleshooting](https://fluidui.willradoux.com/docs/troubleshooting). In development the message also explains it.
+Errors carry a code, like `FLUID_PATH_NUMBER`. Each one has an entry, with the fix, on the [troubleshooting page](https://fluidui.willradoux.com/docs/troubleshooting). In development the message also explains it.
 
 Rules that keep a morph clean:
 
