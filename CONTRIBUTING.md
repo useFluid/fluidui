@@ -40,19 +40,9 @@ This creates `registry/my-piece/` with four files:
 
 Then set its family and texts in `registry/index.ts`, and it shows up on the site, in the CLI and in the prompts page. The catalogue test fails until the README has every section.
 
-## What every piece does
+## Rules
 
-- Wears the brand: colours, radius and font come from the `--fluid-*` variables.
-- Goes straight to its final state with reduced motion.
-- Has touch targets of at least 44 px and a visible focus ring.
-- Works with the keyboard and tells screen readers what changed.
-- Fits at 320 px wide.
-- Uses the engine for springs and morphs, with no other runtime dependency.
-
-## Style
-
-- TypeScript and CSS modules. No comments in the code: names carry the meaning, and the README explains the rest.
-- Small commits with a message that says what changed and why.
+How the code, the public API, errors, tests and the size budget work is in [ENGINEERING.md](ENGINEERING.md). Read it before your first pull request.
 
 ## License
 
