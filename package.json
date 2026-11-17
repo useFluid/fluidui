@@ -16,7 +16,8 @@
     "record": "node scripts/record.mjs",
     "lint": "biome ci .",
     "format": "biome format --write .",
-    "size": "node scripts/size.mjs"
+    "size": "node scripts/size.mjs",
+    "bench": "node scripts/bench.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.8",
