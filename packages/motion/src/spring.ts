@@ -58,6 +58,7 @@ export function createSpring(initial: number, config: SpringConfig = springs.sna
     velocity: 0,
     target: initial,
     step(dt) {
+      if (!(dt > 0 && dt < Infinity)) return spring.value !== spring.target || spring.velocity !== 0;
       const r = stepSpring(spring.value, spring.velocity, spring.target, config.w, config.z, dt);
       spring.value = r.x;
       spring.velocity = r.v;

@@ -139,6 +139,7 @@ export function createMorpher(initial: string, config: MorpherConfig = springs.s
     },
     step(dt) {
       if (resting) return false;
+      if (!(dt > 0 && dt < Infinity)) return true;
       let moving = false;
       for (const s of slots) {
         prepare(s, dt);
