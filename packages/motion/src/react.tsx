@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  type RefObject,
-  type SVGProps,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { type RefObject, type SVGProps, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { type MorpherConfig, createMorpher } from "./morph.ts";
 import { type Spring, type SpringConfig, createSpring, springs } from "./spring.ts";
 import { play } from "./ticker.ts";
@@ -22,7 +14,11 @@ function subscribeMotion(onChange: () => void) {
 }
 
 export function useReducedMotion() {
-  return useSyncExternalStore(subscribeMotion, () => window.matchMedia(QUERY).matches, () => false);
+  return useSyncExternalStore(
+    subscribeMotion,
+    () => window.matchMedia(QUERY).matches,
+    () => false,
+  );
 }
 
 const isReduced = () => typeof window !== "undefined" && window.matchMedia(QUERY).matches;
@@ -42,7 +38,8 @@ export function useSpring<K extends string>(
 
   useLayoutEffect(() => {
     const first = !store.current;
-    const all = (store.current ??= {});
+    store.current ??= {};
+    const all = store.current;
     for (const key in target) all[key] ??= createSpring(target[key], config);
 
     const flush = () => {

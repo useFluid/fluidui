@@ -1,17 +1,11 @@
-export type Command =
-  | { c: "M"; x: number; y: number }
-  | { c: "C"; x1: number; y1: number; x2: number; y2: number; x: number; y: number }
-  | { c: "Z" };
+export type Command = { c: "M"; x: number; y: number } | { c: "C"; x1: number; y1: number; x2: number; y2: number; x: number; y: number } | { c: "Z" };
 
 export class PathError extends Error {}
 
 const NUMBER = /[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/y;
 const KNOWN = "MLHVCSQTAZ";
 
-function arcToCubics(
-  x0: number, y0: number, rx: number, ry: number, deg: number,
-  large: number, sweep: number, x: number, y: number,
-) {
+function arcToCubics(x0: number, y0: number, rx: number, ry: number, deg: number, large: number, sweep: number, x: number, y: number) {
   const result: Command[] = [];
   if (x0 === x && y0 === y) return result;
   rx = Math.abs(rx);
@@ -79,8 +73,12 @@ export function parsePath(d: string): Command[] {
     return Number(f);
   };
 
-  let x = 0, y = 0, sx = 0, sy = 0;
-  let cx = 0, cy = 0;
+  let x = 0,
+    y = 0,
+    sx = 0,
+    sy = 0;
+  let cx = 0,
+    cy = 0;
   let prev = "";
   let cmd = "";
 
@@ -99,9 +97,12 @@ export function parsePath(d: string): Command[] {
   const quad = (qx: number, qy: number, nx: number, ny: number) => {
     out.push({
       c: "C",
-      x1: x + (2 / 3) * (qx - x), y1: y + (2 / 3) * (qy - y),
-      x2: nx + (2 / 3) * (qx - nx), y2: ny + (2 / 3) * (qy - ny),
-      x: nx, y: ny,
+      x1: x + (2 / 3) * (qx - x),
+      y1: y + (2 / 3) * (qy - y),
+      x2: nx + (2 / 3) * (qx - nx),
+      y2: ny + (2 / 3) * (qy - ny),
+      x: nx,
+      y: ny,
     });
     cx = qx;
     cy = qy;
@@ -143,33 +144,47 @@ export function parsePath(d: string): Command[] {
         line(x, number() + oy);
         break;
       case "C": {
-        const x1 = number() + ox, y1 = number() + oy, x2 = number() + ox, y2 = number() + oy;
+        const x1 = number() + ox,
+          y1 = number() + oy,
+          x2 = number() + ox,
+          y2 = number() + oy;
         const nx = number() + ox;
         cubic(x1, y1, x2, y2, nx, number() + oy);
         break;
       }
       case "S": {
         const smooth = prev === "C" || prev === "S";
-        const x1 = smooth ? 2 * x - cx : x, y1 = smooth ? 2 * y - cy : y;
-        const x2 = number() + ox, y2 = number() + oy, nx = number() + ox;
+        const x1 = smooth ? 2 * x - cx : x,
+          y1 = smooth ? 2 * y - cy : y;
+        const x2 = number() + ox,
+          y2 = number() + oy,
+          nx = number() + ox;
         cubic(x1, y1, x2, y2, nx, number() + oy);
         break;
       }
       case "Q": {
-        const qx = number() + ox, qy = number() + oy, nx = number() + ox;
+        const qx = number() + ox,
+          qy = number() + oy,
+          nx = number() + ox;
         quad(qx, qy, nx, number() + oy);
         break;
       }
       case "T": {
         const smooth = prev === "Q" || prev === "T";
-        const qx = smooth ? 2 * x - cx : x, qy = smooth ? 2 * y - cy : y;
+        const qx = smooth ? 2 * x - cx : x,
+          qy = smooth ? 2 * y - cy : y;
         const nx = number() + ox;
         quad(qx, qy, nx, number() + oy);
         break;
       }
       case "A": {
-        const rx = number(), ry = number(), deg = number(), large = flag(), sweep = flag();
-        const nx = number() + ox, ny = number() + oy;
+        const rx = number(),
+          ry = number(),
+          deg = number(),
+          large = flag(),
+          sweep = flag();
+        const nx = number() + ox,
+          ny = number() + oy;
         out.push(...arcToCubics(x, y, rx, ry, deg, large, sweep, nx, ny));
         x = nx;
         y = ny;
@@ -194,9 +209,11 @@ const round = (n: number) => +n.toFixed(2);
 export function serializePath(commands: Command[]) {
   return commands
     .map((c) =>
-      c.c === "M" ? `M${round(c.x)} ${round(c.y)}`
-      : c.c === "Z" ? "Z"
-      : `C${round(c.x1)} ${round(c.y1)} ${round(c.x2)} ${round(c.y2)} ${round(c.x)} ${round(c.y)}`,
+      c.c === "M"
+        ? `M${round(c.x)} ${round(c.y)}`
+        : c.c === "Z"
+          ? "Z"
+          : `C${round(c.x1)} ${round(c.y1)} ${round(c.x2)} ${round(c.y2)} ${round(c.x)} ${round(c.y)}`,
     )
     .join("");
 }
@@ -211,7 +228,10 @@ type Poly = { x: number[]; y: number[] };
 function flatten(commands: Command[], steps = 28) {
   const polys: Poly[] = [];
   let cur: Poly | null = null;
-  let x = 0, y = 0, sx = 0, sy = 0;
+  let x = 0,
+    y = 0,
+    sx = 0,
+    sy = 0;
   for (const c of commands) {
     if (c.c === "M") {
       cur = { x: [c.x], y: [c.y] };
@@ -243,7 +263,10 @@ function flatten(commands: Command[], steps = 28) {
 
 export function fitPath(d: string, size = 120, padding = 0) {
   const commands = parsePath(d);
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
   for (const p of flatten(commands)) {
     for (let i = 0; i < p.x.length; i++) {
       minX = Math.min(minX, p.x[i]);
@@ -253,15 +276,18 @@ export function fitPath(d: string, size = 120, padding = 0) {
     }
   }
   const span = Math.max(maxX - minX, maxY - minY);
-  if (!(span > 0) || !isFinite(span)) throw new PathError("This path has no size");
+  if (!(span > 0) || !Number.isFinite(span)) throw new PathError("This path has no size");
   const k = (size - padding * 2) / span;
-  const X = (v: number) => (v - (minX + maxX) / 2) * k + size / 2;
-  const Y = (v: number) => (v - (minY + maxY) / 2) * k + size / 2;
+  const toX = (v: number) => (v - (minX + maxX) / 2) * k + size / 2;
+  const toY = (v: number) => (v - (minY + maxY) / 2) * k + size / 2;
   return serializePath(
-    commands.map((c): Command =>
-      c.c === "M" ? { c: "M", x: X(c.x), y: Y(c.y) }
-      : c.c === "Z" ? c
-      : { c: "C", x1: X(c.x1), y1: Y(c.y1), x2: X(c.x2), y2: Y(c.y2), x: X(c.x), y: Y(c.y) },
+    commands.map(
+      (c): Command =>
+        c.c === "M"
+          ? { c: "M", x: toX(c.x), y: toY(c.y) }
+          : c.c === "Z"
+            ? c
+            : { c: "C", x1: toX(c.x1), y1: toY(c.y1), x2: toX(c.x2), y2: toY(c.y2), x: toX(c.x), y: toY(c.y) },
     ),
   );
 }
@@ -295,7 +321,9 @@ export function sampleContours(d: string, count = 160): Contour[] {
       x[i] = p.x[seg] + (p.x[j] - p.x[seg]) * t;
       y[i] = p.y[seg] + (p.y[j] - p.y[seg]) * t;
     }
-    let signed = 0, cx = 0, cy = 0;
+    let signed = 0,
+      cx = 0,
+      cy = 0;
     for (let i = 0; i < count; i++) {
       const j = (i + 1) % count;
       signed += x[i] * y[j] - x[j] * y[i];
