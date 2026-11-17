@@ -31,12 +31,12 @@ npm run new -- my-piece
 
 This creates `registry/my-piece/` with four files:
 
-| File | What goes in it |
-|---|---|
-| `MyPiece.tsx` | The component. It reads only the `--fluid-*` variables, never fixed colours. |
-| `MyPiece.module.css` | Its styles. |
-| `demo.tsx` | What the site shows. Use `useAutoplay` from `demo-context` so it plays on its own. |
-| `README.md` | Example, props, keyboard and screen readers, notes. |
+| File                 | What goes in it                                                                    |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| `MyPiece.tsx`        | The component. It reads only the `--fluid-*` variables, never fixed colours.       |
+| `MyPiece.module.css` | Its styles.                                                                        |
+| `demo.tsx`           | What the site shows. Use `useAutoplay` from `demo-context` so it plays on its own. |
+| `README.md`          | Example, props, keyboard and screen readers, notes.                                |
 
 Then set its family and texts in `registry/index.ts`, and it shows up on the site, in the CLI and in the prompts page. The catalogue test fails until the README has every section.
 

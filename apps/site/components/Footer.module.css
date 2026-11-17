@@ -58,7 +58,12 @@
 }
 .install code {
   overflow: hidden;
-  font: 14px ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  font:
+    14px ui-monospace,
+    "Cascadia Code",
+    Menlo,
+    Consolas,
+    monospace;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -91,7 +96,9 @@
   color: #ffffff;
   font-size: 17px;
   text-decoration: none;
-  transition: color 160ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    color 160ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (hover: hover) {
   .columns a:hover {

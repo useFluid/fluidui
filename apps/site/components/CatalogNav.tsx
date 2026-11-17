@@ -20,7 +20,9 @@ export function CatalogNav({ groups }: { groups: Group[] }) {
   return (
     <nav aria-label={t.guide.label} className={styles.nav}>
       <div className={styles.group}>
-        <p className={styles.title}><SameWidth lang={lang} start texts={both((d) => d.guide.start)} /></p>
+        <p className={styles.title}>
+          <SameWidth lang={lang} start texts={both((d) => d.guide.start)} />
+        </p>
         <ul>
           {GUIDE.map((page) => {
             const link = href(lang, guidePath(page));
@@ -39,13 +41,23 @@ export function CatalogNav({ groups }: { groups: Group[] }) {
       </Link>
       {groups.map((group) => (
         <div key={group.category.en} className={styles.group}>
-          <p className={styles.title}><SameWidth lang={lang} start texts={group.category} /></p>
+          <p className={styles.title}>
+            <SameWidth lang={lang} start texts={group.category} />
+          </p>
           <ul>
             {group.pieces.map((piece) => {
               const link = href(lang, `/components/${piece.slug}`);
               return (
                 <li key={piece.slug}>
-                  <Link href={link} prefetch={false} onPointerEnter={warm(link)} onPointerDown={warm(link)} onFocus={warm(link)} className={styles.link} aria-current={path === link ? "page" : undefined}>
+                  <Link
+                    href={link}
+                    prefetch={false}
+                    onPointerEnter={warm(link)}
+                    onPointerDown={warm(link)}
+                    onFocus={warm(link)}
+                    className={styles.link}
+                    aria-current={path === link ? "page" : undefined}
+                  >
                     {piece.name}
                   </Link>
                 </li>

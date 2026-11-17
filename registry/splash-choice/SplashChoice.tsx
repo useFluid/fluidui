@@ -105,7 +105,9 @@ export function SplashChoice({
         <Heading className={styles.title}>
           <span className={styles.line}>{title}</span>
           <span className={styles.word}>
-            <span key={shown} className={styles.wordIn}>{shown}</span>
+            <span key={shown} className={styles.wordIn}>
+              {shown}
+            </span>
           </span>
         </Heading>
         <div className={styles.picker} inert={!risen}>

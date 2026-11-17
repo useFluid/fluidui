@@ -58,7 +58,6 @@ const HELP = `${bold("fluid")} ${dim(registry.version)}
       --out <file.mp4>               default fluid-<format>.mp4
       --browser chrome|msedge        default chrome`;
 
-
 function defaultDir(kind) {
   const src = existsSync("src");
   if (kind === "pieces") return src ? "src/components/fluid" : "components/fluid";
@@ -140,7 +139,12 @@ function add() {
   if (!findTheme()) console.log(`\nSet your brand once:\n  ${bold("npx @usefluid/cli init")}`);
   for (const slug of positional) {
     const piece = registry.pieces.find((p) => p.slug === slug);
-    console.log(`\n${bold(piece.name)}\n${piece.usage.split("\n").map((l) => `  ${l}`).join("\n")}`);
+    console.log(
+      `\n${bold(piece.name)}\n${piece.usage
+        .split("\n")
+        .map((l) => `  ${l}`)
+        .join("\n")}`,
+    );
     console.log(dim(`  Props, keyboard and screen readers: ${join(dir, slug, "README.md")}`));
   }
 }
@@ -155,7 +159,6 @@ function init() {
   console.log(`for example ${bold("--fluid-accent: var(--color-primary);")} so dark mode follows by itself.`);
 }
 
-
 const num = (v) => Number.parseFloat(v ?? "0") || 0;
 const attr = (tag, name) => tag.match(new RegExp(`\\s${name}\\s*=\\s*"([^"]*)"`))?.[1] ?? tag.match(new RegExp(`\\s${name}\\s*=\\s*'([^']*)'`))?.[1];
 
@@ -163,18 +166,26 @@ function shapeToPath(tag) {
   const kind = tag.match(/^<\s*(\w+)/)[1].toLowerCase();
   if (kind === "path") return attr(tag, "d") ?? "";
   if (kind === "circle" || kind === "ellipse") {
-    const cx = num(attr(tag, "cx")), cy = num(attr(tag, "cy"));
-    const rx = num(attr(tag, kind === "circle" ? "r" : "rx")), ry = num(attr(tag, kind === "circle" ? "r" : "ry"));
+    const cx = num(attr(tag, "cx")),
+      cy = num(attr(tag, "cy"));
+    const rx = num(attr(tag, kind === "circle" ? "r" : "rx")),
+      ry = num(attr(tag, kind === "circle" ? "r" : "ry"));
     return `M${cx - rx} ${cy}a${rx} ${ry} 0 1 0 ${2 * rx} 0a${rx} ${ry} 0 1 0 ${-2 * rx} 0Z`;
   }
   if (kind === "rect") {
-    const x = num(attr(tag, "x")), y = num(attr(tag, "y")), w = num(attr(tag, "width")), h = num(attr(tag, "height"));
+    const x = num(attr(tag, "x")),
+      y = num(attr(tag, "y")),
+      w = num(attr(tag, "width")),
+      h = num(attr(tag, "height"));
     const r = Math.min(num(attr(tag, "rx") ?? attr(tag, "ry")), w / 2, h / 2);
     if (!r) return `M${x} ${y}H${x + w}V${y + h}H${x}Z`;
     return `M${x + r} ${y}H${x + w - r}A${r} ${r} 0 0 1 ${x + w} ${y + r}V${y + h - r}A${r} ${r} 0 0 1 ${x + w - r} ${y + h}H${x + r}A${r} ${r} 0 0 1 ${x} ${y + h - r}V${y + r}A${r} ${r} 0 0 1 ${x + r} ${y}Z`;
   }
   if (kind === "polygon" || kind === "polyline") {
-    const pts = (attr(tag, "points") ?? "").trim().split(/[\s,]+/).map(Number);
+    const pts = (attr(tag, "points") ?? "")
+      .trim()
+      .split(/[\s,]+/)
+      .map(Number);
     let d = "";
     for (let i = 0; i + 1 < pts.length; i += 2) d += `${i ? "L" : "M"}${pts[i]} ${pts[i + 1]}`;
     return `${d}Z`;
@@ -210,7 +221,6 @@ async function logo() {
     console.error(dim(`\n${parts} part${parts === 1 ? "" : "s"}. Use --out logo.ts to save it as a module.`));
   }
 }
-
 
 const FORMATS = { story: [1080, 1920], post: [1080, 1350], square: [1080, 1080], wide: [1920, 1080] };
 
@@ -276,8 +286,22 @@ async function capture({ url, frames, width, height, scale, seconds, fps, out })
   await browser.close();
   mkdirSync(dirname(resolve(out)), { recursive: true });
   execFileSync("ffmpeg", [
-    "-y", "-loglevel", "error", "-framerate", String(fps), "-i", join(frames, "%05d.png"),
-    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-movflags", "+faststart", out,
+    "-y",
+    "-loglevel",
+    "error",
+    "-framerate",
+    String(fps),
+    "-i",
+    join(frames, "%05d.png"),
+    "-c:v",
+    "libx264",
+    "-pix_fmt",
+    "yuv420p",
+    "-crf",
+    "18",
+    "-movflags",
+    "+faststart",
+    out,
   ]);
 }
 

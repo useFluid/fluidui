@@ -30,6 +30,11 @@
   margin: 0;
   padding: var(--space-4);
   background: transparent !important;
-  font: 13.5px/1.6 ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  font:
+    13.5px / 1.6 ui-monospace,
+    "Cascadia Code",
+    Menlo,
+    Consolas,
+    monospace;
   letter-spacing: 0;
 }

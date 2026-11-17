@@ -6,7 +6,10 @@ import { MARK } from "@/lib/logo";
 import { useLang } from "./LangProvider";
 import styles from "./SocialVideo.module.css";
 
-const HEART = [12, 21, 12, 21, 4.5, 16.4, 2.4, 11.9, 1, 8.6, 3, 5, 6.6, 5, 8.7, 5, 10.2, 6.2, 12, 8.2, 13.8, 6.2, 15.3, 5, 17.4, 5, 21, 5, 23, 8.6, 21.6, 11.9, 19.5, 16.4, 12, 21, 12, 21];
+const HEART = [
+  12, 21, 12, 21, 4.5, 16.4, 2.4, 11.9, 1, 8.6, 3, 5, 6.6, 5, 8.7, 5, 10.2, 6.2, 12, 8.2, 13.8, 6.2, 15.3, 5, 17.4, 5, 21, 5, 23, 8.6, 21.6, 11.9, 19.5, 16.4,
+  12, 21, 12, 21,
+];
 
 function heart(k = 1, cx = 12, cy = 12.4) {
   const p = HEART.map((v, i) => (i % 2 ? cy + (v - cy) * k : cx + (v - cx) * k).toFixed(2));
@@ -24,7 +27,13 @@ const ICONS = {
   comment: <path {...stroke} d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5Z" />,
   share: <path {...stroke} d="M21 3 10 14M21 3l-7 18-4-7-7-4 18-7Z" />,
   close: <path {...stroke} d="M6 6l12 12M18 6 6 18" />,
-  more: <g fill="currentColor"><circle cx="5" cy="12" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="19" cy="12" r="1.6" /></g>,
+  more: (
+    <g fill="currentColor">
+      <circle cx="5" cy="12" r="1.6" />
+      <circle cx="12" cy="12" r="1.6" />
+      <circle cx="19" cy="12" r="1.6" />
+    </g>
+  ),
 };
 
 function Icon({ name, size = 24 }: { name: keyof typeof ICONS; size?: number }) {
@@ -48,7 +57,14 @@ function Avatar({ size }: { size: number }) {
 function Like({ liked, onToggle, size = 26 }: { liked: boolean; onToggle(): void; size?: number }) {
   const { t } = useLang();
   return (
-    <button type="button" className={styles.icon} data-liked={liked ? "" : undefined} aria-pressed={liked} aria-label={liked ? t.videos.unlike : t.videos.like} onClick={onToggle}>
+    <button
+      type="button"
+      className={styles.icon}
+      data-liked={liked ? "" : undefined}
+      aria-pressed={liked}
+      aria-label={liked ? t.videos.unlike : t.videos.like}
+      onClick={onToggle}
+    >
       <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden>
         <MorphPath d={liked ? FULL : OUTLINE} config={LIKE_SPRING} fill="currentColor" />
       </svg>
@@ -62,10 +78,13 @@ function useVideo() {
   useEffect(() => {
     const el = ref.current;
     if (!el || reduced) return;
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) el.play().catch(() => {});
-      else el.pause();
-    }, { threshold: 0.3 });
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.3 },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, [reduced]);
@@ -117,7 +136,9 @@ export function StoryVideo({ src, label }: { src: string; label: string }) {
       if (bar.current && el.duration) bar.current.style.transform = `scaleX(${el.currentTime / el.duration})`;
       raf = el.paused ? 0 : requestAnimationFrame(tick);
     };
-    const start = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    const start = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
     el.addEventListener("play", start);
     return () => {
       el.removeEventListener("play", start);
@@ -133,7 +154,9 @@ export function StoryVideo({ src, label }: { src: string; label: string }) {
           <Burst n={tap.burst} />
           <div className={styles.top}>
             <div className={styles.bars} aria-hidden>
-              <span><span ref={bar} /></span>
+              <span>
+                <span ref={bar} />
+              </span>
               <span />
               <span />
             </div>
@@ -142,14 +165,20 @@ export function StoryVideo({ src, label }: { src: string; label: string }) {
               <strong>fluid</strong>
               <span className={styles.ago}>{t.videos.ago}</span>
               <span className={styles.spacer} />
-              <span className={styles.ghost} aria-hidden><Icon name="more" size={20} /></span>
-              <span className={styles.ghost} aria-hidden><Icon name="close" size={22} /></span>
+              <span className={styles.ghost} aria-hidden>
+                <Icon name="more" size={20} />
+              </span>
+              <span className={styles.ghost} aria-hidden>
+                <Icon name="close" size={22} />
+              </span>
             </div>
           </div>
           <div className={styles.bottom}>
             <span className={styles.reply}>{t.videos.reply}</span>
             <Like liked={liked} onToggle={() => setLiked((l) => !l)} />
-            <span className={styles.ghost} aria-hidden><Icon name="share" /></span>
+            <span className={styles.ghost} aria-hidden>
+              <Icon name="share" />
+            </span>
           </div>
         </div>
       </div>
@@ -174,7 +203,9 @@ export function PostVideo({ src, label }: { src: string; label: string }) {
           <strong>fluid</strong>
           <span className={styles.follow}>{t.videos.follow}</span>
           <span className={styles.spacer} />
-          <span className={styles.ghost} aria-hidden><Icon name="more" size={20} /></span>
+          <span className={styles.ghost} aria-hidden>
+            <Icon name="more" size={20} />
+          </span>
         </header>
         <div className={styles.media} onPointerUp={tap.onPointerUp}>
           <video ref={ref} src={`${src}#t=0.1`} muted loop playsInline preload="auto" aria-label={label} controls={reduced} />
@@ -182,8 +213,12 @@ export function PostVideo({ src, label }: { src: string; label: string }) {
         </div>
         <div className={styles.actions}>
           <Like liked={liked} onToggle={() => setLiked((l) => !l)} />
-          <span className={styles.ghost} aria-hidden><Icon name="comment" /></span>
-          <span className={styles.ghost} aria-hidden><Icon name="share" /></span>
+          <span className={styles.ghost} aria-hidden>
+            <Icon name="comment" />
+          </span>
+          <span className={styles.ghost} aria-hidden>
+            <Icon name="share" />
+          </span>
           <span className={styles.spacer} />
           <button type="button" className={styles.icon} aria-pressed={saved} aria-label={t.videos.save} onClick={() => setSaved((s) => !s)}>
             <svg viewBox="0 0 24 24" width={24} height={24} aria-hidden>

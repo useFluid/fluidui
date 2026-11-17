@@ -30,10 +30,13 @@ const cache = new Map<string, Promise<Piece>>();
 function load(slug: string, lang: Lang) {
   const key = `${lang}/${slug}`;
   if (!cache.has(key)) {
-    cache.set(key, fetch(`/api/pieces/${lang}/${slug}`).then((r) => {
-      if (!r.ok) throw new Error(String(r.status));
-      return r.json();
-    }));
+    cache.set(
+      key,
+      fetch(`/api/pieces/${lang}/${slug}`).then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json();
+      }),
+    );
   }
   return cache.get(key)!;
 }
@@ -46,14 +49,17 @@ export function PieceDialogProvider({ children }: { children: ReactNode }) {
   const [piece, setPiece] = useState<Piece | null>(null);
   const [failed, setFailed] = useState(false);
 
-  const show = useCallback((next: string, from?: HTMLElement) => {
-    setSlug(next);
-    setOrigin(from ?? null);
-    setPiece(null);
-    setFailed(false);
-    setOpen(true);
-    load(next, lang).then(setPiece, () => setFailed(true));
-  }, [lang]);
+  const show = useCallback(
+    (next: string, from?: HTMLElement) => {
+      setSlug(next);
+      setOrigin(from ?? null);
+      setPiece(null);
+      setFailed(false);
+      setOpen(true);
+      load(next, lang).then(setPiece, () => setFailed(true));
+    },
+    [lang],
+  );
   const close = useCallback(() => setOpen(false), []);
 
   return (
@@ -65,7 +71,9 @@ export function PieceDialogProvider({ children }: { children: ReactNode }) {
             <header className={styles.head}>
               <div>
                 <p className={styles.category}>{piece?.category ?? " "}</p>
-                <h2 id="piece-title" className={styles.title}>{piece?.name ?? t.dialog.loading}</h2>
+                <h2 id="piece-title" className={styles.title}>
+                  {piece?.name ?? t.dialog.loading}
+                </h2>
               </div>
               <button type="button" className={styles.close} onClick={close} aria-label={t.dialog.close}>
                 <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
@@ -84,8 +92,16 @@ export function PieceDialogProvider({ children }: { children: ReactNode }) {
                       label={t.piece.tabs}
                       tabs={[
                         { id: "como", label: <SameWidth lang={lang} texts={both((d) => d.piece.how)} />, content: <p className={styles.how}>{piece.how}</p> },
-                        { id: "uso", label: <SameWidth lang={lang} texts={both((d) => d.piece.usage)} />, content: <CodeBlock name={t.piece.example} {...piece.usage} /> },
-                        { id: "codigo", label: <SameWidth lang={lang} texts={both((d) => d.piece.code)} />, content: piece.files.map((f) => <CodeBlock key={f.name} {...f} />) },
+                        {
+                          id: "uso",
+                          label: <SameWidth lang={lang} texts={both((d) => d.piece.usage)} />,
+                          content: <CodeBlock name={t.piece.example} {...piece.usage} />,
+                        },
+                        {
+                          id: "codigo",
+                          label: <SameWidth lang={lang} texts={both((d) => d.piece.code)} />,
+                          content: piece.files.map((f) => <CodeBlock key={f.name} {...f} />),
+                        },
                         {
                           id: "prompt",
                           label: <SameWidth lang={lang} texts={both((d) => d.piece.prompt)} />,

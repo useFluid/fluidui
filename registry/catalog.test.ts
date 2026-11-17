@@ -44,7 +44,9 @@ describe("catalog", () => {
   it("moves every demo on its own, either by autoplay or by a loop", () => {
     for (const entry of catalog) {
       const demo = readFileSync(join(root, entry.slug, "demo.tsx"), "utf8");
-      const component = readdirSync(join(root, entry.slug)).map((n) => readFileSync(join(root, entry.slug, n), "utf8")).join();
+      const component = readdirSync(join(root, entry.slug))
+        .map((n) => readFileSync(join(root, entry.slug, n), "utf8"))
+        .join();
       const moves = entry.loop || demo.includes("useAutoplay") || /setInterval/.test(component);
       expect(moves, entry.slug).toBeTruthy();
     }

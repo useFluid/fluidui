@@ -9,5 +9,7 @@
     "./demo-context": "./demo-context.tsx",
     "./*": "./*"
   },
-  "dependencies": { "@usefluid/motion": "*" }
+  "dependencies": {
+    "@usefluid/motion": "*"
+  }
 }

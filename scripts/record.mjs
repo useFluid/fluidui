@@ -1,4 +1,3 @@
-
 import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -19,7 +18,9 @@ const flag = (name, fallback) => {
   return i >= 0 ? args[i + 1] : fallback;
 };
 if (!slug) {
-  console.error("Use: npm run record -- <piece> [--format story|post|square|wide] [--brand fluid|orbe|cais|vento] [--background accent|hot|lime|ink|paper|sky|white] [--seconds 6] [--fps 60] [--url http://127.0.0.1:3000]");
+  console.error(
+    "Use: npm run record -- <piece> [--format story|post|square|wide] [--brand fluid|orbe|cais|vento] [--background accent|hot|lime|ink|paper|sky|white] [--seconds 6] [--fps 60] [--url http://127.0.0.1:3000]",
+  );
   process.exit(1);
 }
 
@@ -71,8 +72,22 @@ await browser.close();
 
 mkdirSync("videos", { recursive: true });
 execFileSync("ffmpeg", [
-  "-y", "-loglevel", "error", "-framerate", String(fps), "-i", join(frames, "%05d.png"),
-  "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-movflags", "+faststart", out,
+  "-y",
+  "-loglevel",
+  "error",
+  "-framerate",
+  String(fps),
+  "-i",
+  join(frames, "%05d.png"),
+  "-c:v",
+  "libx264",
+  "-pix_fmt",
+  "yuv420p",
+  "-crf",
+  "18",
+  "-movflags",
+  "+faststart",
+  out,
 ]);
 rmSync(frames, { recursive: true, force: true });
 console.log(`\rDone: ${out} (${width}x${height}, ${seconds}s, ${fps} fps)`);

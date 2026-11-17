@@ -38,7 +38,10 @@ export function NavLinks() {
       if (el.scrollWidth > room) el.scrollLeft = current.offsetLeft - (room - current.offsetWidth) / 2;
     }
     edge();
-    const observer = new ResizeObserver(() => { measure(); edge(); });
+    const observer = new ResizeObserver(() => {
+      measure();
+      edge();
+    });
     if (nav.current) observer.observe(nav.current);
     return () => observer.disconnect();
   }, [active]);
@@ -58,8 +61,22 @@ export function NavLinks() {
   };
   const movingRight = box ? box.left >= edges.current.left : true;
   const immediate = !placed.current;
-  useSpring({ v: box?.left ?? 0 }, ({ v }) => { edges.current.left = v; paint(); }, { ...(movingRight ? { w: 17, z: 0.78 } : { w: 34, z: 0.8 }), immediate });
-  useSpring({ v: box?.right ?? 0 }, ({ v }) => { edges.current.right = v; paint(); }, { ...(movingRight ? { w: 34, z: 0.8 } : { w: 17, z: 0.78 }), immediate });
+  useSpring(
+    { v: box?.left ?? 0 },
+    ({ v }) => {
+      edges.current.left = v;
+      paint();
+    },
+    { ...(movingRight ? { w: 17, z: 0.78 } : { w: 34, z: 0.8 }), immediate },
+  );
+  useSpring(
+    { v: box?.right ?? 0 },
+    ({ v }) => {
+      edges.current.right = v;
+      paint();
+    },
+    { ...(movingRight ? { w: 34, z: 0.8 } : { w: 17, z: 0.78 }), immediate },
+  );
   if (box) placed.current = true;
 
   return (

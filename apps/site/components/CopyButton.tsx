@@ -28,7 +28,9 @@ export function CopyButton({ text, label }: { text: string; label?: string }) {
         }
       }}
     >
-      <span aria-live="polite">{state === "done" ? t.copy.copied : state === "failed" ? t.copy.failed : (label ?? <SameWidth lang={lang} texts={both((d) => d.copy.copy)} />)}</span>
+      <span aria-live="polite">
+        {state === "done" ? t.copy.copied : state === "failed" ? t.copy.failed : (label ?? <SameWidth lang={lang} texts={both((d) => d.copy.copy)} />)}
+      </span>
     </button>
   );
 }

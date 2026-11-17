@@ -15,7 +15,9 @@ export default function Demo() {
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
       <SpringButton pressed={pressed === 0 || undefined}>Save</SpringButton>
-      <SpringButton variant="quiet" pressed={pressed === 1 || undefined}>Cancel</SpringButton>
+      <SpringButton variant="quiet" pressed={pressed === 1 || undefined}>
+        Cancel
+      </SpringButton>
     </div>
   );
 }

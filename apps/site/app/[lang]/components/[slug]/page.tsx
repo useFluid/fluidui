@@ -37,7 +37,11 @@ const RUNNERS = [
   ["bun", "bunx"],
 ] as const;
 
-const slugId = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const slugId = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 export default async function Piece({ params }: Props) {
   const { lang: raw, slug } = await params;
@@ -110,7 +114,12 @@ export default async function Piece({ params }: Props) {
             {
               id: "command",
               label: g.command,
-              content: <Tabs label={g.command} tabs={commands.map((c) => ({ id: c.name, label: c.name, content: <CodeBlock name="Terminal" code={c.code} html={c.html} /> }))} />,
+              content: (
+                <Tabs
+                  label={g.command}
+                  tabs={commands.map((c) => ({ id: c.name, label: c.name, content: <CodeBlock name="Terminal" code={c.code} html={c.html} /> }))}
+                />
+              ),
             },
             {
               id: "manual",
@@ -128,7 +137,9 @@ export default async function Piece({ params }: Props) {
                     ))}
                     {usesFiles.length > 0 && <p className={doc.text}>{g.alsoUses}</p>}
                     {usesFiles.flatMap((u) =>
-                      u.files.map((file) => <CodeBlock key={`${u.slug}/${file.name}`} name={`components/fluid/${u.slug}/${file.name}`} code={file.code} html={file.html} />),
+                      u.files.map((file) => (
+                        <CodeBlock key={`${u.slug}/${file.name}`} name={`components/fluid/${u.slug}/${file.name}`} code={file.code} html={file.html} />
+                      )),
                     )}
                   </li>
                   <li>
@@ -168,10 +179,18 @@ export default async function Piece({ params }: Props) {
               <tbody>
                 {info.props.map((p) => (
                   <tr key={p.name}>
-                    <td><code>{p.name}</code></td>
-                    <td data-label={g.type} data-empty={p.type ? undefined : ""}>{p.type && <code>{p.type}</code>}</td>
-                    <td data-label={g.fallback} data-empty={p.fallback ? undefined : ""}>{p.fallback ? <code>{p.fallback}</code> : "—"}</td>
-                    <td><Inline text={p.text} /></td>
+                    <td>
+                      <code>{p.name}</code>
+                    </td>
+                    <td data-label={g.type} data-empty={p.type ? undefined : ""}>
+                      {p.type && <code>{p.type}</code>}
+                    </td>
+                    <td data-label={g.fallback} data-empty={p.fallback ? undefined : ""}>
+                      {p.fallback ? <code>{p.fallback}</code> : "—"}
+                    </td>
+                    <td>
+                      <Inline text={p.text} />
+                    </td>
                   </tr>
                 ))}
               </tbody>

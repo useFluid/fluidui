@@ -94,7 +94,8 @@ export function createMorpher(initial: string, config: MorpherConfig = springs.s
           align(slot, c);
           return;
         }
-        let cx = 0, cy = 0;
+        let cx = 0,
+          cy = 0;
         for (let p = 0; p < n; p++) {
           cx += slot.x[p] / n;
           cy += slot.y[p] / n;

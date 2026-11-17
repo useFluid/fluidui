@@ -39,8 +39,22 @@ export function PillTabs({ label, tabs, value, onChange }: Props) {
     pill.current.style.transform = `translateX(${edges.current.left}px)`;
     pill.current.style.width = `${Math.max(0, edges.current.right - edges.current.left)}px`;
   };
-  useSpring({ v: box?.left ?? 0 }, ({ v }) => { edges.current.left = v; paint(); }, { ...(right ? TRAIL : LEAD), immediate });
-  useSpring({ v: box?.right ?? 0 }, ({ v }) => { edges.current.right = v; paint(); }, { ...(right ? LEAD : TRAIL), immediate });
+  useSpring(
+    { v: box?.left ?? 0 },
+    ({ v }) => {
+      edges.current.left = v;
+      paint();
+    },
+    { ...(right ? TRAIL : LEAD), immediate },
+  );
+  useSpring(
+    { v: box?.right ?? 0 },
+    ({ v }) => {
+      edges.current.right = v;
+      paint();
+    },
+    { ...(right ? LEAD : TRAIL), immediate },
+  );
 
   const move = (e: KeyboardEvent, i: number) => {
     const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;

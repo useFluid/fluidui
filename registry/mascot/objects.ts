@@ -76,7 +76,23 @@ export const objects: MascotObject[] = [
     d: rr(28, 22, 64, 76, 9) + rr(74, 98, 10, 12, 2),
     eyes: { x: 60, y: 58, gap: 12, size: 1 },
     color: "#f59e0b",
-    words: ["book", "books", "livro", "livros", "bookstore", "livraria", "school", "escola", "course", "curso", "library", "biblioteca", "education", "educação", "study"],
+    words: [
+      "book",
+      "books",
+      "livro",
+      "livros",
+      "bookstore",
+      "livraria",
+      "school",
+      "escola",
+      "course",
+      "curso",
+      "library",
+      "biblioteca",
+      "education",
+      "educação",
+      "study",
+    ],
   },
   {
     id: "camera",
@@ -113,7 +129,12 @@ export const objects: MascotObject[] = [
   {
     id: "paw",
     name: { en: "Paw", pt: "Pata" },
-    d: "M60 54C82 54 94 72 92 86C90 100 76 100 60 96C44 100 30 100 28 86C26 72 38 54 60 54Z" + circle(32, 42, 9) + circle(50, 28, 9) + circle(70, 28, 9) + circle(88, 42, 9),
+    d:
+      "M60 54C82 54 94 72 92 86C90 100 76 100 60 96C44 100 30 100 28 86C26 72 38 54 60 54Z" +
+      circle(32, 42, 9) +
+      circle(50, 28, 9) +
+      circle(70, 28, 9) +
+      circle(88, 42, 9),
     eyes: { x: 60, y: 78, gap: 11, size: 0.9 },
     color: "#f97316",
     words: ["pet", "pets", "petshop", "pet shop", "dog", "cachorro", "cat", "gato", "vet", "veterinário", "veterinária", "animal", "animals"],
@@ -148,7 +169,23 @@ export const objects: MascotObject[] = [
     d: "M60 100C40 86 16 70 16 46C16 30 30 22 42 24C50 25 56 30 60 36C64 30 70 25 78 24C90 22 104 30 104 46C104 70 80 86 60 100Z",
     eyes: { x: 60, y: 56, gap: 13, size: 1 },
     color: "#f43f5e",
-    words: ["love", "amor", "dating", "relacionamento", "health", "saúde", "care", "cuidado", "charity", "ong", "donation", "doação", "wedding", "casamento", "cardio"],
+    words: [
+      "love",
+      "amor",
+      "dating",
+      "relacionamento",
+      "health",
+      "saúde",
+      "care",
+      "cuidado",
+      "charity",
+      "ong",
+      "donation",
+      "doação",
+      "wedding",
+      "casamento",
+      "cardio",
+    ],
   },
   {
     id: "star",
@@ -172,7 +209,23 @@ export const objects: MascotObject[] = [
     d: rr(18, 24, 84, 60, 18) + "M34 84L28 102L52 84Z",
     eyes: { x: 60, y: 54, gap: 13, size: 1 },
     color: "#3b82f6",
-    words: ["chat", "support", "suporte", "help", "ajuda", "message", "mensagem", "community", "comunidade", "social", "agency", "agência", "marketing", "assistant", "bot"],
+    words: [
+      "chat",
+      "support",
+      "suporte",
+      "help",
+      "ajuda",
+      "message",
+      "mensagem",
+      "community",
+      "comunidade",
+      "social",
+      "agency",
+      "agência",
+      "marketing",
+      "assistant",
+      "bot",
+    ],
   },
   {
     id: "gift",
@@ -188,7 +241,22 @@ export const objects: MascotObject[] = [
     d: "M60 14C82 14 94 30 94 48C94 62 84 70 80 82H40C36 70 26 62 26 48C26 30 38 14 60 14Z" + rr(42, 86, 36, 8, 3) + rr(47, 97, 26, 8, 3),
     eyes: { x: 60, y: 46, gap: 12, size: 0.95 },
     color: "#facc15",
-    words: ["idea", "ideia", "ideas", "consulting", "consultoria", "innovation", "inovação", "electric", "elétrica", "energy", "energia", "creative", "criativo", "lighting"],
+    words: [
+      "idea",
+      "ideia",
+      "ideas",
+      "consulting",
+      "consultoria",
+      "innovation",
+      "inovação",
+      "electric",
+      "elétrica",
+      "energy",
+      "energia",
+      "creative",
+      "criativo",
+      "lighting",
+    ],
   },
   {
     id: "pizza",
@@ -196,7 +264,28 @@ export const objects: MascotObject[] = [
     d: "M18 28C46 12 74 12 102 28L60 108Z",
     eyes: { x: 60, y: 42, gap: 11, size: 0.9 },
     color: "#fb923c",
-    words: ["pizza", "pizzaria", "pizzeria", "pizzas", "food", "comida", "restaurant", "restaurante", "delivery", "fast food", "lanchonete", "snack", "burger", "hamburger", "hamburgueria", "lanches", "grill", "churrascaria", "bistro", "bar"],
+    words: [
+      "pizza",
+      "pizzaria",
+      "pizzeria",
+      "pizzas",
+      "food",
+      "comida",
+      "restaurant",
+      "restaurante",
+      "delivery",
+      "fast food",
+      "lanchonete",
+      "snack",
+      "burger",
+      "hamburger",
+      "hamburgueria",
+      "lanches",
+      "grill",
+      "churrascaria",
+      "bistro",
+      "bar",
+    ],
   },
   {
     id: "cupcake",
@@ -212,7 +301,23 @@ export const objects: MascotObject[] = [
     d: rr(24, 26, 72, 50, 8) + "M12 80H108L102 92C101 94 99 95 97 95H23C21 95 19 94 18 92Z",
     eyes: { x: 60, y: 51, gap: 13, size: 1 },
     color: "#64748b",
-    words: ["developer", "desenvolvedor", "dev", "code", "código", "it", "ti", "computer", "computador", "work", "trabalho", "freelancer", "remote", "office", "escritório"],
+    words: [
+      "developer",
+      "desenvolvedor",
+      "dev",
+      "code",
+      "código",
+      "it",
+      "ti",
+      "computer",
+      "computador",
+      "work",
+      "trabalho",
+      "freelancer",
+      "remote",
+      "office",
+      "escritório",
+    ],
   },
   {
     id: "phone",
@@ -268,7 +373,22 @@ export const objects: MascotObject[] = [
     d: "M60 12C94 30 102 72 60 108C18 72 26 30 60 12Z",
     eyes: { x: 60, y: 58, gap: 11, size: 0.9 },
     color: "#16a34a",
-    words: ["organic", "orgânico", "vegan", "vegano", "natural", "sustainable", "sustentável", "farm", "fazenda", "agro", "health food", "salad", "salada", "herbal"],
+    words: [
+      "organic",
+      "orgânico",
+      "vegan",
+      "vegano",
+      "natural",
+      "sustainable",
+      "sustentável",
+      "farm",
+      "fazenda",
+      "agro",
+      "health food",
+      "salad",
+      "salada",
+      "herbal",
+    ],
   },
   {
     id: "toast",
@@ -289,10 +409,29 @@ export const objects: MascotObject[] = [
   {
     id: "car",
     name: { en: "Car", pt: "Carro" },
-    d: "M30 46L40 32C42 29 45 28 48 28H72C75 28 78 29 80 32L90 46H100C104 46 108 50 108 54V78C108 81 106 83 103 83H17C14 83 12 81 12 78V54C12 50 16 46 20 46Z" + circle(34, 94, 10) + circle(86, 94, 10),
+    d:
+      "M30 46L40 32C42 29 45 28 48 28H72C75 28 78 29 80 32L90 46H100C104 46 108 50 108 54V78C108 81 106 83 103 83H17C14 83 12 81 12 78V54C12 50 16 46 20 46Z" +
+      circle(34, 94, 10) +
+      circle(86, 94, 10),
     eyes: { x: 60, y: 60, gap: 13, size: 0.95 },
     color: "#dc2626",
-    words: ["car", "carro", "auto", "automotive", "mechanic", "mecânica", "oficina", "taxi", "uber", "transport", "transporte", "driving school", "autoescola", "rental", "locadora"],
+    words: [
+      "car",
+      "carro",
+      "auto",
+      "automotive",
+      "mechanic",
+      "mecânica",
+      "oficina",
+      "taxi",
+      "uber",
+      "transport",
+      "transporte",
+      "driving school",
+      "autoescola",
+      "rental",
+      "locadora",
+    ],
   },
   {
     id: "comb",
@@ -306,7 +445,10 @@ export const objects: MascotObject[] = [
 
 const normal = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
-const tokens = (s: string) => normal(s).split(/[^a-z0-9]+/).filter(Boolean);
+const tokens = (s: string) =>
+  normal(s)
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean);
 
 const near = (a: string, b: string) => {
   if (a === b || a === `${b}s` || b === `${a}s`) return 1;

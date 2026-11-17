@@ -7,17 +7,25 @@ Tabs with a pill that flows between them, and optional counts.
 ```tsx
 import { PillTabs } from "./PillTabs";
 
-<PillTabs label="Inbox" value={tab} onChange={setTab} tabs={[{ value: "new", label: "New", count: 3 }, { value: "all", label: "All" }]} />
+<PillTabs
+  label="Inbox"
+  value={tab}
+  onChange={setTab}
+  tabs={[
+    { value: "new", label: "New", count: 3 },
+    { value: "all", label: "All" },
+  ]}
+/>;
 ```
 
 ## Props
 
-| Prop | Type | Default | What it does |
-|---|---|---|---|
-| label | string |  | Accessible name of the tab list. |
-| value | string |  | The current tab. |
-| onChange | (value) => void |  |  |
-| tabs | { value, label, count? }[] |  |  |
+| Prop     | Type                       | Default | What it does                     |
+| -------- | -------------------------- | ------- | -------------------------------- |
+| label    | string                     |         | Accessible name of the tab list. |
+| value    | string                     |         | The current tab.                 |
+| onChange | (value) => void            |         |                                  |
+| tabs     | { value, label, count? }[] |         |                                  |
 
 ## Keyboard and screen readers
 

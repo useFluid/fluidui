@@ -39,7 +39,9 @@ export function Bot({ state, messages, name = "Assistant", you = "You", status, 
         </div>
         <div>
           <p className={styles.name}>{name}</p>
-          <p className={styles.status} aria-live="polite">{label}</p>
+          <p className={styles.status} aria-live="polite">
+            {label}
+          </p>
         </div>
       </div>
       <ol className={styles.messages} role="log" aria-live="polite">
@@ -51,7 +53,11 @@ export function Bot({ state, messages, name = "Assistant", you = "You", status, 
         ))}
         {state === "thinking" && (
           <li className={styles.message} data-from="bot" aria-hidden>
-            <span className={styles.dots}><i /><i /><i /></span>
+            <span className={styles.dots}>
+              <i />
+              <i />
+              <i />
+            </span>
           </li>
         )}
       </ol>

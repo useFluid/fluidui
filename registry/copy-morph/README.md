@@ -7,17 +7,17 @@ A copy button where the two sheets flow into a check.
 ```tsx
 import { CopyMorph } from "./CopyMorph";
 
-<CopyMorph text="npm i @usefluid/motion" />
+<CopyMorph text="npm i @usefluid/motion" />;
 ```
 
 ## Props
 
-| Prop | Type | Default | What it does |
-|---|---|---|---|
-| text | string |  | What goes to the clipboard. |
-| label | string | "Copy" | Accessible name. |
-| doneLabel | string | "Copied" | Announced after copying. |
-| done | boolean |  | Force the copied state, for showcases. |
+| Prop      | Type    | Default  | What it does                           |
+| --------- | ------- | -------- | -------------------------------------- |
+| text      | string  |          | What goes to the clipboard.            |
+| label     | string  | "Copy"   | Accessible name.                       |
+| doneLabel | string  | "Copied" | Announced after copying.               |
+| done      | boolean |          | Force the copied state, for showcases. |
 
 ## Keyboard and screen readers
 

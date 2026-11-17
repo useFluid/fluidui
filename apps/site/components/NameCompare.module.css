@@ -44,7 +44,7 @@
   border-radius: var(--fluid-radius);
   background: transparent;
   color: var(--fluid-on-accent);
-  font: 500 14px/1 var(--fluid-font);
+  font: 500 14px / 1 var(--fluid-font);
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;

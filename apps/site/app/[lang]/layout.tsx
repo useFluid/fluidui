@@ -58,7 +58,9 @@ export default async function RootLayout({ children, params }: { children: React
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
       <body>
-        <a className="skip" href="#content">{t.skip}</a>
+        <a className="skip" href="#content">
+          {t.skip}
+        </a>
         <LangProvider lang={lang}>
           <BrandProvider>
             <PieceDialogProvider>

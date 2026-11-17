@@ -9,20 +9,20 @@ import { Pet } from "./Pet";
 
 <div style={{ width: 96, height: 96 }}>
   <Pet mood={saved ? "happy" : "idle"} label="Acme helper" />
-</div>
+</div>;
 ```
 
 ## Props
 
-| Prop | Type | Default | What it does |
-|---|---|---|---|
-| mood | "idle" \| "happy" \| "surprised" \| "sleepy" \| "curious" | "idle" | Tie it to real events: done, error, waiting. |
-| still | boolean | false | No breathing or blinking. |
-| follow | boolean | false | Eyes follow the pointer, and on touch look at each tap. |
-| look | { x, y } |  | Where the eyes look, from -1 to 1, when not following. |
-| label | string |  | Accessible name. Without it the pet is decorative. |
-| color | string | --fluid-accent | Any CSS colour or variable. |
-| className | string |  | It fills its box. |
+| Prop      | Type                                                      | Default        | What it does                                            |
+| --------- | --------------------------------------------------------- | -------------- | ------------------------------------------------------- |
+| mood      | "idle" \| "happy" \| "surprised" \| "sleepy" \| "curious" | "idle"         | Tie it to real events: done, error, waiting.            |
+| still     | boolean                                                   | false          | No breathing or blinking.                               |
+| follow    | boolean                                                   | false          | Eyes follow the pointer, and on touch look at each tap. |
+| look      | { x, y }                                                  |                | Where the eyes look, from -1 to 1, when not following.  |
+| label     | string                                                    |                | Accessible name. Without it the pet is decorative.      |
+| color     | string                                                    | --fluid-accent | Any CSS colour or variable.                             |
+| className | string                                                    |                | It fills its box.                                       |
 
 ## Colours
 

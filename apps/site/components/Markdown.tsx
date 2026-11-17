@@ -22,7 +22,13 @@ function blocks(md: string): Block[] {
     } else if (line.startsWith("|")) {
       const rows: string[][] = [];
       for (; i < lines.length && lines[i].startsWith("|"); i++) {
-        if (!/^\|[-| ]+\|$/.test(lines[i])) rows.push(lines[i].slice(1, -1).split(/(?<!\\)\|/).map((c) => c.replace(/\\\|/g, "|").trim()));
+        if (!/^\|[-| ]+\|$/.test(lines[i]))
+          rows.push(
+            lines[i]
+              .slice(1, -1)
+              .split(/(?<!\\)\|/)
+              .map((c) => c.replace(/\\\|/g, "|").trim()),
+          );
       }
       i--;
       out.push({ kind: "table", rows });
@@ -48,7 +54,12 @@ export function Inline({ text }: { text: string }) {
     if (m.index > last) parts.push(text.slice(last, m.index));
     if (m[1]) parts.push(<code key={m.index}>{m[1]}</code>);
     else if (m[2]) parts.push(<strong key={m.index}>{m[2]}</strong>);
-    else parts.push(<a key={m.index} href={m[4]}>{m[3]}</a>);
+    else
+      parts.push(
+        <a key={m.index} href={m[4]}>
+          {m[3]}
+        </a>,
+      );
     last = m.index + m[0].length;
   }
   if (last < text.length) parts.push(text.slice(last));
@@ -71,19 +82,44 @@ export async function Markdown({ source, name = "Example" }: { source: string; n
           <div key={i} className={styles.tableWrap}>
             <table className={styles.table}>
               <thead>
-                <tr>{head.map((c, j) => <th key={j} scope="col"><Inline text={c} /></th>)}</tr>
+                <tr>
+                  {head.map((c, j) => (
+                    <th key={j} scope="col">
+                      <Inline text={c} />
+                    </th>
+                  ))}
+                </tr>
               </thead>
               <tbody>
                 {rows.map((r, j) => (
-                  <tr key={j}>{r.map((c, k) => <td key={k}><Inline text={c} /></td>)}</tr>
+                  <tr key={j}>
+                    {r.map((c, k) => (
+                      <td key={k}>
+                        <Inline text={c} />
+                      </td>
+                    ))}
+                  </tr>
                 ))}
               </tbody>
             </table>
           </div>
         );
       }
-      if (b.kind === "list") return <ul key={i}>{b.items.map((t, j) => <li key={j}><Inline text={t} /></li>)}</ul>;
-      return <p key={i}><Inline text={b.text} /></p>;
+      if (b.kind === "list")
+        return (
+          <ul key={i}>
+            {b.items.map((t, j) => (
+              <li key={j}>
+                <Inline text={t} />
+              </li>
+            ))}
+          </ul>
+        );
+      return (
+        <p key={i}>
+          <Inline text={b.text} />
+        </p>
+      );
     }),
   );
   return <div className={styles.md}>{rendered}</div>;

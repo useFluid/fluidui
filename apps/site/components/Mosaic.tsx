@@ -110,7 +110,17 @@ export function Mosaic({ entries }: { entries: Tile[] }) {
               <h3 className={styles.name}>{entry.name}</h3>
               <PieceLink slug={slug} className={styles.view} label={`${viewLabel}: ${entry.name}`}>
                 <SameWidth lang={lang} texts={both((d) => d.mosaic.view)} />
-                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <svg
+                  viewBox="0 0 16 16"
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
                   <path d="M6 3h7v7M13 3 4 12" />
                 </svg>
               </PieceLink>

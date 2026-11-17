@@ -9,19 +9,19 @@ import { MorphIsland } from "./MorphIsland";
 
 <MorphIsland label="Quick add" width={300} height={170}>
   <form>...</form>
-</MorphIsland>
+</MorphIsland>;
 ```
 
 ## Props
 
-| Prop | Type | Default | What it does |
-|---|---|---|---|
-| label | string |  | The pill's text and the button's name. |
-| children | ReactNode |  | The panel's content. |
-| width, height | number | 300, 170 | Open size in px. |
-| closedWidth | number | 150 | Closed size in px. |
-| open, onOpenChange |  |  | Control it from outside, or leave it alone. |
-| closeLabel | string | "Close" |  |
+| Prop               | Type      | Default  | What it does                                |
+| ------------------ | --------- | -------- | ------------------------------------------- |
+| label              | string    |          | The pill's text and the button's name.      |
+| children           | ReactNode |          | The panel's content.                        |
+| width, height      | number    | 300, 170 | Open size in px.                            |
+| closedWidth        | number    | 150      | Closed size in px.                          |
+| open, onOpenChange |           |          | Control it from outside, or leave it alone. |
+| closeLabel         | string    | "Close"  |                                             |
 
 ## Keyboard and screen readers
 

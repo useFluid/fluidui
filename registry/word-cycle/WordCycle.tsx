@@ -38,16 +38,18 @@ export function WordCycle({ words, every = 1.6, loop = true, play = true }: Prop
       <span className={styles.srOnly}>{words[last]}</span>
       <span className={styles.stack} aria-hidden>
         {words.map((word) => (
-          <span key={word} className={styles.sizer}>{word}</span>
+          <span key={word} className={styles.sizer}>
+            {word}
+          </span>
         ))}
-        <span
-          key={`in-${current}`}
-          className={out === null ? styles.still : styles.in}
-          onAnimationEnd={() => setLeaving(null)}
-        >
+        <span key={`in-${current}`} className={out === null ? styles.still : styles.in} onAnimationEnd={() => setLeaving(null)}>
           {words[current]}
         </span>
-        {out !== null && <span key={`out-${out}`} className={styles.out}>{words[out]}</span>}
+        {out !== null && (
+          <span key={`out-${out}`} className={styles.out}>
+            {words[out]}
+          </span>
+        )}
       </span>
     </span>
   );

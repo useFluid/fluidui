@@ -7,17 +7,17 @@ An on and off switch whose thumb stretches as it travels.
 ```tsx
 import { SpringSwitch } from "./SpringSwitch";
 
-<SpringSwitch label="Email notifications" checked={emails} onChange={setEmails} />
+<SpringSwitch label="Email notifications" checked={emails} onChange={setEmails} />;
 ```
 
 ## Props
 
-| Prop | Type | Default | What it does |
-|---|---|---|---|
-| checked | boolean |  |  |
-| onChange | (checked) => void |  |  |
-| label | string |  | Visible and announced. |
-| className | string |  | For layout, like full width in a settings list. |
+| Prop      | Type              | Default | What it does                                    |
+| --------- | ----------------- | ------- | ----------------------------------------------- |
+| checked   | boolean           |         |                                                 |
+| onChange  | (checked) => void |         |                                                 |
+| label     | string            |         | Visible and announced.                          |
+| className | string            |         | For layout, like full width in a settings list. |
 
 ## Keyboard and screen readers
 

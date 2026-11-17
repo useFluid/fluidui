@@ -52,7 +52,12 @@ function boxOf(from: Props["from"], fallback: DOMRect): { edges: Edges; radius: 
   if (from) return { edges: { top: from.top, right: from.right, bottom: from.bottom, left: from.left }, radius: 16 };
   const k = 0.08;
   return {
-    edges: { top: fallback.top + fallback.height * k, right: fallback.right - fallback.width * k, bottom: fallback.bottom - fallback.height * k, left: fallback.left + fallback.width * k },
+    edges: {
+      top: fallback.top + fallback.height * k,
+      right: fallback.right - fallback.width * k,
+      bottom: fallback.bottom - fallback.height * k,
+      left: fallback.left + fallback.width * k,
+    },
     radius: 28,
   };
 }
@@ -74,10 +79,16 @@ export function MorphDialog({ open, onClose, from, labelledBy, className, style,
 
   const paint = useCallback(() => {
     const s = springs.current;
-    const d = surface.current, p = panel.current, c = content.current, m = scrim.current;
+    const d = surface.current,
+      p = panel.current,
+      c = content.current,
+      m = scrim.current;
     if (!s || !d || !p || !c || !m) return;
     const g = geometry.current;
-    const top = s.top.value, right = s.right.value, bottom = s.bottom.value, left = s.left.value;
+    const top = s.top.value,
+      right = s.right.value,
+      bottom = s.bottom.value,
+      left = s.left.value;
     const width = Math.max(0, right - left);
     const height = Math.max(0, bottom - top);
     const speed = Math.max(...EDGES.map((e) => Math.abs(s[e].velocity)));
@@ -95,27 +106,30 @@ export function MorphDialog({ open, onClose, from, labelledBy, className, style,
     c.style.opacity = String(g.opening ? clamp((progress - 0.55) / 0.45) : clamp((progress - 0.7) / 0.3));
   }, []);
 
-  const run = useCallback((target: { edges: Edges; radius: number }, config: { w: number; z: number }, done?: () => void) => {
-    const s = springs.current;
-    if (!s) return;
-    stop.current?.();
-    for (const e of EDGES) {
-      const next = createSpring(s[e].value, { w: config.w * SPREAD[e], z: config.z });
-      next.velocity = s[e].velocity;
-      next.target = target.edges[e];
-      s[e] = next;
-    }
-    const r = createSpring(s.radius.value, config);
-    r.target = target.radius;
-    s.radius = r;
-    stop.current = play((dt) => {
-      let moving = false;
-      for (const key of [...EDGES, "radius"] as const) if (s[key].step(dt)) moving = true;
-      paint();
-      if (!moving) done?.();
-      return moving;
-    });
-  }, [paint]);
+  const run = useCallback(
+    (target: { edges: Edges; radius: number }, config: { w: number; z: number }, done?: () => void) => {
+      const s = springs.current;
+      if (!s) return;
+      stop.current?.();
+      for (const e of EDGES) {
+        const next = createSpring(s[e].value, { w: config.w * SPREAD[e], z: config.z });
+        next.velocity = s[e].velocity;
+        next.target = target.edges[e];
+        s[e] = next;
+      }
+      const r = createSpring(s.radius.value, config);
+      r.target = target.radius;
+      s.radius = r;
+      stop.current = play((dt) => {
+        let moving = false;
+        for (const key of [...EDGES, "radius"] as const) if (s[key].step(dt)) moving = true;
+        paint();
+        if (!moving) done?.();
+        return moving;
+      });
+    },
+    [paint],
+  );
 
   const settle = useCallback(() => {
     const p = panel.current;
@@ -126,7 +140,9 @@ export function MorphDialog({ open, onClose, from, labelledBy, className, style,
   }, []);
 
   useLayoutEffect(() => {
-    const el = dialog.current, p = panel.current, d = surface.current;
+    const el = dialog.current,
+      p = panel.current,
+      d = surface.current;
     if (!el || !p || !d) return;
     if (open) {
       if (!el.open) {
@@ -188,7 +204,8 @@ export function MorphDialog({ open, onClose, from, labelledBy, className, style,
   useEffect(() => {
     if (!open) return;
     const onResize = () => {
-      const p = panel.current, s = springs.current;
+      const p = panel.current,
+        s = springs.current;
       if (!p || !s || !("rest" in p.dataset)) return;
       const base = dialog.current!.getBoundingClientRect();
       const rect = rectOf(p.getBoundingClientRect(), base);

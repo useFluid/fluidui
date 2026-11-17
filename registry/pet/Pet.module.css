@@ -38,17 +38,34 @@
   animation-duration: 4s;
 }
 @keyframes breathe {
-  0%, 100% { transform: scale(1, 1); }
-  50% { transform: scale(1.03, 0.97); }
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.03, 0.97);
+  }
 }
 @keyframes hop {
-  0%, 100% { transform: translateY(0) scale(1, 1); }
-  30% { transform: translateY(-6px) scale(0.96, 1.05); }
-  60% { transform: translateY(0) scale(1.05, 0.95); }
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  30% {
+    transform: translateY(-6px) scale(0.96, 1.05);
+  }
+  60% {
+    transform: translateY(0) scale(1.05, 0.95);
+  }
 }
 @keyframes float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-3px) scale(0.9); }
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(0.9);
+  }
 }
 .pet[data-still] .body,
 .pet[data-still] .drop {

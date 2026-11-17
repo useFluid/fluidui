@@ -1,4 +1,5 @@
 ---
+
 name: fluid-ai-video
 description: Use when combining Fluid brand motion with AI-generated footage (Sora, Veo, Runway, Kling): writing the generation prompt that leaves room for the brand, or compositing a recorded Fluid layer over the clip. Not for AI video work that does not involve Fluid.
 ---
@@ -34,7 +35,7 @@ Generate two or three takes and pick the calmest; busy footage fights the motion
 Follow `fluid-video`. For a layer that goes on top, render the scene on a pure key colour so it can be removed:
 
 ```tsx
-<main style={{ position: "fixed", inset: 0, background: "#00ff00" }}>…</main>
+<main style={{ position: "fixed", inset: 0, background: "#00ff00" }}>…</main>;
 ```
 
 Pick a key colour that is not in the brand or the logo. Record at the same format and frame rate as the footage.

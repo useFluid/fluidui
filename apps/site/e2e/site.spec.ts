@@ -10,7 +10,9 @@ const PT_PAGES = PAGES.map((p) => (p === "/" ? "/pt" : `/pt${p}`));
 function watchErrors(page: Page) {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
   return errors;
 }
 
@@ -78,8 +80,10 @@ test("switching language keeps the theme and leaves the navbar still", async ({ 
   await page.evaluate(() => {
     const w = window as unknown as { themes: string[] };
     w.themes = [];
-    new MutationObserver(() => w.themes.push(String(document.documentElement.dataset.theme)))
-      .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    new MutationObserver(() => w.themes.push(String(document.documentElement.dataset.theme))).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
   });
   await page.getByRole("radio", { name: "Português" }).click();
   await expect(page).toHaveURL(/\/pt\/components\/?$/);
@@ -92,7 +96,11 @@ test("switching language keeps the theme and leaves the navbar still", async ({ 
 });
 
 test("the brand chosen on the home page dresses every piece on the site", async ({ page }) => {
-  const accent = () => page.locator("main [class*=stage]").first().evaluate((el) => getComputedStyle(el).getPropertyValue("--fluid-accent"));
+  const accent = () =>
+    page
+      .locator("main [class*=stage]")
+      .first()
+      .evaluate((el) => getComputedStyle(el).getPropertyValue("--fluid-accent"));
   await page.goto("/components/shape-morph");
   expect(await accent()).toContain("#11100f");
   await page.goto("/");

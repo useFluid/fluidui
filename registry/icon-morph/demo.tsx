@@ -20,14 +20,7 @@ export default function Demo() {
   return (
     <div style={{ display: "flex", gap: 12 }}>
       {pairs.map((p, i) => (
-        <IconMorph
-          key={p.label}
-          on={state[i]}
-          off={p.off}
-          onIcon={p.on}
-          label={p.label}
-          onClick={() => setState((s) => s.map((v, j) => (j === i ? !v : v)))}
-        />
+        <IconMorph key={p.label} on={state[i]} off={p.off} onIcon={p.on} label={p.label} onClick={() => setState((s) => s.map((v, j) => (j === i ? !v : v)))} />
       ))}
     </div>
   );

@@ -8,7 +8,7 @@
   border-radius: 999px;
   background: var(--fluid-accent);
   color: var(--fluid-on-accent);
-  font: 500 15px/1 var(--fluid-font);
+  font: 500 15px / 1 var(--fluid-font);
   white-space: nowrap;
   cursor: pointer;
   touch-action: manipulation;
@@ -33,7 +33,7 @@
   position: absolute;
   visibility: hidden;
   pointer-events: none;
-  font: 500 15px/1 var(--fluid-font);
+  font: 500 15px / 1 var(--fluid-font);
   white-space: nowrap;
 }
 .measure > span {

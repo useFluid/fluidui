@@ -16,7 +16,17 @@ export function Wall({ entries, lang, headingLevel = "h3" }: { entries: Entry[];
             <Stage slug={entry.slug} loop={entry.loop} className={styles.stage} />
             <PieceLink slug={entry.slug} className={styles.view} label={`${view}: ${entry.name}`}>
               <SameWidth lang={lang} texts={both((d) => d.mosaic.view)} />
-              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <svg
+                viewBox="0 0 16 16"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
                 <path d="M6 3h7v7M13 3 4 12" />
               </svg>
             </PieceLink>

@@ -26,15 +26,21 @@ function useVisible(ref: RefObject<Element | null>) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const close = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setNear(true);
-        close.disconnect();
-      }
-    }, { rootMargin: "600px 0px" });
-    const on = new IntersectionObserver(([entry]) => {
-      setVisible(entry.isIntersecting);
-    }, { threshold: 0.25 });
+    const close = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setNear(true);
+          close.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" },
+    );
+    const on = new IntersectionObserver(
+      ([entry]) => {
+        setVisible(entry.isIntersecting);
+      },
+      { threshold: 0.25 },
+    );
     close.observe(el);
     on.observe(el);
     return () => {

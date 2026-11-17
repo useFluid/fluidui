@@ -88,7 +88,11 @@ export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", si
           <MorphPath d={open ? bodyOpen : bodyClosed} config={BODY_SPRING} className={styles.body} />
           <MorphPath d={open ? barsOpen : barsClosed} config={BAR_SPRING} className={styles.bars} />
         </svg>
-        {title && <p className={styles.title} aria-hidden>{title}</p>}
+        {title && (
+          <p className={styles.title} aria-hidden>
+            {title}
+          </p>
+        )}
         <ul id={id} className={styles.items} inert={!open}>
           {items.map((item, i) => (
             <li
@@ -114,7 +118,16 @@ export function MenuMorph({ open, onOpenChange, items, title, label = "Menu", si
                   {item.label}
                 </a>
               ) : (
-                <button type="button" aria-current={item.current ? "page" : undefined} onClick={() => { item.onSelect?.(); onOpenChange(false); }}>{item.label}</button>
+                <button
+                  type="button"
+                  aria-current={item.current ? "page" : undefined}
+                  onClick={() => {
+                    item.onSelect?.();
+                    onOpenChange(false);
+                  }}
+                >
+                  {item.label}
+                </button>
               )}
             </li>
           ))}

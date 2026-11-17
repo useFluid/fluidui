@@ -17,7 +17,9 @@
   border-radius: 30px;
   background: #11100f;
   color: #ffffff;
-  box-shadow: 0 12px 40px rgba(17, 16, 15, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 12px 40px rgba(17, 16, 15, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   pointer-events: auto;
   view-transition-name: site-nav;
   --fluid-accent: #ffffff;

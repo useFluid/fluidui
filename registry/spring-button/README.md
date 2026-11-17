@@ -13,11 +13,11 @@ import { SpringButton } from "./SpringButton";
 
 ## Props
 
-| Prop | Type | Default | What it does |
-|---|---|---|---|
-| variant | "solid" \| "quiet" | "solid" | Main or secondary action. |
-| pressed | boolean |  | Show it held down, for showcases. |
-| ...button props | ButtonHTMLAttributes |  | Everything a native button takes: onClick, type, disabled, aria-*. |
+| Prop            | Type                 | Default | What it does                                                       |
+| --------------- | -------------------- | ------- | ------------------------------------------------------------------ |
+| variant         | "solid" \| "quiet"   | "solid" | Main or secondary action.                                          |
+| pressed         | boolean              |         | Show it held down, for showcases.                                  |
+| ...button props | ButtonHTMLAttributes |         | Everything a native button takes: onClick, type, disabled, aria-*. |
 
 ## Keyboard and screen readers
 

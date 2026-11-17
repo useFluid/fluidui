@@ -44,12 +44,18 @@ export function SegmentedPicker<T extends string>({ label, value, onChange, opti
   };
   useSpring(
     { v: box.left },
-    ({ v }) => { edges.current.left = v; paint(); },
+    ({ v }) => {
+      edges.current.left = v;
+      paint();
+    },
     { ...(movingRight ? TRAIL : LEAD), immediate },
   );
   useSpring(
     { v: box.right },
-    ({ v }) => { edges.current.right = v; paint(); },
+    ({ v }) => {
+      edges.current.right = v;
+      paint();
+    },
     { ...(movingRight ? LEAD : TRAIL), immediate },
   );
 

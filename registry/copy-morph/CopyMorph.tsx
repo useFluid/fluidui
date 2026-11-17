@@ -52,7 +52,9 @@ export function CopyMorph({ text, label = "Copy", doneLabel = "Copied", done: fo
 
   useSpring(
     { w: done ? widths.done : widths.idle },
-    ({ w }) => { if (button.current && w > 0) button.current.style.width = `${w}px`; },
+    ({ w }) => {
+      if (button.current && w > 0) button.current.style.width = `${w}px`;
+    },
     { w: 18, z: 0.8, immediate: widths.idle === 0 },
   );
 

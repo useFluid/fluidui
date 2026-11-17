@@ -32,14 +32,39 @@ export function SpringButton({ variant = "solid", pressed, className, ...props }
       ref={el}
       className={[styles.button, className].filter(Boolean).join(" ")}
       data-variant={variant}
-      onPointerEnter={(e) => { if (e.pointerType === "mouse") setHover(true); props.onPointerEnter?.(e); }}
-      onPointerLeave={(e) => { setHover(false); setDown(false); props.onPointerLeave?.(e); }}
-      onPointerDown={(e) => { setDown(true); props.onPointerDown?.(e); }}
-      onPointerUp={(e) => { setDown(false); props.onPointerUp?.(e); }}
-      onPointerCancel={(e) => { setDown(false); props.onPointerCancel?.(e); }}
-      onKeyDown={(e) => { if (e.key === " " || e.key === "Enter") setDown(true); props.onKeyDown?.(e); }}
-      onKeyUp={(e) => { setDown(false); props.onKeyUp?.(e); }}
-      onBlur={(e) => { setDown(false); props.onBlur?.(e); }}
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse") setHover(true);
+        props.onPointerEnter?.(e);
+      }}
+      onPointerLeave={(e) => {
+        setHover(false);
+        setDown(false);
+        props.onPointerLeave?.(e);
+      }}
+      onPointerDown={(e) => {
+        setDown(true);
+        props.onPointerDown?.(e);
+      }}
+      onPointerUp={(e) => {
+        setDown(false);
+        props.onPointerUp?.(e);
+      }}
+      onPointerCancel={(e) => {
+        setDown(false);
+        props.onPointerCancel?.(e);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === " " || e.key === "Enter") setDown(true);
+        props.onKeyDown?.(e);
+      }}
+      onKeyUp={(e) => {
+        setDown(false);
+        props.onKeyUp?.(e);
+      }}
+      onBlur={(e) => {
+        setDown(false);
+        props.onBlur?.(e);
+      }}
     />
   );
 }

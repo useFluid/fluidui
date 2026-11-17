@@ -25,7 +25,9 @@ export function Header({ lang }: { lang: Lang }) {
               <ThemeSwitch />
             </div>
             <GitHubLink label={t.nav.github} />
-            <Link href={href(lang, "/docs")} className={styles.cta}><SameWidth lang={lang} texts={{ en: dictionaries.en.nav.start, pt: dictionaries.pt.nav.start }} /></Link>
+            <Link href={href(lang, "/docs")} className={styles.cta}>
+              <SameWidth lang={lang} texts={{ en: dictionaries.en.nav.start, pt: dictionaries.pt.nav.start }} />
+            </Link>
           </div>
         </div>
       </div>

@@ -18,7 +18,16 @@ export default function Demo() {
   useAutoplay(() => setView((v) => keys[(keys.indexOf(v) + 1) % keys.length]), 2000);
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, width: "100%", maxWidth: 320 }}>
-      <div style={{ width: "100%", height: 130, borderRadius: "var(--fluid-radius)", overflow: "hidden", border: "1px solid var(--fluid-border)", background: "var(--fluid-surface)" }}>
+      <div
+        style={{
+          width: "100%",
+          height: 130,
+          borderRadius: "var(--fluid-radius)",
+          overflow: "hidden",
+          border: "1px solid var(--fluid-border)",
+          background: "var(--fluid-surface)",
+        }}
+      >
         <LogoWipe logo={logo} view={view}>
           <div style={{ height: 130, padding: 18, fontFamily: "var(--fluid-font)", color: "var(--fluid-text)" }}>
             <p style={{ margin: 0, fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em" }}>{screens[view][0]}</p>
@@ -26,12 +35,7 @@ export default function Demo() {
           </div>
         </LogoWipe>
       </div>
-      <SegmentedPicker
-        label="Screen"
-        value={view}
-        onChange={setView}
-        options={Object.entries(screens).map(([value, [label]]) => ({ value, label }))}
-      />
+      <SegmentedPicker label="Screen" value={view} onChange={setView} options={Object.entries(screens).map(([value, [label]]) => ({ value, label }))} />
     </div>
   );
 }

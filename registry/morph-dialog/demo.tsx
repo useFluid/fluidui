@@ -40,10 +40,15 @@ export default function Demo() {
         {cards.map((item, i) => (
           <button
             key={item.title}
-            ref={(el) => { buttons.current[i] = el; }}
+            ref={(el) => {
+              buttons.current[i] = el;
+            }}
             type="button"
             style={card}
-            onClick={() => { setShown(i); setOpen(i); }}
+            onClick={() => {
+              setShown(i);
+              setOpen(i);
+            }}
           >
             {item.title}
           </button>
@@ -57,7 +62,9 @@ export default function Demo() {
         labelledBy="morph-dialog-title"
         style={{ width: "min(100%, 340px)", padding: 22, gap: 10 }}
       >
-        <h3 id="morph-dialog-title" style={{ margin: 0, fontSize: 22, letterSpacing: "-0.03em" }}>{c.title}</h3>
+        <h3 id="morph-dialog-title" style={{ margin: 0, fontSize: 22, letterSpacing: "-0.03em" }}>
+          {c.title}
+        </h3>
         <p style={{ margin: "0 0 12px", color: "var(--fluid-text-2)" }}>{c.text}</p>
         <button
           type="button"

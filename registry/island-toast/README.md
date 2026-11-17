@@ -7,15 +7,15 @@ A notice that drops from the top as a pill and leaves the same way.
 ```tsx
 import { IslandToast } from "./IslandToast";
 
-<IslandToast message={notice} />
+<IslandToast message={notice} />;
 ```
 
 ## Props
 
-| Prop | Type | Default | What it does |
-|---|---|---|---|
-| message | string \| null |  | Set a text to show it; null hides it. You decide when. |
-| icon | ReactNode | a check | Any icon; `null` for none. |
+| Prop    | Type           | Default | What it does                                           |
+| ------- | -------------- | ------- | ------------------------------------------------------ |
+| message | string \| null |         | Set a text to show it; null hides it. You decide when. |
+| icon    | ReactNode      | a check | Any icon; `null` for none.                             |
 
 ## Keyboard and screen readers
 

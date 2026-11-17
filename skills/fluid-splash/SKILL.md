@@ -1,4 +1,5 @@
 ---
+
 name: fluid-splash
 description: Use when the project depends on @usefluid/motion or the user names Fluid, and they want an opening, intro or splash built from their logo with Fluid. Not for native app launch screens or splash screens without Fluid.
 ---
@@ -9,11 +10,11 @@ An opening is shapes flowing into the logo, the logo rising, and the headline co
 
 ## Pick a model
 
-| Model | Ends on | Good for |
-|---|---|---|
-| `splash-shapes` | your own content (`children`) | a home page with a headline and a call to action |
-| `splash-choice` | a picker that sends the logo into other shapes | products with several audiences |
-| `splash-dots` | the brand name | brands where the name matters |
+| Model           | Ends on                                        | Good for                                         |
+| --------------- | ---------------------------------------------- | ------------------------------------------------ |
+| `splash-shapes` | your own content (`children`)                  | a home page with a headline and a call to action |
+| `splash-choice` | a picker that sends the logo into other shapes | products with several audiences                  |
+| `splash-dots`   | the brand name                                 | brands where the name matters                    |
 
 ```bash
 npx @usefluid/cli add splash-shapes
@@ -72,9 +73,9 @@ export function Opening() {
 
 ## Common mistakes
 
-| Mistake | Fix |
-|---|---|
-| A long sentence as a changing word | One or two words; the rest as normal text |
-| The last shape of the route looks like the logo | Change `route`, so the logo's arrival reads |
-| Playing it on every page | Only on the first screen, once per visit |
-| A full page squeezed into `children` | `children` sit in a column at most 460 px wide. For a dashboard or grid, render the content after the opening and reveal it in `onDone` |
+| Mistake                                         | Fix                                                                                                                                     |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| A long sentence as a changing word              | One or two words; the rest as normal text                                                                                               |
+| The last shape of the route looks like the logo | Change `route`, so the logo's arrival reads                                                                                             |
+| Playing it on every page                        | Only on the first screen, once per visit                                                                                                |
+| A full page squeezed into `children`            | `children` sit in a column at most 460 px wide. For a dashboard or grid, render the content after the opening and reveal it in `onDone` |

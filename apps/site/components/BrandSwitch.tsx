@@ -61,11 +61,7 @@ export function BrandSwitch() {
       setError("");
       setOpen(false);
     } catch (err) {
-      setError(
-        err instanceof PathError && err.message === "transform"
-          ? t.brand.transform
-          : t.brand.invalid,
-      );
+      setError(err instanceof PathError && err.message === "transform" ? t.brand.transform : t.brand.invalid);
     }
   };
 
@@ -77,14 +73,7 @@ export function BrandSwitch() {
   return (
     <div ref={root} className={styles.root}>
       <SegmentedPicker label={t.brand.group} value={brandId} onChange={select} options={options} />
-      <button
-        ref={toggle}
-        type="button"
-        className={styles.add}
-        aria-expanded={open}
-        aria-label={t.brand.add}
-        onClick={() => setOpen((o) => !o)}
-      >
+      <button ref={toggle} type="button" className={styles.add} aria-expanded={open} aria-label={t.brand.add} onClick={() => setOpen((o) => !o)}>
         <span aria-hidden>+</span>
       </button>
       {open && (
@@ -117,7 +106,11 @@ export function BrandSwitch() {
             <input type="file" accept=".svg,image/svg+xml" className="srOnly" onChange={onFile} />
             {t.brand.choose}
           </label>
-          {error && <p role="alert" className={styles.error}>{error}</p>}
+          {error && (
+            <p role="alert" className={styles.error}>
+              {error}
+            </p>
+          )}
         </div>
       )}
     </div>
