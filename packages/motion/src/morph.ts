@@ -9,6 +9,11 @@ type Slot = {
   tx: Float64Array;
   ty: Float64Array;
   w: Float64Array;
+  a: Float64Array;
+  b: Float64Array;
+  c: Float64Array;
+  d: Float64Array;
+  dt: number;
 };
 
 export type MorpherConfig = SpringConfig & {
@@ -47,7 +52,34 @@ export function createMorpher(initial: string, config: MorpherConfig = springs.s
       tx: Float64Array.from(x0),
       ty: Float64Array.from(y0),
       w,
+      a: new Float64Array(n),
+      b: new Float64Array(n),
+      c: new Float64Array(n),
+      d: new Float64Array(n),
+      dt: -1,
     };
+  };
+
+  const prepare = (s: Slot, dt: number) => {
+    if (s.dt === dt) return;
+    s.dt = dt;
+    for (let i = 0; i < n; i++) {
+      const fromOffset = stepSpring(1, 0, 0, s.w[i], config.z, dt);
+      s.a[i] = fromOffset.x;
+      s.d[i] = fromOffset.v;
+      const fromVelocity = stepSpring(0, 1, 0, s.w[i], config.z, dt);
+      s.b[i] = fromVelocity.x;
+      s.c[i] = fromVelocity.v;
+    }
+  };
+
+  const parts: string[] = [];
+  const CENTS = Array.from({ length: 100 }, (_, i) => (i < 10 ? `.0${i}` : `.${i}`));
+  const write = (v: number) => {
+    const hundredths = Math.round(v * 100);
+    const size = hundredths < 0 ? -hundredths : hundredths;
+    const whole = (size - (size % 100)) / 100;
+    return `${hundredths < 0 ? "-" : ""}${whole}${CENTS[size % 100]}`;
   };
 
   const align = (slot: Slot, c: Contour) => {
@@ -108,15 +140,20 @@ export function createMorpher(initial: string, config: MorpherConfig = springs.s
       if (resting) return false;
       let moving = false;
       for (const s of slots) {
+        prepare(s, dt);
+        const { x, y, vx, vy, tx, ty, a, b, c, d } = s;
         for (let i = 0; i < n; i++) {
-          let r = stepSpring(s.x[i], s.vx[i], s.tx[i], s.w[i], config.z, dt);
-          s.x[i] = r.x;
-          s.vx[i] = r.v;
-          if (Math.abs(r.x - s.tx[i]) > REST || Math.abs(r.v) > REST) moving = true;
-          r = stepSpring(s.y[i], s.vy[i], s.ty[i], s.w[i], config.z, dt);
-          s.y[i] = r.x;
-          s.vy[i] = r.v;
-          if (Math.abs(r.x - s.ty[i]) > REST || Math.abs(r.v) > REST) moving = true;
+          const ox = x[i] - tx[i];
+          const oy = y[i] - ty[i];
+          const px = a[i] * ox + b[i] * vx[i];
+          const py = a[i] * oy + b[i] * vy[i];
+          const nvx = d[i] * ox + c[i] * vx[i];
+          const nvy = d[i] * oy + c[i] * vy[i];
+          x[i] = tx[i] + px;
+          y[i] = ty[i] + py;
+          vx[i] = nvx;
+          vy[i] = nvy;
+          if (!moving && (Math.abs(px) > REST || Math.abs(nvx) > REST || Math.abs(py) > REST || Math.abs(nvy) > REST)) moving = true;
         }
       }
       if (!moving) api.jump(exact);
@@ -124,13 +161,13 @@ export function createMorpher(initial: string, config: MorpherConfig = springs.s
     },
     path() {
       if (resting) return exact;
-      let d = "";
+      parts.length = 0;
       for (const s of slots) {
-        d += `M${s.x[0].toFixed(2)} ${s.y[0].toFixed(2)}`;
-        for (let i = 1; i < n; i++) d += `L${s.x[i].toFixed(2)} ${s.y[i].toFixed(2)}`;
-        d += "Z";
+        parts.push("M", write(s.x[0]), " ", write(s.y[0]));
+        for (let i = 1; i < n; i++) parts.push("L", write(s.x[i]), " ", write(s.y[i]));
+        parts.push("Z");
       }
-      return d;
+      return parts.join("");
     },
   };
   api.jump(initial);

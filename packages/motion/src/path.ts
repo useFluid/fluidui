@@ -300,7 +300,26 @@ export type Contour = {
   cy: number;
 };
 
+const CACHE_SIZE = 16;
+const sampled = new Map<string, Contour[]>();
+
+const copyContour = (c: Contour): Contour => ({ x: c.x.slice(), y: c.y.slice(), area: c.area, cx: c.cx, cy: c.cy });
+
 export function sampleContours(d: string, count = 160): Contour[] {
+  const key = `${count}|${d}`;
+  const hit = sampled.get(key);
+  if (hit) {
+    sampled.delete(key);
+    sampled.set(key, hit);
+    return hit.map(copyContour);
+  }
+  const fresh = measureContours(d, count);
+  sampled.set(key, fresh);
+  if (sampled.size > CACHE_SIZE) sampled.delete(sampled.keys().next().value as string);
+  return fresh.map(copyContour);
+}
+
+function measureContours(d: string, count: number): Contour[] {
   const contours = flatten(parsePath(d)).map((p): Contour => {
     const n = p.x.length;
     const lengths = new Float64Array(n + 1);
