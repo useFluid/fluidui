@@ -121,4 +121,23 @@ describe("MorphPath", () => {
     rerender(inBox(shapes.flower));
     expect(drawn(container)).toBe(shapes.flower);
   });
+
+  it("shows the first valid shape after an invalid first d", () => {
+    const { container, rerender } = render(inBox(""));
+    rerender(inBox(shapes.circle));
+    act(() => flush());
+    expect(drawn(container)).toBe(shapes.circle);
+    rerender(inBox(shapes.flower));
+    act(() => flush());
+    expect(drawn(container)).toBe(shapes.flower);
+  });
+
+  it("stays quiet for a menu drawn in the corner of a wide box", () => {
+    const closed = "M0 24a24 24 0 1 1 48 0a24 24 0 1 1-48 0Z";
+    const bars = "M8 10h27v3H8zM8 20h27v3H8zM8 30h27v3H8z";
+    const { rerender } = render(inBox(closed, "0 0 320 240"));
+    rerender(inBox(bars, "0 0 320 240"));
+    act(() => flush());
+    expect(warn).not.toHaveBeenCalled();
+  });
 });

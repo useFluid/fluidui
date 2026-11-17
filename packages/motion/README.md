@@ -45,11 +45,11 @@ Paths from other places come in other boxes. Two helpers bring them into the 120
 
 | Helper             | Use it for                                                                                           | What it does                                                           |
 | ------------------ | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `scalePath(d, 24)` | Icons from Lucide, Heroicons or any icon set (`viewBox="0 0 24 24"`), or `scalePath(d, "0 0 20 20")` | Rescales from that box, keeping the icon's size and position inside it |
+| `scalePath(d, 24)` | Filled icons from a set (`viewBox="0 0 24 24"`), such as Heroicons solid or Phosphor fill, or `scalePath(d, "0 0 20 20")` for other boxes | Rescales from that box, keeping the icon's size and position inside it |
 | `fitPath(d)`       | Your logo, from any SVG                                                                              | Fills the box with the drawing, centred                                |
 
 ```tsx
-const check = scalePath(lucideCheckPath, 24);
+const check = scalePath(heroiconCheckSolid, 24);
 
 <svg viewBox="0 0 120 120">
   <MorphPath d={done ? check : shapes.circle} fill="currentColor" />

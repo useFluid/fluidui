@@ -98,14 +98,27 @@ export function MorphPath({
   const target = useRef(first);
 
   useLayoutEffect(() => {
-    if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") checkBox(el.current, d);
+    try {
+      if (process.env.NODE_ENV !== "production") checkBox(el.current, d);
+    } catch {}
   }, [d]);
 
   useLayoutEffect(() => {
     if (d === target.current && !stop.current) return;
     const reduced = isReduced();
     try {
-      morpher.current ??= createMorpher(first, config);
+      if (!morpher.current) {
+        try {
+          morpher.current = createMorpher(first, config);
+        } catch (error) {
+          if (!(error instanceof PathError)) throw error;
+          morpher.current = createMorpher(d, config);
+          target.current = d;
+          el.current?.setAttribute("d", d);
+          rest.current?.(d);
+          return;
+        }
+      }
       if (reduced) morpher.current.jump(d);
       else morpher.current.to(d);
     } catch (error) {
@@ -160,7 +173,7 @@ function checkBox(path: SVGPathElement | null, d: string) {
     }
   }
   const side = Math.max(box.width, box.height);
-  const cornered = maxX - box.x < side * 0.3 && maxY - box.y < side * 0.3;
+  const cornered = side >= 96 && maxX - box.x <= 32 && maxY - box.y <= 32;
   const margin = side * 0.1;
   const outside = minX < box.x - margin || minY < box.y - margin || maxX > box.x + box.width + margin || maxY > box.y + box.height + margin;
   if (!cornered && !outside) return;

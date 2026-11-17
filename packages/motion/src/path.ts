@@ -23,12 +23,12 @@ export class PathError extends Error {
     this.name = "PathError";
     if (!isCode(code)) return;
     this.code = code;
-    if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
-      const where = typeof at === "number" ? ` at position ${at}` : at ? ` ${at}` : "";
-      this.message = `${code}${where}
-${explain(code)}
-More: ${docsLink(code)}`;
-    }
+    try {
+      if (process.env.NODE_ENV !== "production") {
+        const where = typeof at === "number" ? ` at position ${at}` : at ? ` ${at}` : "";
+        this.message = `${code}${where}\n${explain(code)}\nMore: ${docsLink(code)}`;
+      }
+    } catch {}
   }
 }
 

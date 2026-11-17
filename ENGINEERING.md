@@ -29,7 +29,7 @@ How Fluid is built. These rules apply to new code and to any piece a change touc
 
 ## Development-only code
 
-- Anything that exists only to help during development, such as checks, warnings and long explanations, sits behind `isDev()` from `packages/motion/src/dev.ts`.
+- Anything that exists only to help during development, such as checks, warnings and long explanations, sits inside `try { if (process.env.NODE_ENV !== "production") { … } } catch {}`, written inline where it is used. Bundlers (Next.js, Vite, webpack, esbuild) replace the condition and drop the block in production. Without a bundler, `process` is missing, the `try` catches it, and the page still works. A helper function in another module would not be dropped, so do not wrap the condition in one.
 - Bundlers drop it in production. `npm run size` fails if development text reaches the production bundle.
 
 ## Size budget

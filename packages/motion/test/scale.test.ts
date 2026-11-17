@@ -75,4 +75,18 @@ describe("path errors", () => {
     expect(error.code).toBeUndefined();
     expect(error).toBeInstanceOf(Error);
   });
+
+  it("explains the error on its own lines in development", () => {
+    try {
+      parsePath("M10");
+    } catch (error) {
+      const lines = (error as PathError).message.split("\n");
+      expect(lines).toEqual([
+        "FLUID_PATH_NUMBER at position 3",
+        expect.stringMatching(/^A command is missing a number\./),
+        "More: https://fluidui.willradoux.com/docs/troubleshooting#FLUID_PATH_NUMBER",
+      ]);
+    }
+    expect.assertions(1);
+  });
 });
