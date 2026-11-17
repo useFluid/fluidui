@@ -1,6 +1,45 @@
+import { FLUID_DEV_ONLY, docsLink } from "./dev.ts";
+
 export type Command = { c: "M"; x: number; y: number } | { c: "C"; x1: number; y1: number; x2: number; y2: number; x: number; y: number } | { c: "Z" };
 
-export class PathError extends Error {}
+export type PathErrorCode =
+  | "FLUID_PATH_START"
+  | "FLUID_PATH_NUMBER"
+  | "FLUID_PATH_FLAG"
+  | "FLUID_PATH_COMMAND"
+  | "FLUID_PATH_CHARACTER"
+  | "FLUID_PATH_EMPTY"
+  | "FLUID_PATH_NO_SIZE"
+  | "FLUID_VIEWBOX";
+
+export class PathError extends Error {
+  readonly code: PathErrorCode;
+  constructor(code: PathErrorCode, at?: number | string) {
+    super(`${code}: see ${docsLink(code)}`);
+    this.name = "PathError";
+    this.code = code;
+    if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
+      const where = typeof at === "number" ? ` at position ${at}` : at ? ` ${at}` : "";
+      this.message = `${code}${where}
+${explain(code)}
+More: ${docsLink(code)}`;
+    }
+  }
+}
+
+function explain(code: PathErrorCode) {
+  const help: Record<PathErrorCode, string> = {
+    FLUID_PATH_START: 'An SVG path has to begin with a move command. Fix: start the d attribute with M, for example "M10 10L20 20".',
+    FLUID_PATH_NUMBER: "A command is missing a number. Fix: check the path was copied whole; every command needs all its coordinates.",
+    FLUID_PATH_FLAG: "Arc commands need two flags that are 0 or 1. Fix: re-export the SVG from your editor, or convert arcs to curves.",
+    FLUID_PATH_COMMAND: "This letter is not an SVG path command. Fix: pass only the d attribute of a <path>, not the whole SVG markup.",
+    FLUID_PATH_CHARACTER: "There is a value where no command expects one. Fix: pass only the d attribute of a <path>, without extra text.",
+    FLUID_PATH_EMPTY: "The path has commands but draws no line or curve. Fix: pass a shape with at least one segment.",
+    FLUID_PATH_NO_SIZE: "The path has no width or height, so it cannot be fitted. Fix: pass a shape with an area, not a single point.",
+    FLUID_VIEWBOX: 'The box must be a positive number or a viewBox string "minX minY width height". Fix: scalePath(icon, 24) or scalePath(icon, "0 0 24 24").',
+  };
+  return `${help[code]}${help[FLUID_DEV_ONLY as PathErrorCode] ?? ""}`;
+}
 
 const NUMBER = /[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/y;
 const KNOWN = "MLHVCSQTAZ";
@@ -61,14 +100,14 @@ export function parsePath(d: string): Command[] {
     skip();
     NUMBER.lastIndex = i;
     const m = NUMBER.exec(d);
-    if (!m) throw new PathError(`Expected a number at position ${i}`);
+    if (!m) throw new PathError("FLUID_PATH_NUMBER", i);
     i = NUMBER.lastIndex;
     return Number(m[0]);
   };
   const flag = () => {
     skip();
     const f = d[i];
-    if (f !== "0" && f !== "1") throw new PathError(`Expected an arc flag at position ${i}`);
+    if (f !== "0" && f !== "1") throw new PathError("FLUID_PATH_FLAG", i);
     i++;
     return Number(f);
   };
@@ -114,15 +153,15 @@ export function parsePath(d: string): Command[] {
   while (i < d.length) {
     if (/[a-zA-Z]/.test(d[i])) {
       cmd = d[i++];
-      if (!KNOWN.includes(cmd.toUpperCase())) throw new PathError(`Unknown command ${cmd}`);
+      if (!KNOWN.includes(cmd.toUpperCase())) throw new PathError("FLUID_PATH_COMMAND", cmd);
     } else if (!cmd || cmd === "z" || cmd === "Z") {
-      throw new PathError(`Unexpected character at position ${i}`);
+      throw new PathError("FLUID_PATH_CHARACTER", i);
     }
     const up = cmd.toUpperCase();
     const rel = cmd !== up;
     const ox = rel ? x : 0;
     const oy = rel ? y : 0;
-    if (!out.length && up !== "M") throw new PathError("A path must start with M");
+    if (!out.length && up !== "M") throw new PathError("FLUID_PATH_START");
 
     switch (up) {
       case "M": {
@@ -200,7 +239,7 @@ export function parsePath(d: string): Command[] {
     prev = up;
     skip();
   }
-  if (!out.some((c) => c.c === "C")) throw new PathError("This path draws nothing");
+  if (!out.some((c) => c.c === "C")) throw new PathError("FLUID_PATH_EMPTY");
   return out;
 }
 
@@ -276,12 +315,42 @@ export function fitPath(d: string, size = 120, padding = 0) {
     }
   }
   const span = Math.max(maxX - minX, maxY - minY);
-  if (!(span > 0) || !Number.isFinite(span)) throw new PathError("This path has no size");
+  if (!(span > 0) || !Number.isFinite(span)) throw new PathError("FLUID_PATH_NO_SIZE");
   const k = (size - padding * 2) / span;
   const toX = (v: number) => (v - (minX + maxX) / 2) * k + size / 2;
   const toY = (v: number) => (v - (minY + maxY) / 2) * k + size / 2;
   return serializePath(
     commands.map(
+      (c): Command =>
+        c.c === "M"
+          ? { c: "M", x: toX(c.x), y: toY(c.y) }
+          : c.c === "Z"
+            ? c
+            : { c: "C", x1: toX(c.x1), y1: toY(c.y1), x2: toX(c.x2), y2: toY(c.y2), x: toX(c.x), y: toY(c.y) },
+    ),
+  );
+}
+
+export function scalePath(d: string, from: number | string, size = 120) {
+  const box =
+    typeof from === "number"
+      ? [0, 0, from, from]
+      : from
+          .trim()
+          .split(/[\s,]+/)
+          .map(Number);
+  const [minX, minY, width, height] = box;
+  if (box.length !== 4 || !box.every(Number.isFinite) || !(width > 0) || !(height > 0)) {
+    throw new PathError("FLUID_VIEWBOX", JSON.stringify(from));
+  }
+  const side = Math.max(width, height);
+  const k = size / side;
+  const shiftX = (side - width) / 2;
+  const shiftY = (side - height) / 2;
+  const toX = (v: number) => (v - minX + shiftX) * k;
+  const toY = (v: number) => (v - minY + shiftY) * k;
+  return serializePath(
+    parsePath(d).map(
       (c): Command =>
         c.c === "M"
           ? { c: "M", x: toX(c.x), y: toY(c.y) }
