@@ -25,6 +25,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: node scripts/build-packages.mjs
+      - run: npm run size
 
   e2e:
     name: Site in Edge and WebKit
