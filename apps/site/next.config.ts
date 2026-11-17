@@ -12,7 +12,8 @@ const config: NextConfig = {
   ...(dev && {
     redirects: async () => [
       { source: "/", destination: "/en/", permanent: false },
-      { source: "/docs/:path*", destination: "/en/docs/:path*", permanent: false },
+      { source: "/:section(components|docs|mascots|splash|prompts)", destination: "/en/:section", permanent: false },
+      { source: "/:section(components|docs)/:slug([^./]+)", destination: "/en/:section/:slug", permanent: false },
     ],
   }),
 };
