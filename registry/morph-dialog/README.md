@@ -20,14 +20,14 @@ const [from, setFrom] = useState<HTMLElement | null>(null);
 
 ## Props
 
-| Prop             | Type                           | Default | What it does                                                                                                                    |
-| ---------------- | ------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| open             | boolean                        |         | Whether the window is open.                                                                                                     |
-| onClose          | () => void                     |         | Called on Esc and a click outside. Set `open` to false in it.                                                                   |
-| from             | HTMLElement \| DOMRect \| null |         | What it grows out of and goes back into. Keep it in its own state and keep it set while closing, so the window flows back home. |
-| labelledBy       | string                         |         | Id of the window's title.                                                                                                       |
-| className, style |                                |         | Size and look of the window: width, height, padding, background, radius.                                                        |
-| contained        | boolean                        | false   | Open inside the nearest positioned parent instead of over the page.                                                             |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| open | boolean |  | Whether the window is open. |
+| onClose | () => void |  | Called on Esc and a click outside. Set `open` to false in it. |
+| from | HTMLElement \| DOMRect \| null |  | What it grows out of and goes back into. Keep it in its own state and keep it set while closing, so the window flows back home. |
+| labelledBy | string |  | Id of the window's title. |
+| className, style |  |  | Size and look of the window: width, height, padding, background, radius. |
+| contained | boolean | false | Open inside the nearest positioned parent instead of over the page. |
 
 ## Keyboard and screen readers
 

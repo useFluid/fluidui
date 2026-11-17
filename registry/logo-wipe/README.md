@@ -9,18 +9,18 @@ import { LogoWipe } from "./LogoWipe";
 
 <LogoWipe logo={logo} view={step}>
   {step === "plan" ? <Plan /> : <Checkout />}
-</LogoWipe>;
+</LogoWipe>
 ```
 
 ## Props
 
-| Prop                | Type                            | Default | What it does                                                     |
-| ------------------- | ------------------------------- | ------- | ---------------------------------------------------------------- |
-| LogoWipe logo       | string                          |         | Your logo path.                                                  |
-| LogoWipe view       | string                          |         | Change it to play the wipe; the old children stay until covered. |
-| LogoWipe fixed      | boolean                         | false   | Cover the whole screen instead of the wrapped area.              |
-| LogoCurtain covered | boolean                         |         | Controlled curtain, for route changes.                           |
-| useCurtain()        | { covered, cover(), uncover() } |         | `await cover()` resolves once the screen is covered.             |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| LogoWipe logo | string |  | Your logo path. |
+| LogoWipe view | string |  | Change it to play the wipe; the old children stay until covered. |
+| LogoWipe fixed | boolean | false | Cover the whole screen instead of the wrapped area. |
+| LogoCurtain covered | boolean |  | Controlled curtain, for route changes. |
+| useCurtain() | { covered, cover(), uncover() } |  | `await cover()` resolves once the screen is covered. |
 
 ## Keyboard and screen readers
 

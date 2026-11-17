@@ -18,20 +18,20 @@ const [open, setOpen] = useState(false);
     { label: "Orders", href: "/orders" },
     { label: "Help", onSelect: openHelp },
   ]}
-/>;
+/>
 ```
 
 ## Props
 
-| Prop         | Type                          | Default | What it does                                                               |
-| ------------ | ----------------------------- | ------- | -------------------------------------------------------------------------- |
-| open         | boolean                       |         | Whether the card is open.                                                  |
-| onOpenChange | (open) => void                |         | Called on the button, Esc, a tap outside or choosing an item.              |
-| items        | { label, href?, onSelect? }[] |         | Any number of rows. With `href` a row is a link.                           |
-| title        | string                        |         | Heading shown on the open card.                                            |
-| label        | string                        | "Menu"  | Accessible name of the button.                                             |
-| side         | "left" \| "right"             | "right" | The side the card opens towards. Put the menu at that edge of your header. |
-| width        | number                        | 320     | Width of the open card in px; it never exceeds the screen.                 |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| open | boolean |  | Whether the card is open. |
+| onOpenChange | (open) => void |  | Called on the button, Esc, a tap outside or choosing an item. |
+| items | { label, href?, onSelect? }[] |  | Any number of rows. With `href` a row is a link. |
+| title | string |  | Heading shown on the open card. |
+| label | string | "Menu" | Accessible name of the button. |
+| side | "left" \| "right" | "right" | The side the card opens towards. Put the menu at that edge of your header. |
+| width | number | 320 | Width of the open card in px; it never exceeds the screen. |
 
 ## Keyboard and screen readers
 

@@ -11,7 +11,8 @@
       "!**/node_modules",
       "!**/test-results",
       "!.superpowers",
-      "!apps/site/AGENTS.md"
+      "!apps/site/AGENTS.md",
+      "!**/*.md"
     ]
   },
   "formatter": {

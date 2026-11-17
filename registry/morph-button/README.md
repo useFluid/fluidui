@@ -17,16 +17,16 @@ const [state, setState] = useState<MorphButtonState>("idle");
     await placeOrder();
     setState("done");
   }}
-/>;
+/>
 ```
 
 ## Props
 
-| Prop            | Type                          | Default               | What it does                     |
-| --------------- | ----------------------------- | --------------------- | -------------------------------- |
-| state           | "idle" \| "loading" \| "done" |                       | Drive it from your real request. |
-| labels          | { idle, loading?, done }      | Send / Sending / Sent | The words for each state.        |
-| ...button props |                               |                       | Anything a `<button>` takes.     |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| state | "idle" \| "loading" \| "done" |  | Drive it from your real request. |
+| labels | { idle, loading?, done } | Send / Sending / Sent | The words for each state. |
+| ...button props |  |  | Anything a `<button>` takes. |
 
 ## Keyboard and screen readers
 

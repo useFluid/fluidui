@@ -1,5 +1,4 @@
 ---
-
 name: fluid-metamorph
 description: Use when building a new component with the Fluid engine (@usefluid/motion: MorphPath, useSpring, createMorpher) or when a Fluid morph tears, twists or spikes. Not for SVG morphing with other libraries.
 ---
@@ -10,14 +9,14 @@ Metamorph turns an outline into points spread evenly along its border, each on i
 
 ## The tools
 
-| Tool                               | What it does                                                                                |
-| ---------------------------------- | ------------------------------------------------------------------------------------------- |
-| `<MorphPath d={...} />`            | A path that flows to every new `d`. `onRest` fires when it lands.                           |
-| `useSpring(values, apply, config)` | Numbers on springs, applied to the DOM every frame without re-rendering React.              |
-| `useSequence(times, active)`       | A timeline in seconds; returns the index of the step reached.                               |
-| `useSkip(enabled, initial)`        | True after any key or tap, for skippable sequences.                                         |
-| `fitPath(d, 120)`                  | Fits any path into the 120 box.                                                             |
-| `shapes`                           | Ready starts: `dot`, `circle`, `square`, `capsule`, `triangle`, `flower`, `drop`, `pebble`. |
+| Tool | What it does |
+|---|---|
+| `<MorphPath d={...} />` | A path that flows to every new `d`. `onRest` fires when it lands. |
+| `useSpring(values, apply, config)` | Numbers on springs, applied to the DOM every frame without re-rendering React. |
+| `useSequence(times, active)` | A timeline in seconds; returns the index of the step reached. |
+| `useSkip(enabled, initial)` | True after any key or tap, for skippable sequences. |
+| `fitPath(d, 120)` | Fits any path into the 120 box. |
+| `shapes` | Ready starts: `dot`, `circle`, `square`, `capsule`, `triangle`, `flower`, `drop`, `pebble`. |
 
 ```tsx
 import { shapes, springs } from "@usefluid/motion";
@@ -27,13 +26,9 @@ import { MorphPath, useSpring } from "@usefluid/motion/react";
   <MorphPath d={open ? logo : shapes.circle} fill="currentColor" config={{ w: 18, z: 0.78 }} />
 </svg>;
 
-useSpring(
-  { w: open ? 320 : 48 },
-  ({ w }) => {
-    ref.current.style.width = `${w}px`;
-  },
-  springs.snappy,
-);
+useSpring({ w: open ? 320 : 48 }, ({ w }) => {
+  ref.current.style.width = `${w}px`;
+}, springs.snappy);
 ```
 
 Every hook jumps to its end when the system asks for reduced motion.
@@ -53,12 +48,12 @@ Every hook jumps to its end when the system asks for reduced motion.
 
 ## When a morph looks wrong
 
-| Symptom                        | Cause                               | Fix                                                             |
-| ------------------------------ | ----------------------------------- | --------------------------------------------------------------- |
-| Parts swap or cross mid-flight | Different size order between states | Same number and order of parts, biggest first                   |
-| The shape tears                | Small details inside the body path  | Move them out (rule 2)                                          |
-| Spikes on long trips           | Too much spread                     | `spread` near 0.05                                              |
-| Twisting                       | Very different start points         | Start both paths at the same side, or go through a simple shape |
+| Symptom | Cause | Fix |
+|---|---|---|
+| Parts swap or cross mid-flight | Different size order between states | Same number and order of parts, biggest first |
+| The shape tears | Small details inside the body path | Move them out (rule 2) |
+| Spikes on long trips | Too much spread | `spread` near 0.05 |
+| Twisting | Very different start points | Start both paths at the same side, or go through a simple shape |
 
 ## A new piece
 

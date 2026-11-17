@@ -7,16 +7,16 @@ A loader that keeps changing shape and ends on a check.
 ```tsx
 import { MorphLoader } from "./MorphLoader";
 
-<MorphLoader done={!loading} label="Loading orders" doneLabel="Orders loaded" />;
+<MorphLoader done={!loading} label="Loading orders" doneLabel="Orders loaded" />
 ```
 
 ## Props
 
-| Prop      | Type    | Default   | What it does                                  |
-| --------- | ------- | --------- | --------------------------------------------- |
-| done      | boolean |           | False while loading; true lands on the check. |
-| label     | string  | "Loading" | Announced while loading.                      |
-| doneLabel | string  | "Done"    | Announced when done.                          |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| done | boolean |  | False while loading; true lands on the check. |
+| label | string | "Loading" | Announced while loading. |
+| doneLabel | string | "Done" | Announced when done. |
 
 ## Keyboard and screen readers
 

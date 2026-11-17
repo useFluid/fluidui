@@ -1,5 +1,4 @@
 ---
-
 name: fluid-video
 description: Use when recording a web page or Fluid animation to MP4 with the Fluid CLI (fluid record), or when such a recording is choppy, cut off or blank. Not for editing, cutting or captioning existing videos.
 ---
@@ -44,12 +43,12 @@ Everything in the video must happen by itself: start timelines on mount, drive i
 npx @usefluid/cli record http://localhost:3000/record --format story --seconds 6 --out videos/intro.mp4
 ```
 
-| Format   | Size        | The page is laid out at |
-| -------- | ----------- | ----------------------- |
-| `story`  | 1080 x 1920 | 400 x 711               |
-| `post`   | 1080 x 1350 | 400 x 500               |
-| `square` | 1080 x 1080 | 400 x 400               |
-| `wide`   | 1920 x 1080 | 711 x 400               |
+| Format | Size | The page is laid out at |
+|---|---|---|
+| `story` | 1080 x 1920 | 400 x 711 |
+| `post` | 1080 x 1350 | 400 x 500 |
+| `square` | 1080 x 1080 | 400 x 400 |
+| `wide` | 1920 x 1080 | 711 x 400 |
 
 The short side is always 400 px and is scaled up 2.7 times, so design the scene at those sizes. A production build records smoother than the dev server.
 
@@ -68,8 +67,8 @@ Look at the sheet:
 
 ## Common mistakes
 
-| Symptom                       | Cause and fix                                                                                          |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
-| The app's header in the video | The scene shares the app layout; give it its own                                                       |
-| Text cut at the sides         | Pieces sized with `cqmin` render bigger at 400 px; shorten the text or size it down on the record page |
-| A blank first second          | The scene waits for something; start on mount                                                          |
+| Symptom | Cause and fix |
+|---|---|
+| The app's header in the video | The scene shares the app layout; give it its own |
+| Text cut at the sides | Pieces sized with `cqmin` render bigger at 400 px; shorten the text or size it down on the record page |
+| A blank first second | The scene waits for something; start on mount |

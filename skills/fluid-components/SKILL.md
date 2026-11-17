@@ -1,5 +1,4 @@
 ---
-
 name: fluid-components
 description: Use when the project depends on @usefluid/motion or the user names Fluid, and they want to add, choose or adapt a Fluid piece (Metamorph, Pet, Bot, Segmented Picker, Spring Switch, Morph Dialog, Splash...). Not for animation with other libraries (Framer Motion, GSAP, CSS) or projects without Fluid.
 ---
@@ -16,26 +15,26 @@ Fluid pieces are React components copied into the project, all made from one mot
 
 ## Pick the piece
 
-| The product needs                         | Piece                                                                          |
-| ----------------------------------------- | ------------------------------------------------------------------------------ |
-| A window that opens from a card or button | `morph-dialog`                                                                 |
-| A mobile menu                             | `menu-morph`                                                                   |
-| A filter or a view switch over one list   | `segmented-picker`                                                             |
-| Tabs that switch panels, with counts      | `pill-tabs`                                                                    |
-| An on and off setting                     | `spring-switch`                                                                |
-| Main and secondary buttons                | `spring-button`                                                                |
-| A submit that takes a moment              | `morph-button`                                                                 |
-| A notice after an action                  | `island-toast`                                                                 |
-| Copy a code or link                       | `copy-morph`                                                                   |
-| A loading state                           | `morph-loader`                                                                 |
-| Open and close, play and pause icons      | `icon-morph`                                                                   |
-| A quick action that opens a small panel   | `morph-island`                                                                 |
-| A changing word in a heading              | `word-cycle`                                                                   |
-| A heading that arrives letter by letter   | `text-reveal`                                                                  |
-| A route or screen change with the brand   | `logo-wipe` (`LogoCurtain` for routes)                                         |
-| The logo arriving                         | `shape-morph`                                                                  |
-| An opening                                | `splash-shapes`, `splash-choice`, `splash-dots` (see the `fluid-splash` skill) |
-| A mascot or assistant                     | `pet`, `bot` (see the `fluid-characters` skill)                                |
+| The product needs | Piece |
+|---|---|
+| A window that opens from a card or button | `morph-dialog` |
+| A mobile menu | `menu-morph` |
+| A filter or a view switch over one list | `segmented-picker` |
+| Tabs that switch panels, with counts | `pill-tabs` |
+| An on and off setting | `spring-switch` |
+| Main and secondary buttons | `spring-button` |
+| A submit that takes a moment | `morph-button` |
+| A notice after an action | `island-toast` |
+| Copy a code or link | `copy-morph` |
+| A loading state | `morph-loader` |
+| Open and close, play and pause icons | `icon-morph` |
+| A quick action that opens a small panel | `morph-island` |
+| A changing word in a heading | `word-cycle` |
+| A heading that arrives letter by letter | `text-reveal` |
+| A route or screen change with the brand | `logo-wipe` (`LogoCurtain` for routes) |
+| The logo arriving | `shape-morph` |
+| An opening | `splash-shapes`, `splash-choice`, `splash-dots` (see the `fluid-splash` skill) |
+| A mascot or assistant | `pet`, `bot` (see the `fluid-characters` skill) |
 
 `npx @usefluid/cli list` prints all of them.
 
@@ -68,13 +67,13 @@ Drive pieces from the product's real data and events: the real request for `morp
 
 ## Common mistakes
 
-| Mistake                                                          | Fix                                                                                                                                  |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `from={ref.current}` on MorphDialog, or clearing `from` on close | Keep `open` and `from` in separate state and leave `from` set while it closes                                                        |
-| `LogoWipe` around App Router `children`                          | Use `LogoCurtain` and `useCurtain`: cover, navigate, uncover on the new path; skip the curtain for the current path (see its README) |
-| MenuMorph links reload the whole page in Next.js                 | Give each item `onSelect: () => router.push(href)` as well as `href`                                                                 |
-| `pill-tabs` for a filter                                         | `segmented-picker` is the right semantics for a filter                                                                               |
-| `word-cycle` looping in the product                              | `loop={false}`                                                                                                                       |
-| A Bot with no way to type                                        | Pass your input as its `children`                                                                                                    |
+| Mistake | Fix |
+|---|---|
+| `from={ref.current}` on MorphDialog, or clearing `from` on close | Keep `open` and `from` in separate state and leave `from` set while it closes |
+| `LogoWipe` around App Router `children` | Use `LogoCurtain` and `useCurtain`: cover, navigate, uncover on the new path; skip the curtain for the current path (see its README) |
+| MenuMorph links reload the whole page in Next.js | Give each item `onSelect: () => router.push(href)` as well as `href` |
+| `pill-tabs` for a filter | `segmented-picker` is the right semantics for a filter |
+| `word-cycle` looping in the product | `loop={false}` |
+| A Bot with no way to type | Pass your input as its `children` |
 
 Building something no piece covers? Use `fluid-metamorph`.

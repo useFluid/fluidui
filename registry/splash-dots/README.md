@@ -7,20 +7,20 @@ An opening: scattered dots fly to your logo's outline, it fills in and the name 
 ```tsx
 import { SplashDots } from "./SplashDots";
 
-<SplashDots logo={logo} name="Acme" as="h1" finished={seen} onDone={remember} />;
+<SplashDots logo={logo} name="Acme" as="h1" finished={seen} onDone={remember} />
 ```
 
 ## Props
 
-| Prop      | Type                | Default | What it does    |
-| --------- | ------------------- | ------- | --------------- |
-| logo      | string              |         | Your logo path. |
-| name      | string              |         |                 |
-| as        | "h1" \| "h2" \| "p" | "p"     |                 |
-| finished  | boolean             | false   |                 |
-| skippable | boolean             | true    |                 |
-| onDone    | () => void          |         |                 |
-| play      | boolean             | true    |                 |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| logo | string |  | Your logo path. |
+| name | string |  |  |
+| as | "h1" \| "h2" \| "p" | "p" |  |
+| finished | boolean | false |  |
+| skippable | boolean | true |  |
+| onDone | () => void |  |  |
+| play | boolean | true |  |
 
 ## Keyboard and screen readers
 

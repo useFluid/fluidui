@@ -56,7 +56,7 @@ Goal of this phase: someone writing Fluid by hand gets the same quality as someo
 
 ### Foundation slice (first)
 
-- **Lint and format: Biome.** One fast tool for both, one config file, no plugin set to maintain. _My call_: ESLint plus Prettier would also work but means two tools and more config. Applied to the whole repo in one formatting commit so later diffs stay readable. CI runs `biome ci`.
+- **Lint and format: Biome.** One fast tool for both, one config file, no plugin set to maintain. *My call*: ESLint plus Prettier would also work but means two tools and more config. Applied to the whole repo in one formatting commit so later diffs stay readable. CI runs `biome ci`.
 - **Rules document: `ENGINEERING.md` at the root**, linked from CONTRIBUTING. Covers:
   - public API naming;
   - props conventions (controlled pairs like `value` and `onChange`, `className` passthrough);
@@ -66,33 +66,33 @@ Goal of this phase: someone writing Fluid by hand gets the same quality as someo
   - size budget;
   - testing expectations;
   - semantic versioning and the changelog.
-- **Size budget.** _My call_: measure what users actually ship.
+- **Size budget.** *My call*: measure what users actually ship.
   - A script bundles the engine with esbuild (a dev dependency only) in production mode, minified, and reports gzip sizes for two entry points: `@usefluid/motion` and `@usefluid/motion/react`.
   - CI fails above the budget.
   - The baseline is measured before this phase starts, and the budget is that baseline plus 15 percent.
   - Development-only code is excluded by construction, and the check also proves it is dropped.
-- **Existing pieces are exempt from a retrofit.** _My call_: the rules in `ENGINEERING.md` apply to new code and to any piece a change touches. The document says so explicitly. Existing pieces keep their props and defaults. `ShapeMorph`, `IconMorph` and other pieces are not changed in this phase; they already work in the 120 box.
+- **Existing pieces are exempt from a retrofit.** *My call*: the rules in `ENGINEERING.md` apply to new code and to any piece a change touches. The document says so explicitly. Existing pieces keep their props and defaults. `ShapeMorph`, `IconMorph` and other pieces are not changed in this phase; they already work in the 120 box.
 
 ### Manual use
 
-- **Coordinate boxes are stated per path, at the call site.** _My call_: a public helper rescales one path from its own viewBox into the 120 box, keeping relative size and position (unlike `fitPath`, which fills the box and would blow `shapes.dot` up). The documented pattern is: convert icons once with the helper, draw in `viewBox="0 0 120 120"`, and morph freely against built-in shapes and logos. `MorphPath` itself gets no box prop: a prop would apply to every `d` it receives and wrongly rescale the built-in shapes when one component alternates between an icon and a shape. Both helpers are documented side by side. Name and signature are left to the builder.
-- **Development warning for mismatched boxes.** _My call_: in development only, `MorphPath` reads the enclosing `<svg>` `viewBox`. If a path's bounds are far smaller than that box, or fall outside it, `MorphPath` warns once and names the helper. Comparing against the box, not shape against shape, keeps intentional dot-to-logo morphs quiet. The threshold is left to the builder.
+- **Coordinate boxes are stated per path, at the call site.** *My call*: a public helper rescales one path from its own viewBox into the 120 box, keeping relative size and position (unlike `fitPath`, which fills the box and would blow `shapes.dot` up). The documented pattern is: convert icons once with the helper, draw in `viewBox="0 0 120 120"`, and morph freely against built-in shapes and logos. `MorphPath` itself gets no box prop: a prop would apply to every `d` it receives and wrongly rescale the built-in shapes when one component alternates between an icon and a shape. Both helpers are documented side by side. Name and signature are left to the builder.
+- **Development warning for mismatched boxes.** *My call*: in development only, `MorphPath` reads the enclosing `<svg>` `viewBox`. If a path's bounds are far smaller than that box, or fall outside it, `MorphPath` warns once and names the helper. Comparing against the box, not shape against shape, keeps intentional dot-to-logo morphs quiet. The threshold is left to the builder.
 - **Invalid paths no longer crash.** `MorphPath` catches a `PathError` and keeps the last good shape. In development it warns with the full message.
-- **Errors have codes.** _My call_, following React's model: every `PathError` carries a short stable code (for example `FLUID_PATH_NO_SIZE`). Production builds keep only the code and a link to the Troubleshooting page. Development builds add the full explanation and the fix. Troubleshooting is organised by code.
-- **Development-only code** is gated so bundlers drop it in production. _My call_: `process.env.NODE_ENV !== "production"`, guarded so it does not throw where `process` is undefined (plain ESM in a browser without a bundler).
+- **Errors have codes.** *My call*, following React's model: every `PathError` carries a short stable code (for example `FLUID_PATH_NO_SIZE`). Production builds keep only the code and a link to the Troubleshooting page. Development builds add the full explanation and the fix. Troubleshooting is organised by code.
+- **Development-only code** is gated so bundlers drop it in production. *My call*: `process.env.NODE_ENV !== "production"`, guarded so it does not throw where `process` is undefined (plain ESM in a browser without a bundler).
 - **Docs, a "Without AI" track on the site**:
   - "Start by hand": install, theme, first spring, first morph, in under ten minutes;
   - recipes: morph icons from Lucide or Heroicons, morph to your logo, a spring on any value, copy a piece and adapt it;
   - "Troubleshooting": every error and warning message, its cause and its fix;
   - reference: every public export with its types and an example.
-
+  
   Pages follow the existing guide system in `apps/site/lib/guide.ts` and are also served as Markdown for agents.
 - **The "Without AI" track is English only.** Willian decided this. The Portuguese routes of these pages show the English text, so the language switch keeps working and no page is missing, and their sidebar links stay in place. Existing Portuguese content elsewhere on the site is not touched in this phase.
 
 ### Tests
 
 - Unit tests for the new path helper and the improved error messages, in the existing Vitest setup.
-- Tests for `MorphPath` in a DOM environment: rescaling, the mismatch warning, the invalid path fallback, and reduced motion. _My call_: add `happy-dom` as a dev dependency for Vitest. It does not touch any published package.
+- Tests for `MorphPath` in a DOM environment: rescaling, the mismatch warning, the invalid path fallback, and reduced motion. *My call*: add `happy-dom` as a dev dependency for Vitest. It does not touch any published package.
 - An end-to-end test that runs the "Start by hand" recipe on the site: a 24 x 24 icon morphing into a built-in shape renders without errors.
 
 ## Success criteria

@@ -16,17 +16,17 @@ import { SegmentedPicker } from "./SegmentedPicker";
     { value: "active", label: "Active" },
     { value: "done", label: "Done" },
   ]}
-/>;
+/>
 ```
 
 ## Props
 
-| Prop     | Type                           | Default | What it does                                      |
-| -------- | ------------------------------ | ------- | ------------------------------------------------- |
-| label    | string                         |         | Accessible name of the group.                     |
-| value    | string                         |         | The chosen option.                                |
-| onChange | (value) => void                |         |                                                   |
-| options  | { value, label, ariaLabel? }[] |         | `label` can be any node, like a word and a count. |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| label | string |  | Accessible name of the group. |
+| value | string |  | The chosen option. |
+| onChange | (value) => void |  |  |
+| options | { value, label, ariaLabel? }[] |  | `label` can be any node, like a word and a count. |
 
 ## Keyboard and screen readers
 

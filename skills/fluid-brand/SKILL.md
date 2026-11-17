@@ -1,5 +1,4 @@
 ---
-
 name: fluid-brand
 description: Use when a project already depends on @usefluid/motion (or the user asks to set up Fluid) and the logo, colours or font still need to reach the Fluid pieces: no --fluid-* theme file yet, a new logo, or a rebrand. Not for brand work that does not involve Fluid.
 ---
@@ -14,12 +13,12 @@ Every Fluid piece reads ten `--fluid-*` CSS variables and takes the logo as one 
 
 ### 1. Find what exists
 
-| Look for                            | Where                                                                                                         |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Logo (SVG, symbol only, one colour) | `public/`, `assets/`, `src/assets/`, `app/`, components named `Logo`                                          |
-| Colour tokens                       | `globals.css`, `tokens.css`, `tailwind.config.*`, `theme.ts`, variables like `--primary` or `--color-primary` |
-| Font                                | the `font-family` on `body`, `next/font`, `@font-face`                                                        |
-| Dark mode                           | `.dark`, `[data-theme]` or a `prefers-color-scheme` query                                                     |
+| Look for | Where |
+|---|---|
+| Logo (SVG, symbol only, one colour) | `public/`, `assets/`, `src/assets/`, `app/`, components named `Logo` |
+| Colour tokens | `globals.css`, `tokens.css`, `tailwind.config.*`, `theme.ts`, variables like `--primary` or `--color-primary` |
+| Font | the `font-family` on `body`, `next/font`, `@font-face` |
+| Dark mode | `.dark`, `[data-theme]` or a `prefers-color-scheme` query |
 
 No SVG logo? Ask for one. Never draw a logo, use a generic icon, or use another company's mark.
 
@@ -58,14 +57,14 @@ Replace every value with the project's own token, and import the file once at th
 }
 ```
 
-| Variable                               | Used for                                                       |
-| -------------------------------------- | -------------------------------------------------------------- |
-| `--fluid-accent`                       | logos, fills, the chosen pill, switches when on                |
-| `--fluid-on-accent`                    | text, icons and small shapes on the accent; also switch thumbs |
-| `--fluid-surface`, `--fluid-surface-2` | panels, and the area behind pieces                             |
-| `--fluid-text`, `--fluid-text-2`       | main and secondary text                                        |
-| `--fluid-border`, `--fluid-focus`      | hairlines and the focus ring                                   |
-| `--fluid-radius`, `--fluid-font`       | control radius and font                                        |
+| Variable | Used for |
+|---|---|
+| `--fluid-accent` | logos, fills, the chosen pill, switches when on |
+| `--fluid-on-accent` | text, icons and small shapes on the accent; also switch thumbs |
+| `--fluid-surface`, `--fluid-surface-2` | panels, and the area behind pieces |
+| `--fluid-text`, `--fluid-text-2` | main and secondary text |
+| `--fluid-border`, `--fluid-focus` | hairlines and the focus ring |
+| `--fluid-radius`, `--fluid-font` | control radius and font |
 
 A token the project lacks: pick a value and tell the person you chose it.
 
@@ -73,11 +72,11 @@ A token the project lacks: pick a value and tell the person you chose it.
 
 ## Common mistakes
 
-| Mistake                                   | Fix                                                                                                                                                                            |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Copying hex values into the theme         | Point at the project's variables, so a rebrand or dark mode changes everything                                                                                                 |
+| Mistake | Fix |
+|---|---|
+| Copying hex values into the theme | Point at the project's variables, so a rebrand or dark mode changes everything |
 | A separate dark block that repeats values | Not needed when the variables point at tokens that switch on the same element, usually `<html>`. If the dark class is on `<body>`, declare the `--fluid-*` block on `body` too |
-| Showing the logo touching its box         | The fitted path fills the 120 box; draw it with `viewBox="-8 -8 136 136"` for breathing room                                                                                   |
-| Assuming a logo with holes broke          | Holes need `fill-rule="evenodd"`, which `MorphPath` already sets                                                                                                               |
+| Showing the logo touching its box | The fitted path fills the 120 box; draw it with `viewBox="-8 -8 136 136"` for breathing room |
+| Assuming a logo with holes broke | Holes need `fill-rule="evenodd"`, which `MorphPath` already sets |
 
 Then add pieces with `fluid-components`.

@@ -18,14 +18,14 @@ Fluid has three parts:
 
 ## Pieces
 
-| Family      | Pieces                                                                                    |
-| ----------- | ----------------------------------------------------------------------------------------- |
-| Metamorph   | Shape Morph, Icon Morph, Menu Morph, Morph Dialog, Morph Button, Copy Morph, Morph Loader |
-| Characters  | Pet, Bot, Mascot                                                                          |
-| Controls    | Segmented Picker, Pill Tabs, Spring Switch, Spring Button, Morph Island                   |
-| Text        | Word Cycle, Text Reveal                                                                   |
-| Transitions | Logo Wipe, Island Toast                                                                   |
-| Splash      | Splash Choice, Splash Shapes, Splash Dots                                                 |
+| Family | Pieces |
+|---|---|
+| Metamorph | Shape Morph, Icon Morph, Menu Morph, Morph Dialog, Morph Button, Copy Morph, Morph Loader |
+| Characters | Pet, Bot, Mascot |
+| Controls | Segmented Picker, Pill Tabs, Spring Switch, Spring Button, Morph Island |
+| Text | Word Cycle, Text Reveal |
+| Transitions | Logo Wipe, Island Toast |
+| Splash | Splash Choice, Splash Shapes, Splash Dots |
 
 Every piece:
 
@@ -46,11 +46,11 @@ npx @usefluid/cli logo logo.svg --out src/lib/logo.ts
 npx @usefluid/cli add splash-choice morph-dialog
 ```
 
-| Command  | What it does                                                                                                                                        |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `init`   | Writes the theme file with the ten variables. Point them at your own tokens.                                                                        |
-| `logo`   | Converts an SVG logo into the single path, in a 120 x 120 box, that the pieces use.                                                                 |
-| `add`    | Copies pieces into `src/components/fluid/`, with any piece they depend on. From then on they are your code.                                         |
+| Command | What it does |
+|---|---|
+| `init` | Writes the theme file with the ten variables. Point them at your own tokens. |
+| `logo` | Converts an SVG logo into the single path, in a 120 x 120 box, that the pieces use. |
+| `add` | Copies pieces into `src/components/fluid/`, with any piece they depend on. From then on they are your code. |
 | `record` | Records any page as an MP4, frame by frame at 60 fps, in story, post, square or wide format. Needs `playwright-core`, Chrome or Edge, and `ffmpeg`. |
 
 The engine on its own:
@@ -76,15 +76,15 @@ Full API: [packages/motion](packages/motion/README.md) and [packages/cli](packag
 npx skills@latest add useFluid/fluidui
 ```
 
-| Skill              | For                                                    |
-| ------------------ | ------------------------------------------------------ |
-| `fluid-brand`      | Finds the logo, colours and font, and writes the theme |
-| `fluid-components` | Picks the right piece and adapts it                    |
-| `fluid-metamorph`  | Builds new pieces with the engine                      |
-| `fluid-splash`     | Builds a product opening from the logo                 |
-| `fluid-characters` | Pets, bots and mascots with moods tied to the product  |
-| `fluid-video`      | Records pages and pieces as video                      |
-| `fluid-ai-video`   | Puts brand motion over AI-generated video              |
+| Skill | For |
+|---|---|
+| `fluid-brand` | Finds the logo, colours and font, and writes the theme |
+| `fluid-components` | Picks the right piece and adapts it |
+| `fluid-metamorph` | Builds new pieces with the engine |
+| `fluid-splash` | Builds a product opening from the logo |
+| `fluid-characters` | Pets, bots and mascots with moods tied to the product |
+| `fluid-video` | Records pages and pieces as video |
+| `fluid-ai-video` | Puts brand motion over AI-generated video |
 
 They only start when the project uses Fluid or you ask for it by name. More in [skills](skills/README.md).
 
@@ -116,12 +116,12 @@ npm run new -- my-piece
 node scripts/build-packages.mjs
 ```
 
-| Script           | What it does                                                           |
-| ---------------- | ---------------------------------------------------------------------- |
-| `dev`            | The site at http://localhost:3000                                      |
-| `test`           | Engine and catalogue tests                                             |
-| `test:e2e`       | The site in a real browser, on Microsoft Edge                          |
-| `new`            | A new piece with its component, demo and README                        |
+| Script | What it does |
+|---|---|
+| `dev` | The site at http://localhost:3000 |
+| `test` | Engine and catalogue tests |
+| `test:e2e` | The site in a real browser, on Microsoft Edge |
+| `new` | A new piece with its component, demo and README |
 | `build-packages` | Builds the engine and the CLI into `dist/` and packs them into `pack/` |
 
 See [CONTRIBUTING](CONTRIBUTING.md) for what every piece needs, and the [code of conduct](CODE_OF_CONDUCT.md). Security problems go through [SECURITY](SECURITY.md).

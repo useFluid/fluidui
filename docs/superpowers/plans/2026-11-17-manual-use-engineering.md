@@ -5,7 +5,6 @@
 **Goal:** Make Fluid as good by hand as with AI. Give the repository enforced engineering rules. Make the engine measurably faster without changing what it draws.
 
 **Architecture:** Additive changes to `@usefluid/motion`:
-
 - a `scalePath` helper;
 - coded `PathError`s with development-only explanations;
 - a `MorphPath` that never crashes and warns about box mismatches in development;
@@ -40,12 +39,10 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 1: Biome for lint and format
 
 **Files:**
-
 - Create: `biome.json`
 - Modify: `package.json` (scripts, devDependencies), `.github/workflows/ci.yml` (check job), every source file touched by formatting
 
 **Interfaces:**
-
 - Produces: `npm run lint` (`biome ci .`), `npm run format` (`biome format --write .`)
 
 - [ ] **Step 1:** Add `@biomejs/biome` as a root dev dependency and `biome.json`:
@@ -61,12 +58,10 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 2: Engineering rules
 
 **Files:**
-
 - Create: `ENGINEERING.md`
 - Modify: `CONTRIBUTING.md` (link it, move the "What every piece does" list into it)
 
 **Interfaces:**
-
 - Produces: the rules later tasks follow. In particular, error codes are `FLUID_` plus an uppercase snake name, and development messages say what went wrong and how to fix it.
 
 - [ ] **Step 1:** Write `ENGINEERING.md` with these sections:
@@ -79,7 +74,7 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
   - Tests: what each layer needs.
   - Versioning and changelog.
   - Lint exceptions: from Task 1.
-
+  
   Add the line: "These rules apply to new code and to any piece a change touches; existing pieces are not retrofitted."
 - [ ] **Step 2:** Run `npx biome ci .`. Expected: pass.
 - [ ] **Step 3:** Commit.
@@ -87,12 +82,10 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 3: Size budget in CI
 
 **Files:**
-
 - Create: `scripts/size.mjs`, `size-budget.json`
 - Modify: `package.json` (script `size`, dev dependency `esbuild`), `.github/workflows/ci.yml` (run after `build-packages`)
 
 **Interfaces:**
-
 - Produces: `npm run size`. It bundles `packages/motion/dist/index.js` and `packages/motion/dist/react.js` with esbuild (`bundle`, `minify`, `format: "esm"`, `define: { "process.env.NODE_ENV": '"production"' }`, `external: ["react"]`), prints the gzip bytes of each, and exits 1 when either is above `size-budget.json` `{ "index": number, "react": number }`. It also exits 1 if the minified output contains the string `FLUID_DEV_ONLY`. That marker is a constant Task 6 places in development-only text.
 
 - [ ] **Step 1:** Write the script and run it on the current `dist`. Expected: it prints two numbers.
@@ -103,19 +96,17 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 4: Benchmarks
 
 **Files:**
-
 - Create: `packages/motion/test/engine.bench.ts`
 - Modify: `vitest.config.mts` (add `benchmark: { include: ["packages/**/test/**/*.bench.ts"] }`), `package.json` (script `bench`: `vitest bench --run`)
 
 **Interfaces:**
-
 - Produces: these named benchmarks, which Task 5 must improve:
   - `morph frame: circle to logo, 160 points`: one `step(1/60)` plus one `path()` on a morph that is in motion;
   - `morph frame: two-part logo, 160 points`;
   - `sampleContours: logo`;
   - `stepSpring x 1000`;
   - `springCss`.
-
+  
   Use the Fluid brand logo from `registry/brands.ts` and `RING_AND_DOT` from the existing tests.
 
 - [ ] **Step 1:** Write the benchmarks and run `npm run bench`. Record the ops/s of each in the pull request description as the baseline.
@@ -124,12 +115,10 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 5: Faster morph inner loop
 
 **Files:**
-
 - Modify: `packages/motion/src/morph.ts`, `packages/motion/src/path.ts` (`sampleContours`)
 - Test: `packages/motion/test/motion.test.ts`
 
 **Interfaces:**
-
 - Consumes: the benchmarks from Task 4.
 - Produces: the same `createMorpher` and `sampleContours` signatures and outputs.
 
@@ -147,13 +136,11 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 6: Coded errors and `scalePath`
 
 **Files:**
-
 - Create: `packages/motion/src/dev.ts`
 - Modify: `packages/motion/src/path.ts`, `packages/motion/src/index.ts`, `packages/motion/README.md`
 - Test: `packages/motion/test/motion.test.ts`
 
 **Interfaces:**
-
 - Produces:
   - `isDev(): boolean`, `warnOnce(code: string, message: string): void` (deduplicated per code and message; prints through `console.warn` only when `isDev()`), and `FLUID_DEV_ONLY` (internal).
   - `type PathErrorCode = "FLUID_PATH_START" | "FLUID_PATH_NUMBER" | "FLUID_PATH_FLAG" | "FLUID_PATH_COMMAND" | "FLUID_PATH_CHARACTER" | "FLUID_PATH_EMPTY" | "FLUID_PATH_NO_SIZE" | "FLUID_VIEWBOX"`.
@@ -174,12 +161,10 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 7: `MorphPath` that never crashes and warns about boxes
 
 **Files:**
-
 - Modify: `packages/motion/src/react.tsx`, `vitest.config.mts` (`environmentMatchGlobs` or a per-file `// @vitest-environment happy-dom` pragma; the pragma is a directive, not a comment), `package.json` (dev dependencies `happy-dom`, `@testing-library/react`)
 - Create: `packages/motion/test/react.test.tsx`
 
 **Interfaces:**
-
 - Consumes: `isDev`, `warnOnce`, `PathError`, `sampleContours` from earlier tasks.
 - Produces: the same `MorphPath` props. New behaviour:
   - a `d` that throws a `PathError` keeps the last valid shape, calls `warnOnce(error.code, error.message)`, and does not call `onRest`;
@@ -198,7 +183,6 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
 ### Task 8: "By hand" docs track
 
 **Files:**
-
 - Create: `apps/site/content/by-hand.md`, `apps/site/content/recipes.md`, `apps/site/content/troubleshooting.md`, `apps/site/content/reference.md`
 - Modify:
   - `apps/site/lib/guide.ts`: add `"by-hand"`, `"recipes"`, `"troubleshooting"` and `"reference"` after `"installation"`;
@@ -208,7 +192,6 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
   - `apps/site/e2e/site.spec.ts`.
 
 **Interfaces:**
-
 - Consumes: the exact error codes from Tasks 6 and 7 (`FLUID_PATH_*`, `FLUID_VIEWBOX`, `FLUID_BOX_MISMATCH`).
 - Produces: the routes `/docs/by-hand`, `/docs/recipes`, `/docs/troubleshooting`, `/docs/reference`. Troubleshooting has one heading per code, with the anchor id equal to the code, so the links from error messages land on it.
 
@@ -222,14 +205,13 @@ Repository tooling (Biome, size budget, benchmarks) runs in CI. A new English-on
   - `recipes`: Lucide and Heroicons icons with `scalePath`, your logo with `fitPath`, a spring on any value without React using `createSpring` and `play`, copy a piece and adapt it;
   - `troubleshooting`: one section per code, covering what happened, why, and the fix with code;
   - `reference`: every export of `@usefluid/motion` and `@usefluid/motion/react`, with its signature and a one-line example.
-
+  
   Add the live example to `recipes` as a small client component.
 - [ ] **Step 4:** Run `npm run build && npx playwright test --project=edge`. Expected: all pass. Commit.
 
 ### Task 9: Release 0.2.0
 
 **Files:**
-
 - Modify: `CHANGELOG.md`, `README.md` (link to "By hand")
 
 - [ ] **Step 1:** Add the `## 0.2.0` changelog entry, covering:

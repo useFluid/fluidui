@@ -7,19 +7,17 @@ A word that changes, each one coming out of a blur.
 ```tsx
 import { WordCycle } from "./WordCycle";
 
-<h1>
-  Made for <WordCycle words={["shops.", "clinics.", "you."]} loop={false} />
-</h1>;
+<h1>Made for <WordCycle words={["shops.", "clinics.", "you."]} loop={false} /></h1>
 ```
 
 ## Props
 
-| Prop  | Type     | Default | What it does                                         |
-| ----- | -------- | ------- | ---------------------------------------------------- |
-| words | string[] |         | Short words. The box takes the width of the longest. |
-| every | number   | 1.6     | Seconds per word.                                    |
-| loop  | boolean  | true    | False stops on the last word.                        |
-| play  | boolean  | true    |                                                      |
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| words | string[] |  | Short words. The box takes the width of the longest. |
+| every | number | 1.6 | Seconds per word. |
+| loop | boolean | true | False stops on the last word. |
+| play | boolean | true |  |
 
 ## Keyboard and screen readers
 

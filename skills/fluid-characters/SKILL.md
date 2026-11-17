@@ -1,5 +1,4 @@
 ---
-
 name: fluid-characters
 description: Use when the project depends on @usefluid/motion or the user names Fluid, and they want a pet, mascot or assistant face built with Fluid's Pet or Bot. Not for illustrated mascots, 3D characters or avatars without Fluid.
 ---
@@ -16,13 +15,13 @@ Read `pet/README.md` and `bot/README.md` for every prop.
 
 ## Tie moods to real events
 
-| Product event                    | Mood                                |
-| -------------------------------- | ----------------------------------- |
-| Waiting for the person           | `idle`                              |
-| Something worked                 | `happy` (hops twice, then breathes) |
-| An error or something unexpected | `surprised`                         |
-| No activity for a while          | `sleepy`                            |
-| The person is typing or choosing | `curious`                           |
+| Product event | Mood |
+|---|---|
+| Waiting for the person | `idle` |
+| Something worked | `happy` (hops twice, then breathes) |
+| An error or something unexpected | `surprised` |
+| No activity for a while | `sleepy` |
+| The person is typing or choosing | `curious` |
 
 Never change mood at random. Pass `still` where nothing should move on its own.
 
@@ -34,26 +33,19 @@ Never change mood at random. Pass `still` where nothing should move on its own.
 <Bot state={state} messages={messages} name="Acme help">
   <form onSubmit={send}>
     <label htmlFor="ask">Ask a question</label>
-    <input
-      id="ask"
-      value={draft}
-      onChange={(e) => {
-        setDraft(e.target.value);
-        setState("listening");
-      }}
-    />
+    <input id="ask" value={draft} onChange={(e) => { setDraft(e.target.value); setState("listening"); }} />
     <button>Send</button>
   </form>
-</Bot>;
+</Bot>
 ```
 
-| State       | When                                       |
-| ----------- | ------------------------------------------ |
-| `idle`      | nothing happening                          |
-| `listening` | the person is typing                       |
-| `thinking`  | waiting for the answer                     |
-| `talking`   | the answer is arriving                     |
-| `done`      | answered; go back to `idle` after a moment |
+| State | When |
+|---|---|
+| `idle` | nothing happening |
+| `listening` | the person is typing |
+| `thinking` | waiting for the answer |
+| `talking` | the answer is arriving |
+| `done` | answered; go back to `idle` after a moment |
 
 The conversation is announced as a log, with who said each message.
 
