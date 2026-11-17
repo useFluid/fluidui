@@ -107,15 +107,16 @@ export function createMorpher(initial: string, config: MorpherConfig = springs.s
 
   const api: Morpher = {
     jump(d) {
+      const next = sampleContours(d, n);
       exact = d;
       resting = true;
-      slots = sampleContours(d, n).map((c, i) => makeSlot(c.x, c.y, i));
+      slots = next.map((c, i) => makeSlot(c.x, c.y, i));
     },
     to(d) {
       if (d === exact) return;
+      const target = sampleContours(d, n);
       exact = d;
       resting = false;
-      const target = sampleContours(d, n);
       while (slots.length < target.length) {
         const c = target[slots.length];
         slots.push(makeSlot(new Float64Array(n).fill(c.cx), new Float64Array(n).fill(c.cy), slots.length));

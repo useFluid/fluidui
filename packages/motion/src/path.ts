@@ -12,11 +12,16 @@ export type PathErrorCode =
   | "FLUID_PATH_NO_SIZE"
   | "FLUID_VIEWBOX";
 
+const isCode = (value: string): value is PathErrorCode => /^FLUID_(PATH_[A-Z_]+|VIEWBOX)$/.test(value);
+
 export class PathError extends Error {
-  readonly code: PathErrorCode;
-  constructor(code: PathErrorCode, at?: number | string) {
-    super(`${code}: see ${docsLink(code)}`);
+  readonly code?: PathErrorCode;
+  constructor(code: PathErrorCode, at?: number | string);
+  constructor(message: string);
+  constructor(code: string, at?: number | string) {
+    super(isCode(code) ? `${code}: see ${docsLink(code)}` : code);
     this.name = "PathError";
+    if (!isCode(code)) return;
     this.code = code;
     if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
       const where = typeof at === "number" ? ` at position ${at}` : at ? ` ${at}` : "";

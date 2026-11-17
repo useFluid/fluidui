@@ -46,4 +46,17 @@ describe("optimized engine", () => {
     for (let i = 0; i < 600; i++) m.step(1 / 60);
     expect(m.path()).toBe(to);
   });
+
+  it("leaves the morph untouched when the new target is not a path", () => {
+    const m = createMorpher("M10 10L50 10L50 50Z", springs.soft);
+    m.to("M10 10L90 10L90 90Z");
+    m.step(1 / 60);
+    const before = m.path();
+    expect(() => m.to("not a path")).toThrow();
+    expect(m.path()).toBe(before);
+    expect(() => m.jump("")).toThrow();
+    expect(m.path()).toBe(before);
+    for (let i = 0; i < 600; i++) m.step(1 / 60);
+    expect(m.path()).toBe("M10 10L90 10L90 90Z");
+  });
 });

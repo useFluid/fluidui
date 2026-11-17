@@ -5,7 +5,7 @@ const points = (d: string) => parsePath(d).flatMap((c: Command) => (c.c === "M" 
 
 const close = (a: number[], b: number[]) => {
   expect(a.length).toBe(b.length);
-  a.forEach((v, i) => expect(Math.abs(v - b[i])).toBeLessThan(0.01));
+  for (const [i, v] of a.entries()) expect(Math.abs(v - b[i])).toBeLessThan(0.01);
 };
 
 describe("scalePath", () => {
@@ -67,5 +67,12 @@ describe("path errors", () => {
     expect(codeOf(() => parsePath("M0 0L1 1Z5"))).toBe("FLUID_PATH_CHARACTER");
     expect(codeOf(() => parsePath("M0 0Z"))).toBe("FLUID_PATH_EMPTY");
     expect(codeOf(() => fitPath("M5 5L5 5L5 5Z"))).toBe("FLUID_PATH_NO_SIZE");
+  });
+
+  it("still takes plain text, as before codes existed", () => {
+    const error = new PathError("transform");
+    expect(error.message).toBe("transform");
+    expect(error.code).toBeUndefined();
+    expect(error).toBeInstanceOf(Error);
   });
 });
