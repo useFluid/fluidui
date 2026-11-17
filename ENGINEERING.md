@@ -60,18 +60,18 @@ How Fluid is built. These rules apply to new code and to any piece a change touc
 
 These Biome rules are off on purpose:
 
-| Rule | Why |
-|---|---|
-| `useExhaustiveDependencies` | Hooks key effects on computed signatures (a joined list of values) on purpose. |
-| `noArrayIndexKey` | Static lists that never reorder. |
-| `noDangerouslySetInnerHtml` | Highlighted code comes from Shiki at build time, never from users. |
-| `noSvgWithoutTitle` | Decorative SVGs are `aria-hidden`; meaningful ones carry `role="img"` and `aria-label`. |
+| Rule                          | Why                                                                                                            |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `useExhaustiveDependencies`   | Hooks key effects on computed signatures (a joined list of values) on purpose.                                 |
+| `noArrayIndexKey`             | Static lists that never reorder.                                                                               |
+| `noDangerouslySetInnerHtml`   | Highlighted code comes from Shiki at build time, never from users.                                             |
+| `noSvgWithoutTitle`           | Decorative SVGs are `aria-hidden`; meaningful ones carry `role="img"` and `aria-label`.                        |
 | `noStaticElementInteractions` | Containers listen for events that bubble up from their own controls, such as Escape and pointer down to pause. |
-| `useSemanticElements` | Custom radio groups follow the ARIA radiogroup pattern with roving focus. |
-| `useAnchorContent` | Icon links are named with `aria-label`. |
-| `noImportantStyles` | Reduced-motion overrides have to beat inline animation styles. |
-| `noNonNullAssertion` | Used only where the value is guaranteed by construction. |
-| `noDescendingSpecificity` | CSS modules keep state selectors next to the base rule they change. |
+| `useSemanticElements`         | Custom radio groups follow the ARIA radiogroup pattern with roving focus.                                      |
+| `useAnchorContent`            | Icon links are named with `aria-label`.                                                                        |
+| `noImportantStyles`           | Reduced-motion overrides have to beat inline animation styles.                                                 |
+| `noNonNullAssertion`          | Used only where the value is guaranteed by construction.                                                       |
+| `noDescendingSpecificity`     | CSS modules keep state selectors next to the base rule they change.                                            |
 
 ## Versioning
 
