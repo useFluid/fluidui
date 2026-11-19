@@ -65,11 +65,11 @@
   margin-top: var(--space-5);
 }
 .tall {
-  height: 1060px;
+  height: 1340px;
 }
 @media (max-width: 720px) {
   .tall {
-    height: 1820px;
+    height: 2480px;
   }
 }
 .tabs {

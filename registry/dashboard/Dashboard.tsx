@@ -1,6 +1,8 @@
 "use client";
 
 import { AreaMorph } from "../area-morph/AreaMorph";
+import { DonutMorph } from "../donut-morph/DonutMorph";
+import { DotGrid } from "../dot-grid/DotGrid";
 import { PillTabs } from "../pill-tabs/PillTabs";
 import { ProgressRing } from "../progress-ring/ProgressRing";
 import { RankList } from "../rank-list/RankList";
@@ -22,6 +24,8 @@ export type Range = {
   barsMax?: number;
   goal: { label: string; value: number; max: number };
   leaders: Ranked[];
+  channels?: { label: string; value: number }[];
+  activity?: number[];
 };
 
 type Props = {
@@ -59,6 +63,12 @@ export function Dashboard({ title, ranges, value, onChange, colors = PALETTE, lo
         <SpringBars label="Activity" data={range.bars} max={range.barsMax} locale={locale} color={color(1)} />
         <RankList label="Top sellers" items={range.leaders} locale={locale} color={color(3)} />
       </div>
+      {(range.channels || range.activity) && (
+        <div className={styles.split}>
+          {range.channels && <DonutMorph label="Visits" parts={range.channels.map((c, i) => ({ ...c, color: color(i) }))} locale={locale} />}
+          {range.activity && <DotGrid label="Activity" values={range.activity} summary={`${range.label}: ${range.activity.length} days`} color={color(1)} />}
+        </div>
+      )}
     </section>
   );
 }
