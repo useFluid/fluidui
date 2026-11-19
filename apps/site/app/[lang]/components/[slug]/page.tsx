@@ -101,7 +101,7 @@ export default async function Piece({ params }: Props) {
       markdown={{ text: readme(slug), button: g.copyPage }}
     >
       <Section id="preview" title={g.preview}>
-        <Stage slug={slug} loop={entry.loop} className={styles.stage} priority />
+        <Stage slug={slug} loop={entry.loop} className={entry.tall ? `${styles.stage} ${styles.tall}` : styles.stage} priority />
         <CodeToggle show={g.viewCode} hide={g.hideCode}>
           <CodeBlock name="demo.tsx" code={demoCode} html={demo} />
         </CodeToggle>

@@ -1,0 +1,58 @@
+.root {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  color: var(--fluid-text);
+  font-family: var(--fluid-font);
+}
+.ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.track,
+.arc {
+  fill: none;
+  stroke-width: 12;
+}
+.track {
+  stroke: color-mix(in srgb, var(--fluid-text) 9%, transparent);
+}
+.arc {
+  stroke: var(--fluid-accent);
+  stroke-linecap: round;
+}
+.center {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  max-width: 62%;
+  text-align: center;
+}
+.value {
+  font-size: 34px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.label {
+  color: var(--fluid-text-2);
+  font-size: 12px;
+  font-weight: 500;
+}
+.root[data-done] .arc {
+  animation: done 600ms cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes done {
+  40% {
+    stroke-width: 16;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .root[data-done] .arc {
+    animation: none;
+  }
+}

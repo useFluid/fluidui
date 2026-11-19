@@ -10,9 +10,19 @@
   font-family: var(--fluid-font);
 }
 .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--fluid-text-2);
   font-size: 14px;
   font-weight: 500;
+}
+.label::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--fluid-accent);
+  content: "";
 }
 .value {
   font-size: 44px;

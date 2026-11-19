@@ -64,6 +64,14 @@
   height: clamp(340px, 60vh, 560px);
   margin-top: var(--space-5);
 }
+.tall {
+  height: 1060px;
+}
+@media (max-width: 720px) {
+  .tall {
+    height: 1820px;
+  }
+}
 .tabs {
   margin-top: var(--space-6);
 }

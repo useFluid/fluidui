@@ -20,6 +20,7 @@ export type Entry = Texts & {
   category: Category;
   size: "s" | "m" | "l";
   loop?: number;
+  tall?: boolean;
   usage: string;
   pt: Texts;
 };
@@ -466,6 +467,52 @@ const coffee = pickObject("we run a small coffee shop");
       description: "Um calendário do mês em que a seleção flui de dia em dia e o mês entra deslizando do lado de onde veio.",
       how: "A seleção é uma pílula em duas molas, na horizontal e na vertical da grade, então viaja entre os dias em vez de piscar. Trocar de mês move os dias um pouco, numa mola, a partir do lado de onde você veio. É uma grade de datas: as setas andam por dia e semana, Page Up e Page Down por mês, e cada dia é lido como data completa.",
       task: "Use SpringCalendar nos campos de data do meu produto, no meu idioma e com o meu primeiro dia da semana.",
+    },
+  },
+  {
+    slug: "progress-ring",
+    name: "Progress Ring",
+    category: "Data",
+    size: "m",
+    usage: `<ProgressRing label="Monthly goal" value={73} />`,
+    description: "A ring that fills on a spring toward a goal, with the percent rolling in the middle.",
+    how: "One spring drives both the arc and the number, with a little overshoot, so the ring passes its mark and settles back like something with weight. At the goal the stroke swells once. It is a progress bar for screen readers, with its label and values.",
+    task: "Use ProgressRing for the goals and quotas of my dashboard, with the real targets.",
+    pt: {
+      description: "Um anel que enche numa mola até a meta, com a porcentagem girando no meio.",
+      how: "Uma mola move o arco e o número juntos, com um pouco de passagem do ponto, então o anel passa da marca e volta como algo com peso. Ao chegar na meta o traço incha uma vez. Para leitores de tela é uma barra de progresso, com o rótulo e os valores.",
+      task: "Use ProgressRing nas metas e cotas do meu dashboard, com os alvos reais.",
+    },
+  },
+  {
+    slug: "rank-list",
+    name: "Rank List",
+    category: "Data",
+    size: "m",
+    usage: `<RankList label="Sales this month" items={[{ id: "ana", label: "Ana", value: 610 }]} />`,
+    description: "A ranking whose rows travel to their new place on springs when the numbers change.",
+    how: "Each row has a spring for its place, so when the order changes the rows slide past each other instead of jumping, and a row that climbs passes over the rest. The values roll on springs of their own. The list is in ranked order in the page, so screen readers read the places right, and ties keep their order.",
+    task: "Use RankList for the leaderboards and top lists of my dashboard, with stable ids for each row.",
+    pt: {
+      description: "Um ranking em que as linhas viajam até o novo lugar em molas quando os números mudam.",
+      how: "Cada linha tem uma mola para a sua posição, então quando a ordem muda as linhas deslizam umas pelas outras em vez de pular, e a que sobe passa por cima das outras. Os valores giram nas próprias molas. A lista fica na ordem do ranking na página, então leitores de tela leem as posições certas, e empates mantêm a ordem.",
+      task: "Use RankList nos rankings e listas de destaque do meu dashboard, com ids estáveis em cada linha.",
+    },
+  },
+  {
+    slug: "dashboard",
+    name: "Dashboard",
+    category: "Data",
+    size: "l",
+    tall: true,
+    usage: `<Dashboard title="Store" ranges={ranges} value={range} onChange={setRange} />`,
+    description: "A whole dashboard where changing the range rolls every number, raises the bars, flows the trend and reorders the ranking together.",
+    how: "It is made of the Data pieces: Stat Counter, Area Morph, Spring Bars, Progress Ring and Rank List, with Pill Tabs for the range. Each keeps its own springs, so one change spreads through the page at slightly different speeds, like a single motion. Colours come in order from a palette you can replace.",
+    task: "Build my dashboard with Dashboard, using my real metrics for each range and my brand colours.",
+    pt: {
+      description: "Um dashboard inteiro em que trocar o período gira todos os números, sobe as barras, flui a tendência e reordena o ranking juntos.",
+      how: "É feito das peças de dados: Stat Counter, Area Morph, Spring Bars, Progress Ring e Rank List, com Pill Tabs para o período. Cada uma mantém as próprias molas, então uma mudança se espalha pela página em velocidades um pouco diferentes, como um movimento só. As cores vêm em ordem de uma paleta que você pode trocar.",
+      task: "Monte meu dashboard com Dashboard, usando minhas métricas reais em cada período e as cores da minha marca.",
     },
   },
 ];

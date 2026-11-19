@@ -1,7 +1,7 @@
 "use client";
 
 import { MorphPath } from "@usefluid/motion/react";
-import { useId } from "react";
+import { type CSSProperties, useId } from "react";
 import { areaPath } from "./area";
 import styles from "./AreaMorph.module.css";
 
@@ -12,13 +12,14 @@ type Props = {
   values: number[];
   max?: number;
   labels?: string[];
+  color?: string;
 };
 
-export function AreaMorph({ label, values, max, labels }: Props) {
+export function AreaMorph({ label, values, max, labels, color }: Props) {
   const gradient = `fluid-area-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const d = areaPath(values, max);
   return (
-    <figure className={styles.root}>
+    <figure className={styles.root} style={color ? ({ "--fluid-accent": color, "--fluid-on-accent": "#ffffff" } as CSSProperties) : undefined}>
       <svg viewBox="0 0 120 120" preserveAspectRatio="none" className={styles.chart} role="img" aria-label={`${label}: ${values.join(", ")}`}>
         <defs>
           <linearGradient id={gradient} x1="0" y1="0" x2="0" y2="1">

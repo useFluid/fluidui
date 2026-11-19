@@ -1,12 +1,15 @@
 "use client";
 
 import { MorphPath, useSpring } from "@usefluid/motion/react";
-import { useMemo, useRef, useState } from "react";
+import { type CSSProperties, useMemo, useRef, useState } from "react";
 import styles from "./StatCounter.module.css";
 
 const UP = "M60 18L102 64H74V102H46V64H18Z";
 const DOWN = "M60 102L18 56H46V18H74V56H102Z";
 const ROLL = { w: 9, z: 1 };
+const tint = (color?: string) => (color ? ({ "--fluid-accent": color, "--fluid-on-accent": "#ffffff" } as CSSProperties) : undefined);
+
+const roundLike = (v: number, target: number) => Number(v.toFixed(Math.min(6, (String(target).split(".")[1] ?? "").length)));
 
 type Props = {
   label: string;
@@ -15,9 +18,10 @@ type Props = {
   format?: Intl.NumberFormatOptions;
   locale?: string;
   upIsGood?: boolean;
+  color?: string;
 };
 
-export function StatCounter({ label, value, previous, format, locale, upIsGood = true }: Props) {
+export function StatCounter({ label, value, previous, format, locale, upIsGood = true, color }: Props) {
   const out = useRef<HTMLSpanElement>(null);
   const key = JSON.stringify(format ?? {});
   const number = useMemo(() => new Intl.NumberFormat(locale, JSON.parse(key)), [locale, key]);
@@ -27,7 +31,7 @@ export function StatCounter({ label, value, previous, format, locale, upIsGood =
   useSpring(
     { v: value },
     ({ v }) => {
-      if (out.current) out.current.textContent = number.format(v);
+      if (out.current) out.current.textContent = number.format(roundLike(v, value));
     },
     ROLL,
   );
@@ -37,7 +41,7 @@ export function StatCounter({ label, value, previous, format, locale, upIsGood =
   const good = up === upIsGood;
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} style={tint(color)}>
       <span className={styles.label}>{label}</span>
       <span ref={out} className={styles.value} aria-hidden>
         {first}
