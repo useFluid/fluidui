@@ -8,6 +8,8 @@ const UP = "M60 18L102 64H74V102H46V64H18Z";
 const DOWN = "M60 102L18 56H46V18H74V56H102Z";
 const ROLL = { w: 9, z: 1 };
 
+const roundLike = (v: number, target: number) => Number(v.toFixed(Math.min(6, (String(target).split(".")[1] ?? "").length)));
+
 type Props = {
   label: string;
   value: number;
@@ -27,7 +29,7 @@ export function StatCounter({ label, value, previous, format, locale, upIsGood =
   useSpring(
     { v: value },
     ({ v }) => {
-      if (out.current) out.current.textContent = number.format(v);
+      if (out.current) out.current.textContent = number.format(roundLike(v, value));
     },
     ROLL,
   );

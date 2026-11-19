@@ -23,6 +23,8 @@ import SpringButton from "./spring-button/demo";
 import SpringSwitch from "./spring-switch/demo";
 import TextReveal from "./text-reveal/demo";
 import WordCycle from "./word-cycle/demo";
+import RankList from "./rank-list/demo";
+import ProgressRing from "./progress-ring/demo";
 import SpringCalendar from "./spring-calendar/demo";
 import AreaMorph from "./area-morph/demo";
 import SpringBars from "./spring-bars/demo";
@@ -55,4 +57,6 @@ export const demos: Record<string, ComponentType> = {
   "spring-bars": SpringBars,
   "area-morph": AreaMorph,
   "spring-calendar": SpringCalendar,
+  "progress-ring": ProgressRing,
+  "rank-list": RankList,
 };

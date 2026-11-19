@@ -468,6 +468,36 @@ const coffee = pickObject("we run a small coffee shop");
       task: "Use SpringCalendar nos campos de data do meu produto, no meu idioma e com o meu primeiro dia da semana.",
     },
   },
+  {
+    slug: "progress-ring",
+    name: "Progress Ring",
+    category: "Data",
+    size: "m",
+    usage: `<ProgressRing label="Monthly goal" value={73} />`,
+    description: "A ring that fills on a spring toward a goal, with the percent rolling in the middle.",
+    how: "One spring drives both the arc and the number, with a little overshoot, so the ring passes its mark and settles back like something with weight. At the goal the stroke swells once. It is a progress bar for screen readers, with its label and values.",
+    task: "Use ProgressRing for the goals and quotas of my dashboard, with the real targets.",
+    pt: {
+      description: "Um anel que enche numa mola até a meta, com a porcentagem girando no meio.",
+      how: "Uma mola move o arco e o número juntos, com um pouco de passagem do ponto, então o anel passa da marca e volta como algo com peso. Ao chegar na meta o traço incha uma vez. Para leitores de tela é uma barra de progresso, com o rótulo e os valores.",
+      task: "Use ProgressRing nas metas e cotas do meu dashboard, com os alvos reais.",
+    },
+  },
+  {
+    slug: "rank-list",
+    name: "Rank List",
+    category: "Data",
+    size: "m",
+    usage: `<RankList label="Sales this month" items={[{ id: "ana", label: "Ana", value: 610 }]} />`,
+    description: "A ranking whose rows travel to their new place on springs when the numbers change.",
+    how: "Each row has a spring for its place, so when the order changes the rows slide past each other instead of jumping, and a row that climbs passes over the rest. The values roll on springs of their own. The list is in ranked order in the page, so screen readers read the places right, and ties keep their order.",
+    task: "Use RankList for the leaderboards and top lists of my dashboard, with stable ids for each row.",
+    pt: {
+      description: "Um ranking em que as linhas viajam até o novo lugar em molas quando os números mudam.",
+      how: "Cada linha tem uma mola para a sua posição, então quando a ordem muda as linhas deslizam umas pelas outras em vez de pular, e a que sobe passa por cima das outras. Os valores giram nas próprias molas. A lista fica na ordem do ranking na página, então leitores de tela leem as posições certas, e empates mantêm a ordem.",
+      task: "Use RankList nos rankings e listas de destaque do meu dashboard, com ids estáveis em cada linha.",
+    },
+  },
 ];
 
 export const textsFor = (entry: Entry, lang: Lang): Texts => (lang === "pt" ? entry.pt : entry);
