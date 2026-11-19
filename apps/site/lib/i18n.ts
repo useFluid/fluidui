@@ -39,6 +39,12 @@ export const dictionaries = {
     stats: { pieces: "Pieces", deps: "Dependencies in the engine", skills: "Agent skills", formats: "Video formats" },
     sections: {
       catalog: { eyebrow: "Catalog", title: "Everything here is running.", text: "Play with any piece, or open View to see its code and how it is made." },
+      data: {
+        eyebrow: "Dashboards",
+        title: "Numbers that move like water.",
+        text: "Change the range and every number rolls, the bars rise, the line ripples and the ranking reorders, each on its own spring. Charts, counters, rankings and calendars, ready to take your data.",
+        link: "See the data pieces",
+      },
       brands: {
         eyebrow: "One piece, any brand",
         title: "The same opening, four brands.",
@@ -331,6 +337,12 @@ export const dictionaries = {
     stats: { pieces: "Peças", deps: "Dependências no motor", skills: "Skills para agentes", formats: "Formatos de vídeo" },
     sections: {
       catalog: { eyebrow: "Catálogo", title: "Tudo aqui está rodando.", text: "Mexa em qualquer peça, ou abra o Ver para ver o código e como ela é feita." },
+      data: {
+        eyebrow: "Dashboards",
+        title: "Números que se movem como água.",
+        text: "Troca o período e cada número gira, as barras sobem, a linha ondula e o ranking se reordena, cada um na sua mola. Gráficos, contadores, rankings e calendários, prontos para os seus dados.",
+        link: "Ver as peças de dados",
+      },
       brands: {
         eyebrow: "Uma peça, qualquer marca",
         title: "A mesma abertura, quatro marcas.",

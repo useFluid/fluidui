@@ -11,6 +11,7 @@ import { PaintedStage } from "@/components/PaintedStage";
 import { PetParade } from "@/components/PetParade";
 import { Reveal } from "@/components/Reveal";
 import { SpringLab } from "@/components/SpringLab";
+import { Stage } from "@/components/Stage";
 import { PostVideo, StoryVideo } from "@/components/SocialVideo";
 import { highlight } from "@/lib/highlight";
 import { type Lang, dictionaries, href } from "@/lib/i18n";
@@ -138,10 +139,26 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
+      <section className={`${styles.section} ${styles.dark}`} aria-labelledby="data">
+        <div className="container">
+          <Reveal className={styles.head}>
+            {eyebrow(2, s.data.eyebrow)}
+            <h2 id="data" className={styles.sectionTitle}>
+              {s.data.title}
+            </h2>
+            <p className={styles.text}>{s.data.text}</p>
+            <Link href={href(lang, "/components/dashboard")} className={styles.more}>
+              {s.data.link}
+            </Link>
+          </Reveal>
+          <Stage slug="dashboard" className={styles.dataStage} />
+        </div>
+      </section>
+
       <section className={styles.section} aria-labelledby="brands">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(2, s.brands.eyebrow)}
+            {eyebrow(3, s.brands.eyebrow)}
             <h2 id="brands" className={styles.sectionTitle}>
               {s.brands.title}
             </h2>
@@ -154,7 +171,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="logo">
         <div className={`container ${styles.split}`}>
           <Reveal>
-            {eyebrow(3, s.contour.eyebrow)}
+            {eyebrow(4, s.contour.eyebrow)}
             <h2 id="logo" className={styles.sectionTitle}>
               {s.contour.title}
             </h2>
@@ -171,7 +188,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="physics">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(4, s.physics.eyebrow)}
+            {eyebrow(5, s.physics.eyebrow)}
             <h2 id="physics" className={styles.sectionTitle}>
               {s.physics.title}
             </h2>
@@ -184,7 +201,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="characters">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(5, s.characters.eyebrow)}
+            {eyebrow(6, s.characters.eyebrow)}
             <h2 id="characters" className={styles.sectionTitle}>
               {s.characters.title}
             </h2>
@@ -197,7 +214,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="video">
         <div className={`container ${styles.split}`}>
           <Reveal>
-            {eyebrow(6, s.video.eyebrow)}
+            {eyebrow(7, s.video.eyebrow)}
             <h2 id="video" className={styles.sectionTitle}>
               {s.video.title}
             </h2>
@@ -216,7 +233,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="agents">
         <div className={`container ${styles.split}`}>
           <Reveal>
-            {eyebrow(7, s.agents.eyebrow)}
+            {eyebrow(8, s.agents.eyebrow)}
             <h2 id="agents" className={styles.sectionTitle}>
               {s.agents.title}
             </h2>
