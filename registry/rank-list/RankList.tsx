@@ -1,7 +1,7 @@
 "use client";
 
 import { useSpring } from "@usefluid/motion/react";
-import { useMemo, useRef, useState } from "react";
+import { type CSSProperties, useMemo, useRef, useState } from "react";
 import { type Ranked, rank, roundLike } from "./rank";
 import styles from "./RankList.module.css";
 
@@ -15,6 +15,7 @@ type Props = {
   order?: "desc" | "asc";
   format?: Intl.NumberFormatOptions;
   locale?: string;
+  color?: string;
 };
 
 function Row({ item, place, number }: { item: Ranked; place: number; number: Intl.NumberFormat }) {
@@ -51,12 +52,12 @@ function Row({ item, place, number }: { item: Ranked; place: number; number: Int
   );
 }
 
-export function RankList({ label, items, order = "desc", format, locale }: Props) {
+export function RankList({ label, items, order = "desc", format, locale, color }: Props) {
   const key = JSON.stringify(format ?? {});
   const number = useMemo(() => new Intl.NumberFormat(locale, JSON.parse(key)), [locale, key]);
   const ranked = rank(items, order);
   return (
-    <figure className={styles.root}>
+    <figure className={styles.root} style={color ? ({ "--fluid-accent": color, "--fluid-on-accent": "#ffffff" } as CSSProperties) : undefined}>
       <figcaption className={styles.label}>{label}</figcaption>
       <ol className={styles.list} style={{ height: ranked.length * ROW }}>
         {ranked.map((item, place) => (

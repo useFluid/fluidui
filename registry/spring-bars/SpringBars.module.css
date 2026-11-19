@@ -37,11 +37,11 @@
   width: 100%;
   min-height: 8px;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--fluid-accent) 45%, var(--fluid-surface));
+  background: color-mix(in srgb, var(--bar, var(--fluid-accent)) 45%, var(--fluid-surface));
   transition: background 250ms ease;
 }
 .column[data-active] .fill {
-  background: var(--fluid-accent);
+  background: var(--bar, var(--fluid-accent));
 }
 .bubble {
   position: absolute;

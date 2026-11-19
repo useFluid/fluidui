@@ -14,9 +14,10 @@ type Props = {
   max?: number;
   size?: number;
   locale?: string;
+  color?: string;
 };
 
-export function ProgressRing({ label, value, max = 100, size = 168, locale }: Props) {
+export function ProgressRing({ label, value, max = 100, size = 168, locale, color }: Props) {
   const arc = useRef<SVGCircleElement>(null);
   const out = useRef<HTMLSpanElement>(null);
   const percent = useMemo(() => new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 0 }), [locale]);
@@ -42,7 +43,7 @@ export function ProgressRing({ label, value, max = 100, size = 168, locale }: Pr
       aria-valuemax={max}
       aria-valuenow={Math.min(max, Math.max(0, value))}
       data-done={share >= 1 ? "" : undefined}
-      style={{ width: size }}
+      style={{ width: size, ...(color ? { "--fluid-accent": color, "--fluid-on-accent": "#ffffff" } : {}) }}
     >
       <svg viewBox="0 0 120 120" className={styles.ring} aria-hidden>
         <circle cx={60} cy={60} r={R} className={styles.track} />

@@ -20,6 +20,7 @@ export type Entry = Texts & {
   category: Category;
   size: "s" | "m" | "l";
   loop?: number;
+  tall?: boolean;
   usage: string;
   pt: Texts;
 };
@@ -496,6 +497,22 @@ const coffee = pickObject("we run a small coffee shop");
       description: "Um ranking em que as linhas viajam até o novo lugar em molas quando os números mudam.",
       how: "Cada linha tem uma mola para a sua posição, então quando a ordem muda as linhas deslizam umas pelas outras em vez de pular, e a que sobe passa por cima das outras. Os valores giram nas próprias molas. A lista fica na ordem do ranking na página, então leitores de tela leem as posições certas, e empates mantêm a ordem.",
       task: "Use RankList nos rankings e listas de destaque do meu dashboard, com ids estáveis em cada linha.",
+    },
+  },
+  {
+    slug: "dashboard",
+    name: "Dashboard",
+    category: "Data",
+    size: "l",
+    tall: true,
+    usage: `<Dashboard title="Store" ranges={ranges} value={range} onChange={setRange} />`,
+    description: "A whole dashboard where changing the range rolls every number, raises the bars, flows the trend and reorders the ranking together.",
+    how: "It is made of the Data pieces: Stat Counter, Area Morph, Spring Bars, Progress Ring and Rank List, with Pill Tabs for the range. Each keeps its own springs, so one change spreads through the page at slightly different speeds, like a single motion. Colours come in order from a palette you can replace.",
+    task: "Build my dashboard with Dashboard, using my real metrics for each range and my brand colours.",
+    pt: {
+      description: "Um dashboard inteiro em que trocar o período gira todos os números, sobe as barras, flui a tendência e reordena o ranking juntos.",
+      how: "É feito das peças de dados: Stat Counter, Area Morph, Spring Bars, Progress Ring e Rank List, com Pill Tabs para o período. Cada uma mantém as próprias molas, então uma mudança se espalha pela página em velocidades um pouco diferentes, como um movimento só. As cores vêm em ordem de uma paleta que você pode trocar.",
+      task: "Monte meu dashboard com Dashboard, usando minhas métricas reais em cada período e as cores da minha marca.",
     },
   },
 ];

@@ -1,16 +1,17 @@
 "use client";
 
 import { useSpring } from "@usefluid/motion/react";
-import { type KeyboardEvent, useMemo, useRef, useState } from "react";
+import { type CSSProperties, type KeyboardEvent, useMemo, useRef, useState } from "react";
 import styles from "./SpringBars.module.css";
 
-type Datum = { label: string; value: number };
+type Datum = { label: string; value: number; color?: string };
 type Props = {
   label: string;
   data: Datum[];
   max?: number;
   format?: Intl.NumberFormatOptions;
   locale?: string;
+  color?: string;
 };
 
 function Bar({ share, index }: { share: number; index: number }) {
@@ -25,7 +26,7 @@ function Bar({ share, index }: { share: number; index: number }) {
   return <span ref={fill} className={styles.fill} />;
 }
 
-export function SpringBars({ label, data, max, format, locale }: Props) {
+export function SpringBars({ label, data, max, format, locale, color }: Props) {
   const plot = useRef<HTMLDivElement>(null);
   const bubble = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState(data.length - 1);
@@ -54,13 +55,18 @@ export function SpringBars({ label, data, max, format, locale }: Props) {
   };
 
   return (
-    <figure className={styles.root} aria-label={label}>
+    <figure
+      className={styles.root}
+      aria-label={label}
+      style={color ? ({ "--fluid-accent": color, "--fluid-on-accent": "#ffffff" } as CSSProperties) : undefined}
+    >
       <div ref={plot} className={styles.plot} role="group" aria-label={label}>
         {data.map((d, i) => (
           <button
             key={d.label}
             type="button"
             className={styles.column}
+            style={d.color ? ({ "--bar": d.color } as CSSProperties) : undefined}
             data-active={i === current ? "" : undefined}
             tabIndex={i === current ? 0 : -1}
             aria-label={`${d.label}: ${number.format(d.value)}`}

@@ -23,6 +23,7 @@ import SpringButton from "./spring-button/demo";
 import SpringSwitch from "./spring-switch/demo";
 import TextReveal from "./text-reveal/demo";
 import WordCycle from "./word-cycle/demo";
+import DashboardDemo from "./dashboard/demo";
 import RankList from "./rank-list/demo";
 import ProgressRing from "./progress-ring/demo";
 import SpringCalendar from "./spring-calendar/demo";
@@ -59,4 +60,5 @@ export const demos: Record<string, ComponentType> = {
   "spring-calendar": SpringCalendar,
   "progress-ring": ProgressRing,
   "rank-list": RankList,
+  dashboard: DashboardDemo,
 };
