@@ -39,6 +39,26 @@ export const dictionaries = {
     stats: { pieces: "Pieces", deps: "Dependencies in the engine", skills: "Agent skills", formats: "Video formats" },
     sections: {
       catalog: { eyebrow: "Catalog", title: "Everything here is running.", text: "Play with any piece, or open View to see its code and how it is made." },
+      story: {
+        eyebrow: "How it flows",
+        title: "One outline, everything.",
+        steps: [
+          {
+            title: "It starts as a shape.",
+            text: "Every piece is an outline of points, and every point rides a spring of its own. That is why things arrive like a liquid, not like a slide.",
+          },
+          { title: "It becomes an icon.", text: "Play turns into pause, menu into close. Icons from any set come in with scalePath and flow into each other." },
+          {
+            title: "It lands on your logo.",
+            text: "Open letters, holes, logos in several parts. The engine follows the border, and at rest the exact drawing comes back.",
+          },
+          {
+            title: "It moves your data.",
+            text: "The same engine turns numbers into a shape, so a chart flows from one range to the next like water settling.",
+          },
+          { title: "It comes alive.", text: "Give it eyes and a mood and it becomes a character that looks like your product." },
+        ],
+      },
       data: {
         eyebrow: "Dashboards",
         title: "Numbers that move like water.",
@@ -337,6 +357,23 @@ export const dictionaries = {
     stats: { pieces: "Peças", deps: "Dependências no motor", skills: "Skills para agentes", formats: "Formatos de vídeo" },
     sections: {
       catalog: { eyebrow: "Catálogo", title: "Tudo aqui está rodando.", text: "Mexa em qualquer peça, ou abra o Ver para ver o código e como ela é feita." },
+      story: {
+        eyebrow: "Como flui",
+        title: "Um contorno, tudo.",
+        steps: [
+          {
+            title: "Começa como uma forma.",
+            text: "Cada peça é um contorno de pontos, e cada ponto anda na própria mola. Por isso as coisas chegam como líquido, não como um slide.",
+          },
+          { title: "Vira um ícone.", text: "Tocar vira pausar, menu vira fechar. Ícones de qualquer pacote entram com scalePath e fluem de um para o outro." },
+          { title: "Pousa na sua logo.", text: "Letras abertas, furos, logos em várias partes. O motor segue a borda, e ao parar volta o desenho exato." },
+          {
+            title: "Move os seus dados.",
+            text: "O mesmo motor transforma números numa forma, então um gráfico flui de um período para o outro como água assentando.",
+          },
+          { title: "Ganha vida.", text: "Dá olhos e um humor e vira um personagem com a cara do seu produto." },
+        ],
+      },
       data: {
         eyebrow: "Dashboards",
         title: "Números que se movem como água.",
