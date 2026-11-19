@@ -1,0 +1,449 @@
+.film {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #07080a;
+  color: #f4f6f8;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+.backdrop,
+.scene,
+.camera,
+.flash,
+.vignette,
+.grain,
+.hud {
+  position: absolute;
+  inset: 0;
+}
+.scene {
+  will-change: transform, opacity, filter;
+}
+.camera {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rig {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  container-type: size;
+  border-radius: 28px;
+  background: var(--stage-bg, var(--fluid-surface-2));
+  color: var(--fluid-text);
+  font-family: var(--fluid-font);
+  letter-spacing: normal;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 40px 80px -20px rgba(0, 0, 0, 0.7),
+    0 0 120px -40px rgba(111, 196, 253, 0.35);
+}
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 38%);
+  mix-blend-mode: soft-light;
+}
+
+.heroMark {
+  width: 260px;
+  height: 260px;
+}
+.wordmark {
+  margin: 18px 0 0;
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  min-height: 1.2em;
+}
+
+.ghost {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 760px;
+  height: 760px;
+  opacity: 0.35;
+}
+.tag {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: 118px;
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+.serif {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #6fc4fd;
+  letter-spacing: -0.035em;
+}
+.lede {
+  margin: 34px 0 0;
+  font-size: 22px;
+  color: rgba(244, 246, 248, 0.66);
+  letter-spacing: -0.01em;
+}
+
+.label {
+  position: absolute;
+  left: 56px;
+  top: 64px;
+  max-width: 460px;
+}
+.index {
+  display: block;
+  margin-bottom: 6px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: #6fc4fd;
+}
+.labelTitle {
+  margin: 0;
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+.labelSub {
+  margin: 12px 0 0;
+  font-size: 18px;
+  line-height: 1.4;
+  color: rgba(244, 246, 248, 0.66);
+  letter-spacing: -0.01em;
+}
+.caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 74px;
+  margin: 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(244, 246, 248, 0.86);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  grid-auto-rows: 220px;
+  gap: 26px;
+  transform-style: preserve-3d;
+}
+.rise {
+  transform-style: preserve-3d;
+}
+.gridCard {
+  width: 300px;
+  height: 220px;
+}
+.wide {
+  width: 780px;
+  height: 470px;
+}
+
+.pets {
+  display: flex;
+  gap: 26px;
+  align-items: flex-end;
+  transform-style: preserve-3d;
+}
+.pet {
+  width: 150px;
+  height: 150px;
+}
+.firefly {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 20px 6px rgba(111, 196, 253, 0.9),
+    0 0 60px 20px rgba(111, 196, 253, 0.35);
+}
+
+.pair {
+  display: flex;
+  gap: 90px;
+  align-items: center;
+  transform-style: preserve-3d;
+}
+.botCard {
+  width: 460px;
+  height: 460px;
+}
+.mascotStage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.mascot {
+  width: 300px;
+  height: 300px;
+}
+.mascotName {
+  margin: 0;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 246, 248, 0.6);
+}
+
+.ring {
+  position: relative;
+  width: 400px;
+  height: 270px;
+  transform-style: preserve-3d;
+}
+.ringItem {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+.ringCard {
+  width: 400px;
+  height: 270px;
+}
+
+.brands {
+  display: grid;
+  grid-template-columns: repeat(4, 250px);
+  gap: 24px;
+  transform-style: preserve-3d;
+}
+.brand {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+.brand figcaption {
+  font-size: 22px;
+  font-weight: 600;
+  color: rgba(244, 246, 248, 0.9);
+}
+.brandCard {
+  width: 250px;
+  height: 300px;
+}
+
+.full {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+}
+
+.skills {
+  display: flex;
+  gap: 56px;
+  align-items: center;
+  transform-style: preserve-3d;
+}
+.terminal {
+  width: 560px;
+  padding: 22px 26px 26px;
+  border-radius: 22px;
+  background: rgba(16, 18, 22, 0.86);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 50px 100px -30px rgba(0, 0, 0, 0.8),
+    0 0 140px -50px rgba(111, 196, 253, 0.5);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 17px;
+  letter-spacing: 0;
+}
+.dots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+.cmd {
+  margin: 0 0 16px;
+  min-height: 1.5em;
+  color: #f4f6f8;
+}
+.prompt {
+  color: #6fc4fd;
+}
+.caret {
+  display: inline-block;
+  width: 9px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.18em;
+  background: #6fc4fd;
+}
+.line {
+  margin: 6px 0 0;
+  color: rgba(244, 246, 248, 0.8);
+}
+.tick {
+  color: #d6f21a;
+}
+.pitch {
+  width: 470px;
+}
+.pitchTitle {
+  margin: 0;
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+.agents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+.agent {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.endMark {
+  width: 150px;
+  height: 150px;
+  filter: drop-shadow(0 0 40px rgba(111, 196, 253, 0.5));
+}
+.endWord {
+  margin: 14px 0 0;
+  min-height: 1.1em;
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+.endLine {
+  margin: 14px 0 0;
+  font-size: 24px;
+  color: rgba(244, 246, 248, 0.72);
+}
+.endRow {
+  margin-top: 28px;
+}
+.pill {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #6fc4fd;
+  color: #07080a;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.url {
+  margin: 26px 0 0;
+  font-size: 16px;
+  color: rgba(244, 246, 248, 0.5);
+  letter-spacing: 0;
+}
+
+.flash {
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 20%, rgba(111, 196, 253, 0.55) 48%, rgba(255, 255, 255, 0.7) 52%, transparent 80%);
+  mix-blend-mode: screen;
+}
+.vignette {
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.72) 100%);
+}
+.grain {
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-size: 256px 256px;
+}
+.hud {
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  padding: 24px 32px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 246, 248, 0.55);
+}
+.hud > :nth-child(2) {
+  justify-self: end;
+}
+.hudBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(244, 246, 248, 0.85);
+}
+.hudBrand svg {
+  width: 16px;
+  height: 16px;
+  color: #6fc4fd;
+}
+.hudLabel {
+  grid-row: 3;
+  align-self: end;
+}
+.hudTime {
+  grid-row: 3;
+  grid-column: 2;
+  justify-self: end;
+  align-self: end;
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+.bar {
+  display: block;
+  width: 140px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+}
+.bar b {
+  display: block;
+  height: 100%;
+  background: #6fc4fd;
+}

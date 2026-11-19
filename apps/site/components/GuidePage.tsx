@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BY_HAND, GUIDE, type GuidePage as Page, guidePath } from "@/lib/guide";
+import { type BY_HAND, GUIDE, type GuidePage as Page, guidePath } from "@/lib/guide";
 import { highlight } from "@/lib/highlight";
 import { type Lang, dictionaries, href } from "@/lib/i18n";
 import { REPO } from "@/lib/site";
