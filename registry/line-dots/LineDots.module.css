@@ -1,0 +1,74 @@
+.root {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 520px);
+  margin: 0;
+  padding: 44px 22px 16px;
+  border-radius: 24px;
+  background: var(--fluid-surface);
+  color: var(--fluid-text);
+  font-family: var(--fluid-font);
+}
+.plot {
+  position: relative;
+  height: 180px;
+}
+.chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.line {
+  fill: none;
+  stroke: var(--fluid-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.dot {
+  fill: var(--fluid-surface);
+  stroke: var(--fluid-accent);
+  stroke-width: 3;
+}
+.bubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.bubble span {
+  position: absolute;
+  bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--fluid-text);
+  color: var(--fluid-surface);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.hits {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+.hit {
+  flex: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+}
+.hit:focus-visible {
+  outline: 2px solid var(--fluid-focus);
+  outline-offset: 2px;
+}
+.axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--fluid-text-2);
+  font-size: 12px;
+}

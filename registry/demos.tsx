@@ -23,6 +23,9 @@ import SpringButton from "./spring-button/demo";
 import SpringSwitch from "./spring-switch/demo";
 import TextReveal from "./text-reveal/demo";
 import WordCycle from "./word-cycle/demo";
+import DotGrid from "./dot-grid/demo";
+import DonutMorph from "./donut-morph/demo";
+import LineDots from "./line-dots/demo";
 import DashboardDemo from "./dashboard/demo";
 import RankList from "./rank-list/demo";
 import ProgressRing from "./progress-ring/demo";
@@ -61,4 +64,7 @@ export const demos: Record<string, ComponentType> = {
   "progress-ring": ProgressRing,
   "rank-list": RankList,
   dashboard: DashboardDemo,
+  "line-dots": LineDots,
+  "donut-morph": DonutMorph,
+  "dot-grid": DotGrid,
 };

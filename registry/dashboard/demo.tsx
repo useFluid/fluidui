@@ -6,6 +6,9 @@ import { Dashboard, type Range } from "./Dashboard";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const money = { style: "currency", currency: "USD", maximumFractionDigits: 0 } as const;
+const channels = (v: number[]) => ["Direct", "Search", "Social", "Email"].map((label, i) => ({ label, value: v[i] }));
+const activity = (seed: number) =>
+  Array.from({ length: 84 }, (_, i) => Math.max(0, Math.round(50 + 48 * Math.sin(i * 0.41 + seed) * Math.cos(i * 0.13 + seed))));
 const people = (values: number[]) => ["Ana", "Bruno", "Carla", "Diego"].map((label, i) => ({ id: label, label, value: values[i] }));
 
 const ranges: Range[] = [
@@ -24,6 +27,8 @@ const ranges: Range[] = [
     barsMax: 100,
     goal: { label: "Weekly goal", value: 64, max: 100 },
     leaders: people([42, 38, 51, 29]),
+    channels: channels([420, 260, 180, 90]),
+    activity: activity(0),
   },
   {
     id: "month",
@@ -40,6 +45,8 @@ const ranges: Range[] = [
     barsMax: 100,
     goal: { label: "Monthly goal", value: 88, max: 100 },
     leaders: people([180, 214, 196, 150]),
+    channels: channels([300, 380, 140, 160]),
+    activity: activity(1.9),
   },
   {
     id: "year",
@@ -56,6 +63,8 @@ const ranges: Range[] = [
     barsMax: 100,
     goal: { label: "Yearly goal", value: 100, max: 100 },
     leaders: people([2210, 2480, 1990, 2620]),
+    channels: channels([520, 200, 260, 60]),
+    activity: activity(3.4),
   },
 ];
 
