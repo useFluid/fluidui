@@ -10,6 +10,7 @@ import { Mosaic } from "@/components/Mosaic";
 import { PaintedStage } from "@/components/PaintedStage";
 import { PetParade } from "@/components/PetParade";
 import { Reveal } from "@/components/Reveal";
+import { ScrollStory } from "@/components/ScrollStory";
 import { SpringLab } from "@/components/SpringLab";
 import { Stage } from "@/components/Stage";
 import { PostVideo, StoryVideo } from "@/components/SocialVideo";
@@ -126,10 +127,22 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </dl>
       </div>
 
+      <section className={styles.section} aria-labelledby="story">
+        <div className="container">
+          <Reveal className={styles.head}>
+            {eyebrow(1, s.story.eyebrow)}
+            <h2 id="story" className={styles.sectionTitle}>
+              {s.story.title}
+            </h2>
+          </Reveal>
+          <ScrollStory steps={s.story.steps} />
+        </div>
+      </section>
+
       <section className={styles.section} aria-labelledby="wall">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(1, s.catalog.eyebrow)}
+            {eyebrow(2, s.catalog.eyebrow)}
             <h2 id="wall" className={styles.sectionTitle}>
               {s.catalog.title}
             </h2>
@@ -142,7 +155,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={`${styles.section} ${styles.dark}`} aria-labelledby="data">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(2, s.data.eyebrow)}
+            {eyebrow(3, s.data.eyebrow)}
             <h2 id="data" className={styles.sectionTitle}>
               {s.data.title}
             </h2>
@@ -158,7 +171,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="brands">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(3, s.brands.eyebrow)}
+            {eyebrow(4, s.brands.eyebrow)}
             <h2 id="brands" className={styles.sectionTitle}>
               {s.brands.title}
             </h2>
@@ -171,7 +184,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="logo">
         <div className={`container ${styles.split}`}>
           <Reveal>
-            {eyebrow(4, s.contour.eyebrow)}
+            {eyebrow(5, s.contour.eyebrow)}
             <h2 id="logo" className={styles.sectionTitle}>
               {s.contour.title}
             </h2>
@@ -188,7 +201,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="physics">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(5, s.physics.eyebrow)}
+            {eyebrow(6, s.physics.eyebrow)}
             <h2 id="physics" className={styles.sectionTitle}>
               {s.physics.title}
             </h2>
@@ -201,7 +214,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="characters">
         <div className="container">
           <Reveal className={styles.head}>
-            {eyebrow(6, s.characters.eyebrow)}
+            {eyebrow(7, s.characters.eyebrow)}
             <h2 id="characters" className={styles.sectionTitle}>
               {s.characters.title}
             </h2>
@@ -214,7 +227,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="video">
         <div className={`container ${styles.split}`}>
           <Reveal>
-            {eyebrow(7, s.video.eyebrow)}
+            {eyebrow(8, s.video.eyebrow)}
             <h2 id="video" className={styles.sectionTitle}>
               {s.video.title}
             </h2>
@@ -233,7 +246,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section className={styles.section} aria-labelledby="agents">
         <div className={`container ${styles.split}`}>
           <Reveal>
-            {eyebrow(8, s.agents.eyebrow)}
+            {eyebrow(9, s.agents.eyebrow)}
             <h2 id="agents" className={styles.sectionTitle}>
               {s.agents.title}
             </h2>
