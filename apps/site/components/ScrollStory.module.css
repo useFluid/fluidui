@@ -91,11 +91,14 @@
   display: grid;
   align-content: center;
   min-height: 70vh;
-  opacity: 0.28;
-  transition: opacity 400ms ease;
+  color: var(--text-2);
+  transition: color 400ms ease;
 }
 .step[data-on] {
-  opacity: 1;
+  color: var(--text);
+}
+.step:not([data-on]) p {
+  color: var(--text-2);
 }
 .step h3 {
   margin: 0;
