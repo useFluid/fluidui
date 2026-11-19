@@ -23,6 +23,10 @@ import SpringButton from "./spring-button/demo";
 import SpringSwitch from "./spring-switch/demo";
 import TextReveal from "./text-reveal/demo";
 import WordCycle from "./word-cycle/demo";
+import SpringCalendar from "./spring-calendar/demo";
+import AreaMorph from "./area-morph/demo";
+import SpringBars from "./spring-bars/demo";
+import StatCounter from "./stat-counter/demo";
 
 export const demos: Record<string, ComponentType> = {
   "shape-morph": ShapeMorph,
@@ -47,4 +51,8 @@ export const demos: Record<string, ComponentType> = {
   "splash-choice": SplashChoice,
   "splash-shapes": SplashShapes,
   "splash-dots": SplashDots,
+  "stat-counter": StatCounter,
+  "spring-bars": SpringBars,
+  "area-morph": AreaMorph,
+  "spring-calendar": SpringCalendar,
 };

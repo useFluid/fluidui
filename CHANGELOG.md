@@ -4,6 +4,7 @@
 
 Fluid by hand: the same quality without an agent.
 
+- Four new pieces in a new Data category, for dashboards: Stat Counter (a number that rolls to its value, with an arrow that flows up or down), Spring Bars (bars that rise like liquid), Area Morph (an area chart that flows between data sets on the morph engine) and Spring Calendar (a selection that travels between days, with keyboard date navigation).
 - `scalePath(d, box)` brings a path from any viewBox (`24`, or `"0 0 20 20"`) into the 120 box, keeping its size relative to its box, so filled icons from icon sets morph with the built-in shapes and your logo. `fitPath` stays the tool for logos.
 - Every `PathError` has a code, such as `FLUID_PATH_NUMBER`, and a link to its fix on the new [troubleshooting page](https://fluidui.willradoux.com/docs/troubleshooting). In development the message also explains what went wrong; production builds keep only the code and the link. `PathError` still accepts plain text.
 - `MorphPath` never crashes on a bad `d`: it keeps the last good shape, or waits for the first valid one, and in development warns once with the code. Also in development, it warns with the fix when a path does not fit its svg viewBox. The warnings work with Next.js, Vite, webpack and esbuild, and none of their text reaches production builds.

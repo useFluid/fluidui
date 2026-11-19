@@ -1,0 +1,72 @@
+.root {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 420px);
+  margin: 0;
+  padding: 24px 22px 18px;
+  border-radius: 24px;
+  background: var(--fluid-surface);
+  color: var(--fluid-text);
+  font-family: var(--fluid-font);
+}
+.plot {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  height: 180px;
+  margin-top: 36px;
+}
+.column {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--fluid-text) 5%, transparent);
+  cursor: pointer;
+}
+.column:focus-visible {
+  outline: 2px solid var(--fluid-focus);
+  outline-offset: 2px;
+}
+.fill {
+  width: 100%;
+  min-height: 8px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--fluid-accent) 45%, var(--fluid-surface));
+  transition: background 250ms ease;
+}
+.column[data-active] .fill {
+  background: var(--fluid-accent);
+}
+.bubble {
+  position: absolute;
+  z-index: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--fluid-text);
+  color: var(--fluid-surface);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transform: translate(-50%, -8px);
+  pointer-events: none;
+}
+.axis {
+  display: flex;
+  gap: 8px;
+  color: var(--fluid-text-2);
+  font-size: 12px;
+}
+.axis span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+}

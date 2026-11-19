@@ -1,11 +1,11 @@
-export const categories = ["Metamorph", "Characters", "Controls", "Text", "Transitions", "Splash"] as const;
+export const categories = ["Metamorph", "Characters", "Controls", "Data", "Text", "Transitions", "Splash"] as const;
 export type Category = (typeof categories)[number];
 
 export type Lang = "en" | "pt";
 
 export const categoryLabels: Record<Lang, Record<Category, string>> = {
-  en: { Metamorph: "Metamorph", Characters: "Characters", Controls: "Controls", Text: "Text", Transitions: "Transitions", Splash: "Splash" },
-  pt: { Metamorph: "Metamorfo", Characters: "Personagens", Controls: "Controles", Text: "Texto", Transitions: "Transições", Splash: "Splash" },
+  en: { Metamorph: "Metamorph", Characters: "Characters", Controls: "Controls", Data: "Data", Text: "Text", Transitions: "Transitions", Splash: "Splash" },
+  pt: { Metamorph: "Metamorfo", Characters: "Personagens", Controls: "Controles", Data: "Dados", Text: "Texto", Transitions: "Transições", Splash: "Splash" },
 };
 
 type Texts = {
@@ -406,6 +406,66 @@ const coffee = pickObject("we run a small coffee shop");
       description: "Pontos espalhados voam até o contorno da logo e ela se preenche.",
       how: "São os mesmos pontos que o motor usa para o morph, agora visíveis. Cada um começa num lugar sorteado com semente fixa, então a cena é sempre igual, e voa até o contorno com uma curva de mola e um pequeno atraso. Depois a logo se preenche e o nome entra.",
       task: "Crie a abertura do meu produto com SplashDots, a minha logo e o nome da marca.",
+    },
+  },
+  {
+    slug: "stat-counter",
+    name: "Stat Counter",
+    category: "Data",
+    size: "m",
+    usage: `<StatCounter label="Revenue today" value={16902} previous={13380} format={{ style: "currency", currency: "USD" }} />`,
+    description: "A dashboard number that rolls to its new value, with a change badge whose arrow flows up or down.",
+    how: "One spring carries the number, critically damped, so the digits roll and settle without overshooting the real value. The arrow in the badge is a shape of the engine: up and down are two drawings, and it flows between them. Screen readers get the label, the final value and the change, never the rolling digits.",
+    task: "Use StatCounter for the key numbers of my dashboard, with the real values and the previous period to compare.",
+    pt: {
+      description: "Um número de dashboard que gira até o novo valor, com um selo de variação cuja seta flui para cima ou para baixo.",
+      how: "Uma mola leva o número, com amortecimento crítico, para os dígitos girarem e assentarem sem passar do valor real. A seta do selo é uma forma do motor: para cima e para baixo são dois desenhos, e ela flui entre eles. Leitores de tela recebem o rótulo, o valor final e a variação, nunca os dígitos girando.",
+      task: "Use StatCounter nos números principais do meu dashboard, com os valores reais e o período anterior para comparar.",
+    },
+  },
+  {
+    slug: "spring-bars",
+    name: "Spring Bars",
+    category: "Data",
+    size: "m",
+    usage: `<SpringBars label="Orders this week" max={100} data={[{ label: "Mon", value: 32 }, { label: "Tue", value: 48 }]} />`,
+    description: "A bar chart whose bars rise like liquid, with a value bubble that flows to the bar you point at.",
+    how: "Each bar has a spring of its own, a little slower from left to right, so a change ripples across the chart instead of jumping. The bubble is on two springs, sideways and up, and follows the pointer or the arrow keys. Every bar is a button read with its label and value.",
+    task: "Replace the bar charts of my dashboard with SpringBars, with a fixed max so bars compare across changes.",
+    pt: {
+      description: "Um gráfico de barras em que as barras sobem como líquido, com uma bolha de valor que flui até a barra apontada.",
+      how: "Cada barra tem a própria mola, um pouco mais lenta da esquerda para a direita, então uma mudança atravessa o gráfico como uma onda em vez de pular. A bolha anda em duas molas, para o lado e para cima, e segue o ponteiro ou as setas do teclado. Cada barra é um botão lido com o rótulo e o valor.",
+      task: "Troque os gráficos de barras do meu dashboard por SpringBars, com um max fixo para as barras se compararem entre mudanças.",
+    },
+  },
+  {
+    slug: "area-morph",
+    name: "Area Morph",
+    category: "Data",
+    size: "m",
+    usage: `<AreaMorph label="Visitors" values={[20, 34, 28, 52, 46, 70]} max={100} />`,
+    description: "An area chart that flows from one set of numbers to the next like a liquid, on the engine that morphs logos.",
+    how: "The values become a smooth closed shape in the 120 box, and the morph engine flows it to the next shape: every point of the outline has its own spring, so the area moves like water settling. At rest the exact drawing of the data comes back. The chart is an image read with its label and values.",
+    task: "Use AreaMorph for the trend charts of my dashboard, switching ranges such as week, month and year.",
+    pt: {
+      description: "Um gráfico de área que flui de um conjunto de números para o próximo como líquido, no motor que transforma logos.",
+      how: "Os valores viram uma forma fechada e suave na caixa de 120, e o motor de morph flui até a próxima forma: cada ponto do contorno tem a própria mola, então a área se move como água assentando. Ao parar, volta o desenho exato dos dados. O gráfico é uma imagem lida com o rótulo e os valores.",
+      task: "Use AreaMorph nos gráficos de tendência do meu dashboard, trocando períodos como semana, mês e ano.",
+    },
+  },
+  {
+    slug: "spring-calendar",
+    name: "Spring Calendar",
+    category: "Data",
+    size: "m",
+    usage: `<SpringCalendar value={date} onChange={setDate} />`,
+    description: "A month calendar where the selection flows from day to day and the month slides in from the side it came from.",
+    how: "The selection is one pill on two springs, across and down the grid, so it travels between days instead of blinking. Changing month moves the days a short way on a spring from the side you came from. It is a date grid: arrows move by day and week, Page Up and Page Down by month, and each day is read as a full date.",
+    task: "Use SpringCalendar for the date fields of my product, in my language and with my first day of the week.",
+    pt: {
+      description: "Um calendário do mês em que a seleção flui de dia em dia e o mês entra deslizando do lado de onde veio.",
+      how: "A seleção é uma pílula em duas molas, na horizontal e na vertical da grade, então viaja entre os dias em vez de piscar. Trocar de mês move os dias um pouco, numa mola, a partir do lado de onde você veio. É uma grade de datas: as setas andam por dia e semana, Page Up e Page Down por mês, e cada dia é lido como data completa.",
+      task: "Use SpringCalendar nos campos de data do meu produto, no meu idioma e com o meu primeiro dia da semana.",
     },
   },
 ];
